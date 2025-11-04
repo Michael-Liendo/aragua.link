@@ -15,6 +15,7 @@ import {
 	PublicRoutesEnum,
 } from "./data/routesEnums";
 import Home from "./pages/(app)/home";
+import LinksPage from "./pages/(app)/links";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
 import Landing from "./pages/(public)/Landing";
@@ -63,6 +64,11 @@ const PrivateRoutes: JSX.Element[] = [
 		key={PrivateRoutesEnum.Home}
 		path={PrivateRoutesEnum.Home}
 		Component={Home}
+	/>,
+	<Route
+		key={PrivateRoutesEnum.Links}
+		path={PrivateRoutesEnum.Links}
+		Component={LinksPage}
 	/>,
 ];
 

@@ -21,7 +21,10 @@
 			"complexity": {
 				"noStaticOnlyClass": "off"
 			},
-			"correctness": { "useExhaustiveDependencies": "off" },
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"useUniqueElementIds": "off"
+			},
 			"suspicious": {
 				"noArrayIndexKey": "off"
 			}

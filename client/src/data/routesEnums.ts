@@ -9,4 +9,5 @@ export enum AuthRoutesEnum {
 
 export enum PrivateRoutesEnum {
 	Home = "/app",
+	Links = "/app/links",
 }
