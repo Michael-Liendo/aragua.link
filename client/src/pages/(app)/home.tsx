@@ -7,7 +7,7 @@ function Home() {
 	return (
 		<div className="p-6">
 			<h1 className="text-3xl font-bold mb-2">
-				Bienvenido a AragualLink{user?.first_name ? `, ${user.first_name}` : ""}
+				Bienvenido a AraguaLink{user?.first_name ? `, ${user.first_name}` : ""}
 			</h1>
 			<p className="text-muted-foreground mb-8">
 				Acorta URLs y crea tu página de enlaces personalizada
