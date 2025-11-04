@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const PlanTypeEnum = z.enum(["FREE", "PRO", "ENTERPRISE"]);
+
 export const UserSchema = z.object({
 	id: z.uuid(),
 	is_active: z.boolean().default(true),
@@ -8,6 +10,7 @@ export const UserSchema = z.object({
 	email: z.email(),
 	password: z.string().optional(),
 	phone: z.string().optional(),
+	plan: PlanTypeEnum.default("FREE"),
 	created_at: z.coerce.date(),
 	updated_at: z.coerce.date(),
 	last_login_at: z.coerce.date().optional(),
@@ -31,6 +34,8 @@ export const UserForUpdateSchema = UserSchema.omit({
 	updated_at: true,
 	last_login_at: true,
 }).partial();
+
+export type PlanType = z.infer<typeof PlanTypeEnum>;
 
 export interface IUser extends z.infer<typeof UserSchema> {}
 

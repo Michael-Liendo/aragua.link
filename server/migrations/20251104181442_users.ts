@@ -6,6 +6,10 @@ export async function up(knex: Knex): Promise<void> {
 		table.boolean("is_active").notNullable().defaultTo(true);
 		table.string("first_name").notNullable();
 		table.string("last_name").notNullable();
+		table
+			.enum("plan", ["FREE", "PRO", "ENTERPRISE"])
+			.notNullable()
+			.defaultTo("FREE");
 		table.string("email").notNullable().unique();
 		table.string("phone").nullable();
 		table.string("password").notNullable();
