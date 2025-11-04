@@ -13,7 +13,8 @@
 			"correctness": {
 				"noUnusedVariables": "warn",
 				"noUnusedImports": "warn",
-				"useExhaustiveDependencies": "off"
+				"useExhaustiveDependencies": "off",
+				"useUniqueElementIds": "off"
 			},
 			"suspicious": {
 				"noArrayIndexKey": "off"

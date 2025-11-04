@@ -23,7 +23,7 @@ export async function checkRequestJwt(request: Request) {
 	try {
 		const jwt = token;
 		const payload = Jwt.verifyToken(`${jwt}`);
-		const user = await Services.user.getByID(payload.id);
+		const user = await Services.users.getByID(payload.id);
 
 		if (!user) {
 			throw new UnauthorizedError("Access denied");

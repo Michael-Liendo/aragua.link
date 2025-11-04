@@ -15,9 +15,12 @@ import {
 	PublicRoutesEnum,
 } from "./data/routesEnums";
 import Home from "./pages/(app)/home";
+import LinkAnalyticsPage from "./pages/(app)/link-analytics";
+import LinksPage from "./pages/(app)/links";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
 import Landing from "./pages/(public)/Landing";
+import RedirectPage from "./pages/(public)/Redirect";
 
 const PrivateRoutesWrapper = () => {
 	const { token, authInitialized } = useAuth();
@@ -64,6 +67,16 @@ const PrivateRoutes: JSX.Element[] = [
 		path={PrivateRoutesEnum.Home}
 		Component={Home}
 	/>,
+	<Route
+		key={PrivateRoutesEnum.Links}
+		path={PrivateRoutesEnum.Links}
+		Component={LinksPage}
+	/>,
+	<Route
+		key={PrivateRoutesEnum.LinkAnalytics}
+		path={PrivateRoutesEnum.LinkAnalytics}
+		Component={LinkAnalyticsPage}
+	/>,
 ];
 
 const AuthRoutes: JSX.Element[] = [
@@ -85,4 +98,5 @@ const PublicRoutes: JSX.Element[] = [
 		path={PublicRoutesEnum.Landing}
 		Component={Landing}
 	/>,
+	<Route key="redirect" path="/:shortCode" Component={RedirectPage} />,
 ];
