@@ -9,7 +9,7 @@ export const UserSchema = z.object({
 	last_name: z.string(),
 	email: z.email(),
 	password: z.string().optional(),
-	phone: z.string().optional(),
+	phone: z.string().nullable(),
 	plan: PlanTypeEnum.default("FREE"),
 	created_at: z.coerce.date(),
 	updated_at: z.coerce.date(),

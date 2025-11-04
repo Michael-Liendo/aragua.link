@@ -65,7 +65,7 @@ export default function LoginPage() {
 					<div className="flex flex-col items-center mb-8">
 						<img
 							src="/logo.png"
-							alt="AragualLink Logo"
+							alt="AraguaLink Logo"
 							className="w-20 h-20 mb-4 drop-shadow-lg"
 						/>
 						<h1 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -151,7 +151,7 @@ export default function LoginPage() {
 							Bienvenido de vuelta
 						</h2>
 						<p className="text-lg drop-shadow-md opacity-90">
-							Gestiona tus enlaces de forma simple y efectiva con AragualLink
+							Gestiona tus enlaces de forma simple y efectiva con AraguaLink
 						</p>
 					</div>
 				</div>

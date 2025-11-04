@@ -1,0 +1,21 @@
+{
+  "name": "AraguaLink - Acorta enlaces y crea tu página personalizada",
+  "short_name": "AraguaLink",
+  "description": "Comparte todos tus enlaces, redes sociales y contenido en una sola página personalizada",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "es",
+  "dir": "ltr"
+}

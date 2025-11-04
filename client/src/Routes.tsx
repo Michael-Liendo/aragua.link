@@ -9,10 +9,15 @@ import {
 import { useAuth } from "@/features/auth";
 import AppLayout from "./components/app-layout";
 import { LoadingFullScreen } from "./components/loading";
-import { AuthRoutesEnum, PrivateRoutesEnum } from "./data/routesEnums";
+import {
+	AuthRoutesEnum,
+	PrivateRoutesEnum,
+	PublicRoutesEnum,
+} from "./data/routesEnums";
 import Home from "./pages/(app)/home";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
+import Landing from "./pages/(public)/Landing";
 
 const PrivateRoutesWrapper = () => {
 	const { token, authInitialized } = useAuth();
@@ -46,7 +51,7 @@ export function Routes() {
 				{PublicRoutes.map((route) => route)}
 				<Route
 					path="*"
-					element={<Navigate to={PrivateRoutesEnum.Home} replace />}
+					element={<Navigate to={PublicRoutesEnum.Landing} replace />}
 				/>
 			</ReactRoutes>
 		</Router>
@@ -54,8 +59,11 @@ export function Routes() {
 }
 
 const PrivateRoutes: JSX.Element[] = [
-	// Use an index route for Home so it renders at '/'
-	<Route key={PrivateRoutesEnum.Home} index Component={Home} />,
+	<Route
+		key={PrivateRoutesEnum.Home}
+		path={PrivateRoutesEnum.Home}
+		Component={Home}
+	/>,
 ];
 
 const AuthRoutes: JSX.Element[] = [
@@ -71,4 +79,10 @@ const AuthRoutes: JSX.Element[] = [
 	/>,
 ];
 
-const PublicRoutes: JSX.Element[] = [];
+const PublicRoutes: JSX.Element[] = [
+	<Route
+		key={PublicRoutesEnum.Landing}
+		path={PublicRoutesEnum.Landing}
+		Component={Landing}
+	/>,
+];

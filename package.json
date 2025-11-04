@@ -1,7 +1,7 @@
 {
 	"name": "@aragualink/root",
 	"version": "0.0.1",
-	"description": "AragualLink - URL Shortener & Linktree",
+	"description": "AraguaLink - URL Shortener & Linktree",
 	"workspaces": [
 		"shared",
 		"server",

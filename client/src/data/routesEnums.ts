@@ -1,4 +1,6 @@
-export enum PublicRoutesEnum {}
+export enum PublicRoutesEnum {
+	Landing = "/",
+}
 
 export enum AuthRoutesEnum {
 	Login = "/login",
@@ -6,5 +8,5 @@ export enum AuthRoutesEnum {
 }
 
 export enum PrivateRoutesEnum {
-	Home = "/",
+	Home = "/app",
 }

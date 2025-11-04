@@ -1,4 +1,4 @@
-# 🔗 AragualLink - URL Shortener & Linktree
+# 🔗 AraguaLink - URL Shortener & Linktree
 
 Un acortador de URLs moderno y personalizable con funcionalidad de Linktree, construido con tecnologías de vanguardia. Perfecto para crear enlaces cortos personalizados y páginas de enlaces tipo bio.
 

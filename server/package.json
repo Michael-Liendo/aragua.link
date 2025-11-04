@@ -1,7 +1,7 @@
 {
 	"name": "@aragualink/server",
 	"version": "0.0.1",
-	"description": "AragualLink API Server",
+	"description": "AraguaLink API Server",
 	"type": "commonjs",
 	"main": "src/index.ts",
 	"scripts": {

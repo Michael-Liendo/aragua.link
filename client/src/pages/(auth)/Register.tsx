@@ -95,7 +95,7 @@ export default function RegisterPage() {
 				<div className="relative h-full flex flex-col justify-center items-center text-white p-12">
 					<div className="max-w-md text-center space-y-6">
 						<h2 className="text-4xl font-bold drop-shadow-lg">
-							Únete a AragualLink
+							Únete a AraguaLink
 						</h2>
 					</div>
 				</div>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
 					<div className="flex flex-col items-center mb-8">
 						<img
 							src="/logo.png"
-							alt="AragualLink Logo"
+							alt="AraguaLink Logo"
 							className="w-20 h-20 mb-4 drop-shadow-lg"
 						/>
 						<h1 className="text-3xl font-bold text-gray-900 dark:text-white">
