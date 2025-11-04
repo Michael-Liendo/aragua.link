@@ -54,13 +54,23 @@ export default class LinksService {
 	 * Create a new link
 	 */
 	static async create(userId: string, linkDTO: ILinkForCreate): Promise<ILink> {
-		// Validate short code is unique
+		// Validate short code is unique among links
 		const shortCodeExists = await Repository.links.checkShortCodeExists(
 			linkDTO.short_code,
 		);
 		if (shortCodeExists) {
 			throw new BadRequestError(
-				"Short code already exists. Please choose a different one.",
+				"Este código corto ya está en uso por otro enlace. Por favor elige otro.",
+			);
+		}
+
+		// Validate short code doesn't conflict with existing bio page slugs
+		const bioPageWithSameSlug = await Repository.bioPages.getBySlug(
+			linkDTO.short_code,
+		);
+		if (bioPageWithSameSlug) {
+			throw new BadRequestError(
+				"Este código corto ya está en uso por una página bio. Por favor elige otro.",
 			);
 		}
 
