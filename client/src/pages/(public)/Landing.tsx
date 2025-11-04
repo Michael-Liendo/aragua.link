@@ -17,11 +17,11 @@ export default function Landing() {
 					<div className="flex items-center gap-3">
 						<img
 							src="/logo.png"
-							alt="AragualLink"
+							alt="AraguaLink"
 							className="w-10 h-10 drop-shadow-md"
 						/>
 						<span className="text-2xl font-bold text-gray-900 dark:text-white">
-							AragualLink
+							AraguaLink
 						</span>
 					</div>
 					<div className="flex items-center gap-4">
@@ -47,7 +47,7 @@ export default function Landing() {
 				<div className="max-w-4xl mx-auto">
 					<img
 						src="/large-logo.png"
-						alt="AragualLink Logo"
+						alt="AraguaLink Logo"
 						className="w-full max-w-2xl mx-auto mb-8 drop-shadow-2xl"
 					/>
 					<h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
@@ -148,7 +148,7 @@ export default function Landing() {
 					</h2>
 					<p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
 						Únete a miles de usuarios que ya están compartiendo sus enlaces de
-						manera profesional con AragualLink.
+						manera profesional con AraguaLink.
 					</p>
 					<Link to={AuthRoutesEnum.Register}>
 						<Button
@@ -168,11 +168,11 @@ export default function Landing() {
 					<div className="flex items-center gap-3">
 						<img
 							src="/logo.png"
-							alt="AragualLink"
+							alt="AraguaLink"
 							className="w-8 h-8 drop-shadow-md"
 						/>
 						<span className="text-gray-600 dark:text-gray-400">
-							© 2024 AragualLink. Todos los derechos reservados.
+							© 2024 AraguaLink. Todos los derechos reservados.
 						</span>
 					</div>
 					<div className="flex gap-6">

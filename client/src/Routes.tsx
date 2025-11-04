@@ -9,7 +9,11 @@ import {
 import { useAuth } from "@/features/auth";
 import AppLayout from "./components/app-layout";
 import { LoadingFullScreen } from "./components/loading";
-import { AuthRoutesEnum, PrivateRoutesEnum, PublicRoutesEnum } from "./data/routesEnums";
+import {
+	AuthRoutesEnum,
+	PrivateRoutesEnum,
+	PublicRoutesEnum,
+} from "./data/routesEnums";
 import Home from "./pages/(app)/home";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
@@ -55,7 +59,11 @@ export function Routes() {
 }
 
 const PrivateRoutes: JSX.Element[] = [
-	<Route key={PrivateRoutesEnum.Home} path={PrivateRoutesEnum.Home} Component={Home} />,
+	<Route
+		key={PrivateRoutesEnum.Home}
+		path={PrivateRoutesEnum.Home}
+		Component={Home}
+	/>,
 ];
 
 const AuthRoutes: JSX.Element[] = [
@@ -72,5 +80,9 @@ const AuthRoutes: JSX.Element[] = [
 ];
 
 const PublicRoutes: JSX.Element[] = [
-	<Route key={PublicRoutesEnum.Landing} path={PublicRoutesEnum.Landing} Component={Landing} />,
+	<Route
+		key={PublicRoutesEnum.Landing}
+		path={PublicRoutesEnum.Landing}
+		Component={Landing}
+	/>,
 ];
