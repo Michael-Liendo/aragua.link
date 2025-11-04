@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2016",
+		"declaration": true,
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"strict": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"outDir": "./dist",
+		"skipLibCheck": true,
+		"types": ["node"]
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

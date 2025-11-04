@@ -1,0 +1,25 @@
+{
+	"name": "@aragualink/shared",
+	"version": "0.0.1",
+	"author": "Michael Liendo",
+	"license": "MIT",
+	"main": "dist/cjs/index.js",
+	"module": "dist/mjs/index.js",
+	"exports": {
+		".": {
+			"import": "./dist/mjs/index.js",
+			"require": "./dist/cjs/index.js"
+		},
+		"./*": {
+			"import": "./dist/mjs/*.js",
+			"require": "./dist/cjs/*.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
+		"dev": "tsc -p tsconfig.json --watch & tsc -p tsconfig.cjs.json --watch",
+		"lint": "biome format ./ && biome check ./",
+		"format": "biome format --write ./ && biome check --write ./",
+		"format:unsafe": "biome format --write ./ && biome check --write --unsafe ./"
+	}
+}

@@ -1,0 +1,55 @@
+{
+	"name": "@aragualink/server",
+	"version": "0.0.1",
+	"description": "AragualLink API Server",
+	"type": "commonjs",
+	"main": "src/index.ts",
+	"scripts": {
+		"predev": "npm run build -w @aragualink/shared",
+		"start": "NODE_ENV=production node dist/src/index.js",
+		"dev": "tsx src/index.ts",
+		"dev:watch": "tsx watch src/index.ts",
+		"build": "tsc",
+		"migrations:make": "knex migrate:make -x ts",
+		"migrations:up": "knex migrate:latest",
+		"migrations:down": "knex migrate:down",
+		"seeds:make": "knex seed:make -x ts",
+		"seeds:run": "knex seed:run",
+		"lint": "biome format ./ && biome check ./",
+		"format": "biome format --write ./ && biome check --write ./",
+		"format:unsafe": "biome format --write ./ && biome check --write --unsafe ./"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/Michael-Liendo/aragualink.git"
+	},
+	"keywords": [
+		"server"
+	],
+	"author": "Michael Liendo <contact@michaelliendo.com> (https://michaelliendo.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Michael-Liendo/aragualink/issues"
+	},
+	"homepage": "https://github.com/Michael-Liendo/aragualink#readme",
+	"dependencies": {
+		"@aragualink/shared": "^0.0.1",
+		"@faker-js/faker": "^9.9.0",
+		"@fastify/cors": "^8.5.0",
+		"@types/jsonwebtoken": "^9.0.10",
+		"bcrypt": "^5.1.1",
+		"dotenv": "^16.6.1",
+		"fastify": "^4.29.1",
+		"fastify-plugin": "^4.5.1",
+		"http-status-codes": "^2.3.0",
+		"jsonwebtoken": "^9.0.2",
+		"knex": "^3.1.0",
+		"pg": "^8.16.3",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.20.6"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.2",
+		"@types/node": "^20.19.17"
+	}
+}

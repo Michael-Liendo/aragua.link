@@ -1,0 +1,67 @@
+{
+	"name": "@aragualink/root",
+	"version": "0.0.1",
+	"description": "AragualLink - URL Shortener & Linktree",
+	"workspaces": [
+		"shared",
+		"server",
+		"client"
+	],
+	"scripts": {
+		"build": "npm run build:shared && npm run build:server && npm run build:client",
+		"build:shared": "npm run build -w @aragualink/shared",
+		"build:server": "npm run build -w @aragualink/server",
+		"build:client": "npm run build -w @aragualink/client",
+		"dev": "concurrently \"npm run dev:shared\" \"npm run dev:server\" \"npm run dev:client\"",
+		"dev:shared": "npm run dev -w @aragualink/shared",
+		"dev:server": "npm run dev:watch -w @aragualink/server",
+		"dev:client": "npm run dev -w @aragualink/client",
+		"start": "npm run start -w @aragualink/server",
+		"start:server": "npm run start -w @aragualink/server",
+		"start:client": "npm run preview -w @aragualink/client",
+		"lint": "npm run lint --workspaces",
+		"lint:shared": "npm run lint -w @aragualink/shared",
+		"lint:server": "npm run lint -w @aragualink/server",
+		"lint:client": "npm run lint -w @aragualink/client",
+		"format": "npm run format --workspaces",
+		"format:shared": "npm run format -w @aragualink/shared",
+		"format:server": "npm run format -w @aragualink/server",
+		"format:client": "npm run format -w @aragualink/client",
+		"format:unsafe": "npm run format:unsafe --workspaces",
+		"format:unsafe:shared": "npm run format:unsafe -w @aragualink/shared",
+		"format:unsafe:server": "npm run format:unsafe -w @aragualink/server",
+		"format:unsafe:client": "npm run format:unsafe -w @aragualink/client",
+		"db:migrate": "npm run migrations:up -w @aragualink/server",
+		"db:migrate:down": "npm run migrations:down -w @aragualink/server",
+		"db:seed": "npm run seeds:run -w @aragualink/server",
+		"db:make:migration": "npm run migrations:make -w @aragualink/server",
+		"db:make:seed": "npm run seeds:make -w @aragualink/server",
+		"clean": "rm -rf node_modules && rm -rf */node_modules && rm -rf */dist",
+		"install:all": "npm install && npm install --workspaces"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Michael-Liendo/aragualink.git"
+	},
+	"keywords": [
+		"url-shortener",
+		"linktree",
+		"aragualink",
+		"bio-links"
+	],
+	"author": "Michael Liendo (https://michaelliendo.com)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Michael-Liendo/aragualink/issues"
+	},
+	"homepage": "https://github.com/Michael-Liendo/aragualink#readme",
+	"dependencies": {
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.7",
+		"@types/node": "^24.9.1",
+		"typescript": "^5.9.3",
+		"concurrently": "^9.1.0"
+	}
+}
