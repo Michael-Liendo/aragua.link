@@ -31,7 +31,8 @@ jobs:
           git fetch origin
           git reset --hard origin/main
           npm install --omit=dev
-          npm run build
+          npm run shared:build
+          npm run server:build
           npm run db:migrate
           pm2 restart all
           EOF
