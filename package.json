@@ -41,7 +41,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Michael-Liendo/aragualink.git"
+		"url": "git+https://github.com/Michael-Liendo/aragua.link.git"
 	},
 	"keywords": [
 		"url-shortener",
@@ -52,9 +52,9 @@
 	"author": "Michael Liendo (https://michaelliendo.com)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Michael-Liendo/aragualink/issues"
+		"url": "https://github.com/Michael-Liendo/aragua.link/issues"
 	},
-	"homepage": "https://github.com/Michael-Liendo/aragualink#readme",
+	"homepage": "https://github.com/Michael-Liendo/aragua.link#readme",
 	"dependencies": {
 		"zod": "^4.1.12"
 	},
