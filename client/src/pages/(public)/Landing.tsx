@@ -212,7 +212,7 @@ export default function Landing() {
 								className="w-8 h-8 drop-shadow-md"
 							/>
 							<span className="text-gray-600 dark:text-gray-400">
-								© 2024 AraguaLink. Todos los derechos reservados.
+								© 2025 AraguaLink. Todos los derechos reservados.
 							</span>
 						</div>
 						<div className="flex gap-6">
