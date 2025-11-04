@@ -45,20 +45,13 @@ export function Routes() {
 	return (
 		<Router>
 			<ReactRoutes>
-				{/* Rutas estáticas primero */}
-				<Route
-					key={PublicRoutesEnum.Landing}
-					path={PublicRoutesEnum.Landing}
-					Component={Landing}
-				/>
-				<Route element={<AuthRoutesWrapper />}>
-					{AuthRoutes.map((route) => route)}
-				</Route>
 				<Route element={<PrivateRoutesWrapper />}>
 					{PrivateRoutes.map((route) => route)}
 				</Route>
-				{/* Ruta dinámica al final para no capturar las estáticas */}
-				<Route key="redirect" path="/:shortCode" Component={RedirectPage} />
+				<Route element={<AuthRoutesWrapper />}>
+					{AuthRoutes.map((route) => route)}
+				</Route>
+				{PublicRoutes.map((route) => route)}
 				<Route
 					path="*"
 					element={<Navigate to={PublicRoutesEnum.Landing} replace />}
@@ -97,4 +90,13 @@ const AuthRoutes: JSX.Element[] = [
 		path={AuthRoutesEnum.Register}
 		Component={Register}
 	/>,
+];
+
+const PublicRoutes: JSX.Element[] = [
+	<Route
+		key={PublicRoutesEnum.Landing}
+		path={PublicRoutesEnum.Landing}
+		Component={Landing}
+	/>,
+	<Route key="redirect" path="/:shortCode" Component={RedirectPage} />,
 ];
