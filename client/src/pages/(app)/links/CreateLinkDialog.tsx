@@ -142,7 +142,7 @@ export function CreateLinkDialog({
 							</p>
 						)}
 						<p className="text-sm text-muted-foreground">
-							Tu enlace será: {window.location.origin}/r/
+							Tu enlace será: {window.location.origin}/
 							{formik.values.short_code || "..."}
 						</p>
 					</div>

@@ -15,10 +15,12 @@ import {
 	PublicRoutesEnum,
 } from "./data/routesEnums";
 import Home from "./pages/(app)/home";
+import LinkAnalyticsPage from "./pages/(app)/link-analytics";
 import LinksPage from "./pages/(app)/links";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
 import Landing from "./pages/(public)/Landing";
+import RedirectPage from "./pages/(public)/Redirect";
 
 const PrivateRoutesWrapper = () => {
 	const { token, authInitialized } = useAuth();
@@ -43,13 +45,20 @@ export function Routes() {
 	return (
 		<Router>
 			<ReactRoutes>
-				<Route element={<PrivateRoutesWrapper />}>
-					{PrivateRoutes.map((route) => route)}
-				</Route>
+				{/* Rutas estáticas primero */}
+				<Route
+					key={PublicRoutesEnum.Landing}
+					path={PublicRoutesEnum.Landing}
+					Component={Landing}
+				/>
 				<Route element={<AuthRoutesWrapper />}>
 					{AuthRoutes.map((route) => route)}
 				</Route>
-				{PublicRoutes.map((route) => route)}
+				<Route element={<PrivateRoutesWrapper />}>
+					{PrivateRoutes.map((route) => route)}
+				</Route>
+				{/* Ruta dinámica al final para no capturar las estáticas */}
+				<Route key="redirect" path="/:shortCode" Component={RedirectPage} />
 				<Route
 					path="*"
 					element={<Navigate to={PublicRoutesEnum.Landing} replace />}
@@ -70,6 +79,11 @@ const PrivateRoutes: JSX.Element[] = [
 		path={PrivateRoutesEnum.Links}
 		Component={LinksPage}
 	/>,
+	<Route
+		key={PrivateRoutesEnum.LinkAnalytics}
+		path={PrivateRoutesEnum.LinkAnalytics}
+		Component={LinkAnalyticsPage}
+	/>,
 ];
 
 const AuthRoutes: JSX.Element[] = [
@@ -82,13 +96,5 @@ const AuthRoutes: JSX.Element[] = [
 		key={AuthRoutesEnum.Register}
 		path={AuthRoutesEnum.Register}
 		Component={Register}
-	/>,
-];
-
-const PublicRoutes: JSX.Element[] = [
-	<Route
-		key={PublicRoutesEnum.Landing}
-		path={PublicRoutesEnum.Landing}
-		Component={Landing}
 	/>,
 ];

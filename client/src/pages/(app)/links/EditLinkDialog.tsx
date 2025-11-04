@@ -129,7 +129,7 @@ export function EditLinkDialog({
 					<div className="space-y-2">
 						<Label>Código Corto</Label>
 						<div className="px-3 py-2 bg-muted rounded-md text-sm font-mono">
-							{window.location.origin}/r/{link.short_code}
+							{window.location.origin}/{link.short_code}
 						</div>
 						<p className="text-sm text-muted-foreground">
 							El código corto no se puede modificar

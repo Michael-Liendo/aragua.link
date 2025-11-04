@@ -10,6 +10,7 @@ import {
 	PowerOff,
 	Trash2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,6 +31,8 @@ interface LinksListProps {
 }
 
 export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
+	const navigate = useNavigate();
+
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
 		toast({
@@ -39,7 +42,7 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 	};
 
 	const getShortUrl = (shortCode: string) => {
-		return `${window.location.origin}/r/${shortCode}`;
+		return `${window.location.origin}/${shortCode}`;
 	};
 
 	return (
@@ -89,6 +92,15 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 											</Button>
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
+											<DropdownMenuItem
+												onClick={() =>
+													navigate(`/app/links/${link.id}/analytics`)
+												}
+											>
+												<BarChart3 className="h-4 w-4 mr-2" />
+												Ver Analytics
+											</DropdownMenuItem>
+											<DropdownMenuSeparator />
 											<DropdownMenuItem onClick={() => onEdit(link)}>
 												<Edit className="h-4 w-4 mr-2" />
 												Editar
