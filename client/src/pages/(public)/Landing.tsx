@@ -10,7 +10,7 @@ export default function Landing() {
 	});
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+		<div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 			{/* Header */}
 			<header className="container mx-auto px-4 py-6">
 				<nav className="flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function Landing() {
 
 			{/* CTA Section */}
 			<section className="container mx-auto px-4 py-20">
-				<div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl p-12 md:p-16 text-center shadow-2xl max-w-4xl mx-auto">
+				<div className="bg-linear-to-r from-amber-500 to-orange-500 rounded-3xl p-12 md:p-16 text-center shadow-2xl max-w-4xl mx-auto">
 					<h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
 						¿Listo para comenzar?
 					</h2>
