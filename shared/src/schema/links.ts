@@ -40,6 +40,8 @@ export const LinkForUpdateSchema = LinkSchema.pick({
 	description: true,
 	is_active: true,
 	position: true,
+	special_type: true,
+	special_code: true,
 }).partial();
 
 export interface ILink extends z.infer<typeof LinkSchema> {}
