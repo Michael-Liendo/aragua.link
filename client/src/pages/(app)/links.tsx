@@ -1,8 +1,10 @@
 import type { ILink } from "@aragualink/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link2, Plus } from "lucide-react";
+import { AlertCircle, Link2, Plus } from "lucide-react";
 import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/features/auth";
 import { useSEO } from "@/features/seo";
 import { toast } from "@/features/ui/useToast";
 import Services from "@/services";
@@ -13,9 +15,13 @@ import { LinksList } from "./links/LinksList";
 export default function LinksPage() {
 	useSEO({ title: "Mis Enlaces" });
 
+	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const [createOpen, setCreateOpen] = useState(false);
 	const [editLink, setEditLink] = useState<ILink | null>(null);
+
+	// Check if user has PRO plan
+	const hasPro = user?.plan === "PRO" || user?.plan === "ENTERPRISE";
 
 	// Fetch links
 	const { data: links = [], isLoading } = useQuery({
@@ -76,6 +82,18 @@ export default function LinksPage() {
 		);
 	}
 
+	const handleCreateClick = () => {
+		if (!hasPro) {
+			toast({
+				title: "Plan PRO requerido",
+				description:
+					"Necesitas un plan PRO para crear enlaces. Contacta a un administrador.",
+			});
+			return;
+		}
+		setCreateOpen(true);
+	};
+
 	return (
 		<div className="container mx-auto p-6 max-w-5xl">
 			<div className="flex items-center justify-between mb-8">
@@ -88,11 +106,25 @@ export default function LinksPage() {
 						Gestiona todos tus enlaces en un solo lugar
 					</p>
 				</div>
-				<Button onClick={() => setCreateOpen(true)} size="lg" className="gap-2">
+				<Button onClick={handleCreateClick} size="lg" className="gap-2">
 					<Plus className="h-5 w-5" />
 					Crear Enlace
 				</Button>
 			</div>
+
+			{/* Alert para usuarios sin plan PRO */}
+			{!hasPro && (
+				<Alert className="mb-6 border-amber-500 bg-amber-50 dark:bg-amber-950">
+					<AlertCircle className="h-4 w-4 text-amber-600" />
+					<AlertTitle className="text-amber-900 dark:text-amber-100">
+						Plan PRO Requerido
+					</AlertTitle>
+					<AlertDescription className="text-amber-800 dark:text-amber-200">
+						Para crear y gestionar enlaces necesitas un plan PRO. Por favor,
+						contacta a un administrador para activar tu suscripción.
+					</AlertDescription>
+				</Alert>
+			)}
 
 			{links.length === 0 ? (
 				<div className="text-center py-12 border-2 border-dashed rounded-lg">
@@ -101,13 +133,11 @@ export default function LinksPage() {
 						No tienes enlaces todavía
 					</h3>
 					<p className="text-muted-foreground mb-6">
-						Crea tu primer enlace para comenzar
+						{hasPro
+							? "Crea tu primer enlace para comenzar"
+							: "Necesitas un plan PRO para crear enlaces"}
 					</p>
-					<Button
-						onClick={() => setCreateOpen(true)}
-						size="lg"
-						className="gap-2"
-					>
+					<Button onClick={handleCreateClick} size="lg" className="gap-2">
 						<Plus className="h-5 w-5" />
 						Crear Primer Enlace
 					</Button>
