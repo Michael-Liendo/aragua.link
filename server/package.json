@@ -6,7 +6,7 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"predev": "npm run build -w @aragualink/shared",
-		"start": "NODE_ENV=production node dist/src/index.js",
+		"start": "node dist/index.js",
 		"dev": "tsx src/index.ts",
 		"dev:watch": "tsx watch src/index.ts",
 		"build": "tsc",
