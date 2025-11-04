@@ -1,7 +1,14 @@
-import { type ILinkForCreate, LinkForCreateSchema } from "@aragualink/shared";
+import {
+	type ILinkForCreate,
+	LinkForCreateSchema,
+	SPECIAL_LINK_TEMPLATES,
+	type SpecialLinkType,
+} from "@aragualink/shared";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { Check, X } from "lucide-react";
+import { Check, Sparkles, X } from "lucide-react";
+import { useState } from "react";
+import { SpecialLinkSelector } from "@/components/SpecialLinkSelector";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -30,6 +37,8 @@ export function CreateLinkDialog({
 	onOpenChange,
 	onSuccess,
 }: CreateLinkDialogProps) {
+	const [showSpecialLinks, setShowSpecialLinks] = useState(false);
+
 	const createMutation = useMutation({
 		mutationFn: (link: ILinkForCreate) => Services.links.create(link),
 		onSuccess: () => {
@@ -43,6 +52,7 @@ export function CreateLinkDialog({
 			});
 			onSuccess();
 			formik.resetForm();
+			setShowSpecialLinks(false);
 		},
 		onError: (error: Error) => {
 			toast({
@@ -63,6 +73,8 @@ export function CreateLinkDialog({
 			short_code: "",
 			description: "",
 			is_active: true,
+			special_type: null,
+			special_code: null,
 		},
 		validationSchema: toFormikValidationSchema(LinkForCreateSchema),
 		validateOnChange: false,
@@ -77,6 +89,17 @@ export function CreateLinkDialog({
 		formik.setFieldValue("short_code", randomCode);
 	};
 
+	const handleSpecialLinkSelect = (
+		url: string,
+		type: SpecialLinkType,
+		code: string,
+	) => {
+		formik.setFieldValue("url", url);
+		formik.setFieldValue("special_type", type);
+		formik.setFieldValue("special_code", code);
+		setShowSpecialLinks(false);
+	};
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-[600px]">
@@ -87,112 +110,169 @@ export function CreateLinkDialog({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={formik.handleSubmit} className="space-y-4">
-					<div className="space-y-2">
-						<Label htmlFor="title">Título *</Label>
-						<Input
-							id="title"
-							name="title"
-							placeholder="Mi enlace importante"
-							value={formik.values.title}
-							onChange={formik.handleChange}
-						/>
-						{formik.errors.title && (
-							<p className="text-sm text-destructive">{formik.errors.title}</p>
-						)}
-					</div>
-
-					<div className="space-y-2">
-						<Label htmlFor="url">URL de Destino *</Label>
-						<Input
-							id="url"
-							name="url"
-							type="url"
-							placeholder="https://ejemplo.com"
-							value={formik.values.url}
-							onChange={formik.handleChange}
-						/>
-						{formik.errors.url && (
-							<p className="text-sm text-destructive">{formik.errors.url}</p>
-						)}
-					</div>
-
-					<div className="space-y-2">
-						<Label htmlFor="short_code">Código Corto *</Label>
-						<div className="flex gap-2">
+				{showSpecialLinks ? (
+					<SpecialLinkSelector
+						onSelect={handleSpecialLinkSelect}
+						onCancel={() => setShowSpecialLinks(false)}
+					/>
+				) : (
+					<form onSubmit={formik.handleSubmit} className="space-y-4">
+						<div className="space-y-2">
+							<Label htmlFor="title">Título *</Label>
 							<Input
-								id="short_code"
-								name="short_code"
-								placeholder="mi-enlace"
-								value={formik.values.short_code}
+								id="title"
+								name="title"
+								placeholder="Mi enlace importante"
+								value={formik.values.title}
 								onChange={formik.handleChange}
-								className="flex-1"
 							/>
+							{formik.errors.title && (
+								<p className="text-sm text-destructive">
+									{formik.errors.title}
+								</p>
+							)}
+						</div>
+
+						{/* Mostrar link especial seleccionado o botón para seleccionar */}
+						{formik.values.special_type && formik.values.special_code ? (
+							<div className="space-y-2">
+								<div className="flex items-center justify-between">
+									<Label>Link Especial Seleccionado</Label>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										onClick={() => {
+											formik.setFieldValue("special_type", null);
+											formik.setFieldValue("special_code", null);
+											formik.setFieldValue("url", "");
+										}}
+									>
+										Cambiar
+									</Button>
+								</div>
+								<div className="p-3 bg-muted rounded-md flex items-center gap-2">
+									<span className="text-2xl">
+										{SPECIAL_LINK_TEMPLATES[formik.values.special_type]?.icon}
+									</span>
+									<div>
+										<p className="font-medium">
+											{SPECIAL_LINK_TEMPLATES[formik.values.special_type]?.name}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											Código: {formik.values.special_code}
+										</p>
+									</div>
+								</div>
+							</div>
+						) : (
+							<div className="space-y-2">
+								<div className="flex items-center justify-between">
+									<Label htmlFor="url">URL de Destino *</Label>
+									<Button
+										type="button"
+										variant="outline"
+										size="sm"
+										onClick={() => setShowSpecialLinks(true)}
+										className="gap-2"
+									>
+										<Sparkles className="h-4 w-4" />
+										Links Especiales
+									</Button>
+								</div>
+								<Input
+									id="url"
+									name="url"
+									type="url"
+									placeholder="https://ejemplo.com"
+									value={formik.values.url}
+									onChange={formik.handleChange}
+								/>
+								{formik.errors.url && (
+									<p className="text-sm text-destructive">
+										{formik.errors.url}
+									</p>
+								)}
+							</div>
+						)}
+
+						<div className="space-y-2">
+							<Label htmlFor="short_code">Código Corto *</Label>
+							<div className="flex gap-2">
+								<Input
+									id="short_code"
+									name="short_code"
+									placeholder="mi-enlace"
+									value={formik.values.short_code}
+									onChange={formik.handleChange}
+									className="flex-1"
+								/>
+								<Button
+									type="button"
+									variant="outline"
+									onClick={generateShortCode}
+								>
+									Generar
+								</Button>
+							</div>
+							{formik.errors.short_code && (
+								<p className="text-sm text-destructive">
+									{formik.errors.short_code}
+								</p>
+							)}
+							<p className="text-sm text-muted-foreground">
+								Tu enlace será: {window.location.origin}/
+								{formik.values.short_code || "..."}
+							</p>
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="description">Descripción (opcional)</Label>
+							<Textarea
+								id="description"
+								name="description"
+								placeholder="Descripción breve del enlace"
+								value={formik.values.description || ""}
+								onChange={formik.handleChange}
+								rows={3}
+							/>
+							{formik.errors.description && (
+								<p className="text-sm text-destructive">
+									{formik.errors.description}
+								</p>
+							)}
+						</div>
+
+						<div className="flex items-center justify-between">
+							<div className="space-y-0.5">
+								<Label htmlFor="is_active">Enlace activo</Label>
+								<p className="text-sm text-muted-foreground">
+									Los enlaces inactivos no redirigen
+								</p>
+							</div>
+							<Switch
+								id="is_active"
+								checked={formik.values.is_active}
+								onCheckedChange={(checked) =>
+									formik.setFieldValue("is_active", checked)
+								}
+							/>
+						</div>
+
+						<DialogFooter>
 							<Button
 								type="button"
 								variant="outline"
-								onClick={generateShortCode}
+								onClick={() => onOpenChange(false)}
 							>
-								Generar
+								Cancelar
 							</Button>
-						</div>
-						{formik.errors.short_code && (
-							<p className="text-sm text-destructive">
-								{formik.errors.short_code}
-							</p>
-						)}
-						<p className="text-sm text-muted-foreground">
-							Tu enlace será: {window.location.origin}/
-							{formik.values.short_code || "..."}
-						</p>
-					</div>
-
-					<div className="space-y-2">
-						<Label htmlFor="description">Descripción (opcional)</Label>
-						<Textarea
-							id="description"
-							name="description"
-							placeholder="Descripción breve del enlace"
-							value={formik.values.description || ""}
-							onChange={formik.handleChange}
-							rows={3}
-						/>
-						{formik.errors.description && (
-							<p className="text-sm text-destructive">
-								{formik.errors.description}
-							</p>
-						)}
-					</div>
-
-					<div className="flex items-center justify-between">
-						<div className="space-y-0.5">
-							<Label htmlFor="is_active">Enlace activo</Label>
-							<p className="text-sm text-muted-foreground">
-								Los enlaces inactivos no redirigen
-							</p>
-						</div>
-						<Switch
-							id="is_active"
-							checked={formik.values.is_active}
-							onCheckedChange={(checked) =>
-								formik.setFieldValue("is_active", checked)
-							}
-						/>
-					</div>
-
-					<DialogFooter>
-						<Button
-							type="button"
-							variant="outline"
-							onClick={() => onOpenChange(false)}
-						>
-							Cancelar
-						</Button>
-						<Button type="submit" disabled={createMutation.isPending}>
-							{createMutation.isPending ? "Creando..." : "Crear Enlace"}
-						</Button>
-					</DialogFooter>
-				</form>
+							<Button type="submit" disabled={createMutation.isPending}>
+								{createMutation.isPending ? "Creando..." : "Crear Enlace"}
+							</Button>
+						</DialogFooter>
+					</form>
+				)}
 			</DialogContent>
 		</Dialog>
 	);

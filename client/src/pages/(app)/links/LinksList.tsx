@@ -1,4 +1,10 @@
-import type { ILink } from "@aragualink/shared";
+import {
+	detectSpecialLinkType,
+	extractSpecialLinkCode,
+	getSpecialLinkDisplay,
+	type ILink,
+	SPECIAL_LINK_TEMPLATES,
+} from "@aragualink/shared";
 import {
 	BarChart3,
 	Copy,
@@ -159,14 +165,49 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 									<span className="text-muted-foreground font-medium">
 										Destino:
 									</span>
-									<a
-										href={link.url}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="text-primary hover:underline truncate max-w-md"
-									>
-										{link.url}
-									</a>
+									{(() => {
+										// Intentar usar los campos guardados primero
+										let type = link.special_type;
+										let code = link.special_code;
+
+										// Si no están guardados, detectar automáticamente
+										if (!type || !code) {
+											const detectedType = detectSpecialLinkType(link.url);
+											if (detectedType !== "custom") {
+												const extracted = extractSpecialLinkCode(link.url);
+												if (extracted) {
+													type = extracted.type;
+													code = extracted.code;
+												}
+											}
+										}
+
+										// Si es un link especial, mostrar formato especial
+										if (type && code && type !== "custom") {
+											return (
+												<div className="flex items-center gap-2">
+													<span className="text-lg">
+														{SPECIAL_LINK_TEMPLATES[type]?.icon}
+													</span>
+													<span className="font-medium">
+														{getSpecialLinkDisplay(type, code)}
+													</span>
+												</div>
+											);
+										}
+
+										// Si es un link normal, mostrar URL
+										return (
+											<a
+												href={link.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-primary hover:underline truncate max-w-md"
+											>
+												{link.url}
+											</a>
+										);
+									})()}
 								</div>
 							</div>
 

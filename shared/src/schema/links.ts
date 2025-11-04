@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SpecialLinkTypeEnum } from "./specialLinks";
 
 export const LinkSchema = z.object({
 	id: z.uuid(),
@@ -10,6 +11,8 @@ export const LinkSchema = z.object({
 	is_active: z.boolean().default(true),
 	clicks: z.number().int().min(0).default(0),
 	position: z.number().int().min(0).default(0),
+	special_type: SpecialLinkTypeEnum.nullable().optional(),
+	special_code: z.string().nullable().optional(),
 	created_at: z.coerce.date(),
 	updated_at: z.coerce.date(),
 });
@@ -21,10 +24,14 @@ export const LinkForCreateSchema = LinkSchema.pick({
 	description: true,
 	is_active: true,
 	position: true,
+	special_type: true,
+	special_code: true,
 }).partial({
 	description: true,
 	is_active: true,
 	position: true,
+	special_type: true,
+	special_code: true,
 });
 
 export const LinkForUpdateSchema = LinkSchema.pick({
