@@ -55,7 +55,8 @@ export default function BioPageManager() {
 	// Fetch bio page links
 	const { data: bioPageLinks } = useQuery<BioPageLinkWithDetails[]>({
 		queryKey: ["bioPageLinks"],
-		queryFn: () => Services.bioPages.getLinks() as Promise<BioPageLinkWithDetails[]>,
+		queryFn: () =>
+			Services.bioPages.getLinks() as Promise<BioPageLinkWithDetails[]>,
 		enabled: !!bioPage,
 	});
 
@@ -230,9 +231,7 @@ export default function BioPageManager() {
 				{bioPage && (
 					<Button
 						variant="outline"
-						onClick={() =>
-							window.open(`/${bioPage.slug}`, "_blank")
-						}
+						onClick={() => window.open(`/${bioPage.slug}`, "_blank")}
 					>
 						<Eye className="w-4 h-4 mr-2" />
 						Ver Página
@@ -270,7 +269,12 @@ export default function BioPageManager() {
 										placeholder="mi-nombre"
 										value={formData.slug}
 										onChange={(e) =>
-											setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })
+											setFormData({
+												...formData,
+												slug: e.target.value
+													.toLowerCase()
+													.replace(/[^a-z0-9-]/g, ""),
+											})
 										}
 									/>
 									<p className="text-sm text-muted-foreground">
@@ -342,7 +346,8 @@ export default function BioPageManager() {
 										<Button
 											onClick={handleCreate}
 											disabled={
-												!formData.slug || !formData.display_name ||
+												!formData.slug ||
+												!formData.display_name ||
 												createMutation.isPending
 											}
 											className="flex-1"

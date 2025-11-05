@@ -179,7 +179,9 @@ export function EditLinkDialog({
 									onChange={formik.handleChange}
 								/>
 								{formik.errors.url && (
-									<p className="text-sm text-destructive">{formik.errors.url}</p>
+									<p className="text-sm text-destructive">
+										{formik.errors.url}
+									</p>
 								)}
 							</div>
 						);

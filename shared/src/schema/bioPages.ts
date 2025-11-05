@@ -4,7 +4,11 @@ import { z } from "zod";
 export const BioPageSchema = z.object({
 	id: z.uuid(),
 	user_id: z.uuid(),
-	slug: z.string().min(3).max(50).regex(/^[a-z0-9-]+$/, "Solo letras minúsculas, números y guiones"),
+	slug: z
+		.string()
+		.min(3)
+		.max(50)
+		.regex(/^[a-z0-9-]+$/, "Solo letras minúsculas, números y guiones"),
 	display_name: z.string().min(1).max(100),
 	bio: z.string().max(500).nullable().optional(),
 	avatar_url: z.string().url().nullable().optional(),
@@ -80,15 +84,19 @@ export const PublicBioPageSchema = z.object({
 			description: z.string().nullable().optional(),
 			special_type: z.string().nullable().optional(),
 			special_code: z.string().nullable().optional(),
-		})
+		}),
 	),
 });
 
 // TypeScript interfaces
 export interface IBioPage extends z.infer<typeof BioPageSchema> {}
-export interface IBioPageForCreate extends z.infer<typeof BioPageForCreateSchema> {}
-export interface IBioPageForUpdate extends z.infer<typeof BioPageForUpdateSchema> {}
+export interface IBioPageForCreate
+	extends z.infer<typeof BioPageForCreateSchema> {}
+export interface IBioPageForUpdate
+	extends z.infer<typeof BioPageForUpdateSchema> {}
 export interface IBioPageLink extends z.infer<typeof BioPageLinkSchema> {}
-export interface IBioPageLinkForCreate extends z.infer<typeof BioPageLinkForCreateSchema> {}
-export interface IBioPageLinkForUpdate extends z.infer<typeof BioPageLinkForUpdateSchema> {}
+export interface IBioPageLinkForCreate
+	extends z.infer<typeof BioPageLinkForCreateSchema> {}
+export interface IBioPageLinkForUpdate
+	extends z.infer<typeof BioPageLinkForUpdateSchema> {}
 export interface IPublicBioPage extends z.infer<typeof PublicBioPageSchema> {}

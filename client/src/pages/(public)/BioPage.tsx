@@ -64,7 +64,8 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 	const cardClasses = {
 		light: "bg-white border border-gray-200 hover:border-purple-300",
 		dark: "bg-gray-800 border border-gray-700 hover:border-purple-500",
-		gradient: "bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30",
+		gradient:
+			"bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30",
 	};
 
 	const theme = displayBioPage.theme as "light" | "dark" | "gradient";
@@ -81,9 +82,7 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 							className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-lg"
 						/>
 					)}
-					<h1
-						className={`text-3xl font-bold mb-2 ${textClasses[theme]}`}
-					>
+					<h1 className={`text-3xl font-bold mb-2 ${textClasses[theme]}`}>
 						{displayBioPage.display_name}
 					</h1>
 					{displayBioPage.bio && (
@@ -100,9 +99,10 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 					{displayBioPage.links.map((link) => {
 						const isSpecialLink =
 							link.special_type && link.special_type !== "custom";
-						const specialTemplate = isSpecialLink && link.special_type
-							? SPECIAL_LINK_TEMPLATES[link.special_type as SpecialLinkType]
-							: null;
+						const specialTemplate =
+							isSpecialLink && link.special_type
+								? SPECIAL_LINK_TEMPLATES[link.special_type as SpecialLinkType]
+								: null;
 
 						return (
 							<a
@@ -130,16 +130,19 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 													{link.description}
 												</p>
 											)}
-											{isSpecialLink && link.special_code && link.special_type && link.special_type !== "custom" && (
-												<p
-													className={`text-sm mt-1 ${theme === "light" ? "text-purple-600" : theme === "dark" ? "text-purple-400" : "text-white/90"} font-medium`}
-												>
-													{getSpecialLinkDisplay(
-														link.special_type as SpecialLinkType,
-														link.special_code,
-													)}
-												</p>
-											)}
+											{isSpecialLink &&
+												link.special_code &&
+												link.special_type &&
+												link.special_type !== "custom" && (
+													<p
+														className={`text-sm mt-1 ${theme === "light" ? "text-purple-600" : theme === "dark" ? "text-purple-400" : "text-white/90"} font-medium`}
+													>
+														{getSpecialLinkDisplay(
+															link.special_type as SpecialLinkType,
+															link.special_code,
+														)}
+													</p>
+												)}
 										</div>
 									</div>
 									<ExternalLink

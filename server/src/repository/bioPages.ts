@@ -101,7 +101,7 @@ export default class BioPageRepository {
 	static async getPublicBioPage(
 		slug: string,
 	): Promise<IPublicBioPage | undefined> {
-		const bioPage = await this.getBySlug(slug);
+		const bioPage = await BioPageRepository.getBySlug(slug);
 		if (!bioPage || !bioPage.is_active) {
 			return undefined;
 		}

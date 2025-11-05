@@ -1,9 +1,9 @@
+import type { IPublicBioPage } from "@aragualink/shared";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { IPublicBioPage } from "@aragualink/shared";
-import BioPage from "./BioPage";
 import Services from "@/services";
 import customFetch from "@/utils/fetch";
+import BioPage from "./BioPage";
 
 export default function RedirectPage() {
 	const { shortCode } = useParams<{ shortCode: string }>();
@@ -21,7 +21,8 @@ export default function RedirectPage() {
 			try {
 				// Primero, intentar cargar como bio page
 				try {
-					const bioPageData = await Services.bioPages.getPublicBioPage(shortCode);
+					const bioPageData =
+						await Services.bioPages.getPublicBioPage(shortCode);
 					if (bioPageData) {
 						// Si es una bio page, guardarla para renderizar
 						setBioPage(bioPageData);

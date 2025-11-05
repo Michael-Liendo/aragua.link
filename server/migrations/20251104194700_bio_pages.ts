@@ -47,7 +47,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.index("bio_page_id");
 		table.index("link_id");
 		table.index(["bio_page_id", "position"]);
-		
+
 		// Ensure a link can only be added once to a bio page
 		table.unique(["bio_page_id", "link_id"]);
 	});

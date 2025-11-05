@@ -1,4 +1,5 @@
 import {
+	BioPageSchema,
 	type IBioPage,
 	type IBioPageForCreate,
 	type IBioPageForUpdate,
@@ -7,7 +8,6 @@ import {
 	type IBioPageLinkForUpdate,
 	type IPublicBioPage,
 	type ISResponse,
-	BioPageSchema,
 	PublicBioPageSchema,
 } from "@aragualink/shared";
 import fetch from "../utils/fetch";

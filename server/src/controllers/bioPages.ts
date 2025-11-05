@@ -3,10 +3,7 @@ import Services from "../services";
 import type { Request } from "../types/Request";
 
 // Get user's bio page
-export async function getBioPage(
-	request: Request,
-	reply: FastifyReply,
-) {
+export async function getBioPage(request: Request, reply: FastifyReply) {
 	const bioPage = await Services.bioPages.getByUserId(request.user!.id);
 	return reply.send({
 		success: true,
@@ -15,11 +12,11 @@ export async function getBioPage(
 }
 
 // Create bio page
-export async function createBioPage(
-	request: Request,
-	reply: FastifyReply,
-) {
-	const bioPage = await Services.bioPages.create(request.user!.id, request.body);
+export async function createBioPage(request: Request, reply: FastifyReply) {
+	const bioPage = await Services.bioPages.create(
+		request.user!.id,
+		request.body,
+	);
 	return reply.status(201).send({
 		success: true,
 		data: bioPage,
@@ -27,11 +24,11 @@ export async function createBioPage(
 }
 
 // Update bio page
-export async function updateBioPage(
-	request: Request,
-	reply: FastifyReply,
-) {
-	const bioPage = await Services.bioPages.update(request.user!.id, request.body);
+export async function updateBioPage(request: Request, reply: FastifyReply) {
+	const bioPage = await Services.bioPages.update(
+		request.user!.id,
+		request.body,
+	);
 	return reply.send({
 		success: true,
 		data: bioPage,
@@ -39,19 +36,13 @@ export async function updateBioPage(
 }
 
 // Delete bio page
-export async function deleteBioPage(
-	request: Request,
-	reply: FastifyReply,
-) {
+export async function deleteBioPage(request: Request, reply: FastifyReply) {
 	await Services.bioPages.delete(request.user!.id);
 	return reply.status(204).send();
 }
 
 // Get links in bio page
-export async function getBioPageLinks(
-	request: Request,
-	reply: FastifyReply,
-) {
+export async function getBioPageLinks(request: Request, reply: FastifyReply) {
 	const links = await Services.bioPages.getLinks(request.user!.id);
 	return reply.send({
 		success: true,
@@ -60,10 +51,7 @@ export async function getBioPageLinks(
 }
 
 // Add link to bio page
-export async function addLinkToBioPage(
-	request: Request,
-	reply: FastifyReply,
-) {
+export async function addLinkToBioPage(request: Request, reply: FastifyReply) {
 	const link = await Services.bioPages.addLink(request.user!.id, request.body);
 	return reply.status(201).send({
 		success: true,
@@ -72,10 +60,7 @@ export async function addLinkToBioPage(
 }
 
 // Update link in bio page
-export async function updateBioPageLink(
-	request: Request,
-	reply: FastifyReply,
-) {
+export async function updateBioPageLink(request: Request, reply: FastifyReply) {
 	const { id } = request.params as { id: string };
 	const link = await Services.bioPages.updateLink(
 		request.user!.id,
