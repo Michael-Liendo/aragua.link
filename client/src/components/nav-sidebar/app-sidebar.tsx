@@ -1,4 +1,4 @@
-import { HomeIcon, Link2, MenuIcon, XIcon } from "lucide-react";
+import { HomeIcon, Link2, MenuIcon, Palette, XIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
 	Sidebar,
@@ -39,6 +39,11 @@ const navMain: { title?: string; items: NavItem[] }[] = [
 				title: "Mis Enlaces",
 				url: PrivateRoutesEnum.Links,
 				icon: Link2,
+			},
+			{
+				title: "Página Bio",
+				url: PrivateRoutesEnum.BioPage,
+				icon: Palette,
 			},
 		],
 	},

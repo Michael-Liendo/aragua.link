@@ -89,20 +89,10 @@ export async function getLinkByShortCode(request: Request, reply: Reply) {
 
 /**
  * Track click and redirect (public endpoint)
- * First tries to find a bio page with the slug, if not found, tries to find a link
+ * Redirects to links, bio pages are handled by the frontend
  */
 export async function trackAndRedirect(request: Request, reply: Reply) {
 	const { shortCode } = request.params as { shortCode: string };
-
-	// First, try to find a bio page with this slug
-	try {
-		const bioPage = await Services.bioPages.getPublicBioPage(shortCode);
-		// If bio page exists, redirect to the frontend bio page viewer
-		const bioPageUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/bio/${shortCode}`;
-		return reply.redirect(bioPageUrl);
-	} catch (error) {
-		// Bio page not found, continue to check for regular link
-	}
 
 	// Get link
 	const link = await Services.links.getByShortCode(shortCode);
