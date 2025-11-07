@@ -14,8 +14,10 @@ import {
 	MoreVertical,
 	Power,
 	PowerOff,
+	QrCode,
 	Trash2,
 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +30,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/features/ui/useToast";
+import { QRCodeDialog } from "./QRCodeDialog";
 
 interface LinksListProps {
 	links: ILink[];
@@ -38,6 +41,7 @@ interface LinksListProps {
 
 export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 	const navigate = useNavigate();
+	const [qrLink, setQrLink] = useState<ILink | null>(null);
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
@@ -105,6 +109,10 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 											>
 												<BarChart3 className="h-4 w-4 mr-2" />
 												Ver Analytics
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => setQrLink(link)}>
+												<QrCode className="h-4 w-4 mr-2" />
+												Ver Código QR
 											</DropdownMenuItem>
 											<DropdownMenuSeparator />
 											<DropdownMenuItem onClick={() => onEdit(link)}>
@@ -231,6 +239,15 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 					</div>
 				</Card>
 			))}
+
+			{qrLink && (
+				<QRCodeDialog
+					open={!!qrLink}
+					onOpenChange={(open) => !open && setQrLink(null)}
+					url={getShortUrl(qrLink.short_code)}
+					title={qrLink.title}
+				/>
+			)}
 		</div>
 	);
 }
