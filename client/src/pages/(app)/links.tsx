@@ -163,6 +163,7 @@ export default function LinksPage() {
 					queryClient.invalidateQueries({ queryKey: ["links"] });
 					setCreateOpen(false);
 				}}
+				userPlan={user?.plan}
 			/>
 
 			{editLink && (

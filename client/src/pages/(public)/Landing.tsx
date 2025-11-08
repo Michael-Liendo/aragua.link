@@ -301,6 +301,12 @@ export default function Landing() {
 									<li className="flex items-start gap-3">
 										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
 										<span className="text-white">
+											<strong>Enlaces personalizados</strong> (elige tu código)
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
 											Códigos QR personalizados
 										</span>
 									</li>
