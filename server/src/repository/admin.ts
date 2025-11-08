@@ -111,14 +111,14 @@ export class AdminRepository {
 			.first();
 
 		// Get click counts
-		const clicksTotal = await database("link_analytics")
+		const clicksTotal = await database("click_events")
 			.count("id as count")
 			.first();
-		const clicksToday = await database("link_analytics")
+		const clicksToday = await database("click_events")
 			.where("created_at", ">=", database.raw("CURRENT_DATE"))
 			.count("id as count")
 			.first();
-		const clicksThisWeek = await database("link_analytics")
+		const clicksThisWeek = await database("click_events")
 			.where(
 				"created_at",
 				">=",
@@ -126,7 +126,7 @@ export class AdminRepository {
 			)
 			.count("id as count")
 			.first();
-		const clicksThisMonth = await database("link_analytics")
+		const clicksThisMonth = await database("click_events")
 			.where(
 				"created_at",
 				">=",

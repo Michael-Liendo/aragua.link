@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MasterNameEnum = z.enum(["users"]);
+export const MasterNameEnum = z.enum(["users", "links"]);
 
 export interface IReply {
 	200: ISResponse<unknown>;
