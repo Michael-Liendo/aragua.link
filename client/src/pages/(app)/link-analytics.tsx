@@ -3,37 +3,48 @@ import {
 	ArrowLeft,
 	BarChart3,
 	Globe,
+	Lock,
 	MapPin,
 	Monitor,
 	MousePointerClick,
 	TrendingUp,
 	Users,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PrivateRoutesEnum } from "@/data/routesEnums";
+import { useAuth } from "@/features/auth";
 import { useSEO } from "@/features/seo";
 import Services from "@/services";
 
 export default function LinkAnalyticsPage() {
 	const { linkId } = useParams<{ linkId: string }>();
+	const { user } = useAuth();
 	useSEO({ title: "Analytics del Enlace" });
+
+	// Check if user has FREE plan
+	const isFree = user?.plan === "FREE";
 
 	// Fetch link details
 	const { data: link } = useQuery({
 		queryKey: ["link", linkId],
 		queryFn: () => Services.links.getOne(linkId!),
-		enabled: !!linkId,
+		enabled: !!linkId && !isFree,
 	});
 
 	// Fetch analytics
 	const { data: analytics, isLoading } = useQuery({
 		queryKey: ["analytics", linkId],
 		queryFn: () => Services.analytics.getLinkAnalytics(linkId!),
-		enabled: !!linkId,
+		enabled: !!linkId && !isFree,
 	});
+
+	// Redirect FREE users
+	if (isFree) {
+		return <Navigate to={PrivateRoutesEnum.Links} replace />;
+	}
 
 	if (isLoading) {
 		return (

@@ -1,4 +1,12 @@
-import { ArrowRight, BarChart3, Link2, QrCode, Zap } from "lucide-react";
+import {
+	ArrowRight,
+	BarChart3,
+	Check,
+	Link2,
+	QrCode,
+	X,
+	Zap,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { StructuredData } from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
@@ -56,9 +64,9 @@ export default function Landing() {
 					<nav className="flex items-center justify-between">
 						<div className="flex items-center gap-3">
 							<img
-								src="/logo.png"
+								src="/logo-removebg.png"
 								alt="AraguaLink"
-								className="w-10 h-10 drop-shadow-md"
+								className="w-16 h-16 drop-shadow-md"
 							/>
 							<span className="text-2xl font-bold text-gray-900 dark:text-white">
 								AraguaLink
@@ -86,9 +94,9 @@ export default function Landing() {
 				<section className="container mx-auto px-4 py-20 text-center">
 					<div className="max-w-4xl mx-auto">
 						<img
-							src="/large-logo.png"
+							src="/logo-removebg.png"
 							alt="AraguaLink Logo"
-							className="w-full max-w-2xl mx-auto mb-8 drop-shadow-2xl"
+							className="w-full max-w-48 mx-auto "
 						/>
 						<h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
 							Todo lo que necesitas en un solo enlace
@@ -177,6 +185,165 @@ export default function Landing() {
 								solo resultados profesionales.
 							</p>
 						</div>
+					</div>
+				</section>
+
+				{/* Pricing Section */}
+				<section className="container mx-auto px-4 py-20 dark:bg-gray-800/50">
+					<div className="max-w-6xl mx-auto">
+						<h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
+							Planes y Precios
+						</h2>
+						<p className="text-xl text-center text-gray-600 dark:text-gray-300 mb-16">
+							Elige el plan que mejor se adapte a tus necesidades
+						</p>
+
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+							{/* FREE Plan */}
+							<div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all">
+								<div className="text-center mb-6">
+									<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+										Free
+									</h3>
+									<div className="flex items-baseline justify-center gap-2 mb-4">
+										<span className="text-5xl font-bold text-gray-900 dark:text-white">
+											$0
+										</span>
+										<span className="text-gray-600 dark:text-gray-400">
+											/mes
+										</span>
+									</div>
+									<p className="text-gray-600 dark:text-gray-300">
+										Perfecto para comenzar
+									</p>
+								</div>
+
+								<ul className="space-y-4 mb-8">
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-700 dark:text-gray-300">
+											Hasta <strong>2 enlaces</strong>
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-700 dark:text-gray-300">
+											Acortador de URLs
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-700 dark:text-gray-300">
+											Generador de códigos QR
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-700 dark:text-gray-300">
+											Página de enlaces personalizada
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<X className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-500 dark:text-gray-500">
+											Sin métricas ni analytics
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<X className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+										<span className="text-gray-500 dark:text-gray-500">
+											Soporte limitado
+										</span>
+									</li>
+								</ul>
+
+								<Link to={AuthRoutesEnum.Register} className="block">
+									<Button
+										variant="outline"
+										className="w-full border-2 border-gray-300 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/20"
+										size="lg"
+									>
+										Comenzar gratis
+									</Button>
+								</Link>
+							</div>
+
+							{/* PRO Plan */}
+							<div className="bg-linear-to-br from-amber-500 to-orange-500 rounded-2xl p-8 shadow-2xl border-2 border-amber-400 relative hover:shadow-3xl transition-all transform hover:scale-105">
+								<div className="absolute -top-4 left-1/2 -translate-x-1/2">
+									<span className="bg-white text-amber-600 px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+										Más Popular
+									</span>
+								</div>
+
+								<div className="text-center mb-6">
+									<h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
+									<div className="flex items-baseline justify-center gap-2 mb-4">
+										<span className="text-5xl font-bold text-white">$9.99</span>
+										<span className="text-white/80">/mes</span>
+									</div>
+									<p className="text-white/90">Para profesionales y negocios</p>
+								</div>
+
+								<ul className="space-y-4 mb-8">
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											Hasta <strong>200 enlaces</strong>
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											Acortador de URLs ilimitado
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											Códigos QR personalizados
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											<strong>Analytics completos</strong> y métricas detalladas
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											Estadísticas de clicks en tiempo real
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">
+											Enlaces especiales (WhatsApp, Telegram, etc.)
+										</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+										<span className="text-white">Soporte prioritario</span>
+									</li>
+								</ul>
+
+								<Link to={AuthRoutesEnum.Register} className="block">
+									<Button
+										className="w-full bg-white text-amber-600 hover:bg-gray-100 shadow-xl"
+										size="lg"
+									>
+										Comenzar ahora
+										<ArrowRight className="ml-2 h-5 w-5" />
+									</Button>
+								</Link>
+							</div>
+						</div>
+
+						<p className="text-center text-gray-600 dark:text-gray-400 mt-12">
+							¿Necesitas más? Contáctanos para planes empresariales
+							personalizados
+						</p>
 					</div>
 				</section>
 

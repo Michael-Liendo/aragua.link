@@ -11,6 +11,7 @@ import {
 	Edit,
 	ExternalLink,
 	GripVertical,
+	Lock,
 	MoreVertical,
 	Power,
 	PowerOff,
@@ -37,11 +38,18 @@ interface LinksListProps {
 	onEdit: (link: ILink) => void;
 	onDelete: (id: string) => void;
 	onReorder: (links: ILink[]) => void;
+	userPlan?: string;
 }
 
-export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
+export function LinksList({
+	links,
+	onEdit,
+	onDelete,
+	userPlan,
+}: LinksListProps) {
 	const navigate = useNavigate();
 	const [qrLink, setQrLink] = useState<ILink | null>(null);
+	const isFree = userPlan === "FREE";
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
@@ -103,12 +111,25 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
 											<DropdownMenuItem
-												onClick={() =>
-													navigate(`/app/links/${link.id}/analytics`)
-												}
+												onClick={() => {
+													if (isFree) {
+														toast({
+															title: "Plan PRO requerido",
+															description:
+																"Actualiza a PRO para acceder a analytics y métricas detalladas.",
+														});
+														return;
+													}
+													navigate(`/app/links/${link.id}/analytics`);
+												}}
+												disabled={isFree}
 											>
-												<BarChart3 className="h-4 w-4 mr-2" />
-												Ver Analytics
+												{isFree ? (
+													<Lock className="h-4 w-4 mr-2" />
+												) : (
+													<BarChart3 className="h-4 w-4 mr-2" />
+												)}
+												Ver Analytics {isFree && "(PRO)"}
 											</DropdownMenuItem>
 											<DropdownMenuItem onClick={() => setQrLink(link)}>
 												<QrCode className="h-4 w-4 mr-2" />
