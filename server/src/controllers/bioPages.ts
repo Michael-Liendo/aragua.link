@@ -1,3 +1,9 @@
+import type {
+	IBioPageForCreate,
+	IBioPageForUpdate,
+	IBioPageLinkForCreate,
+	IBioPageLinkForUpdate,
+} from "@aragualink/shared";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import Services from "../services";
 import type { Request } from "../types/Request";
@@ -15,7 +21,7 @@ export async function getBioPage(request: Request, reply: FastifyReply) {
 export async function createBioPage(request: Request, reply: FastifyReply) {
 	const bioPage = await Services.bioPages.create(
 		request.user!.id,
-		request.body,
+		request.body as IBioPageForCreate,
 	);
 	return reply.status(201).send({
 		success: true,
@@ -27,7 +33,7 @@ export async function createBioPage(request: Request, reply: FastifyReply) {
 export async function updateBioPage(request: Request, reply: FastifyReply) {
 	const bioPage = await Services.bioPages.update(
 		request.user!.id,
-		request.body,
+		request.body as IBioPageForUpdate,
 	);
 	return reply.send({
 		success: true,
@@ -52,7 +58,10 @@ export async function getBioPageLinks(request: Request, reply: FastifyReply) {
 
 // Add link to bio page
 export async function addLinkToBioPage(request: Request, reply: FastifyReply) {
-	const link = await Services.bioPages.addLink(request.user!.id, request.body);
+	const link = await Services.bioPages.addLink(
+		request.user!.id,
+		request.body as IBioPageLinkForCreate,
+	);
 	return reply.status(201).send({
 		success: true,
 		data: link,
@@ -65,7 +74,7 @@ export async function updateBioPageLink(request: Request, reply: FastifyReply) {
 	const link = await Services.bioPages.updateLink(
 		request.user!.id,
 		id,
-		request.body,
+		request.body as IBioPageLinkForUpdate,
 	);
 	return reply.send({
 		success: true,

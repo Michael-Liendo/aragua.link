@@ -1,11 +1,10 @@
 import {
-	getSpecialLinkDisplay,
 	type IPublicBioPage,
 	SPECIAL_LINK_TEMPLATES,
 	type SpecialLinkType,
 } from "@aragualink/shared";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
 import Services from "@/services";
 
@@ -71,23 +70,23 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 	const theme = displayBioPage.theme as "light" | "dark" | "gradient";
 
 	return (
-		<div className={`min-h-screen ${themeClasses[theme]} py-12 px-4`}>
-			<div className="max-w-2xl mx-auto">
+		<div className={`min-h-screen ${themeClasses[theme]} py-8 px-4`}>
+			<div className="max-w-xl mx-auto">
 				{/* Profile Section */}
-				<div className="text-center mb-8">
+				<div className="text-center mb-10">
 					{displayBioPage.avatar_url && (
 						<img
 							src={displayBioPage.avatar_url}
 							alt={displayBioPage.display_name}
-							className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-lg"
+							className="w-28 h-28 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-xl"
 						/>
 					)}
-					<h1 className={`text-3xl font-bold mb-2 ${textClasses[theme]}`}>
+					<h1 className={`text-2xl font-bold mb-3 ${textClasses[theme]}`}>
 						{displayBioPage.display_name}
 					</h1>
 					{displayBioPage.bio && (
 						<p
-							className={`text-lg ${theme === "light" ? "text-gray-600" : theme === "dark" ? "text-gray-300" : "text-white/90"} max-w-md mx-auto`}
+							className={`text-base ${theme === "light" ? "text-gray-600" : theme === "dark" ? "text-gray-300" : "text-white/90"} max-w-md mx-auto px-4`}
 						>
 							{displayBioPage.bio}
 						</p>
@@ -95,7 +94,7 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 				</div>
 
 				{/* Links Section */}
-				<div className="space-y-4">
+				<div className="space-y-4 mb-8">
 					{displayBioPage.links.map((link) => {
 						const isSpecialLink =
 							link.special_type && link.special_type !== "custom";
@@ -110,44 +109,30 @@ export default function BioPage({ bioPageData }: BioPageProps = {}) {
 								href={link.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								className={`block ${cardClasses[theme]} rounded-xl p-6 transition-all duration-200 hover:scale-105 hover:shadow-xl group`}
+								className={`block ${cardClasses[theme]} rounded-2xl p-5 transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl group`}
 							>
-								<div className="flex items-center justify-between">
-									<div className="flex items-center gap-4 flex-1">
-										{isSpecialLink && specialTemplate && (
-											<span className="text-3xl">{specialTemplate.icon}</span>
-										)}
-										<div className="flex-1">
-											<h3
-												className={`text-lg font-semibold ${textClasses[theme]} group-hover:underline`}
-											>
-												{link.title}
-											</h3>
-											{link.description && (
-												<p
-													className={`text-sm mt-1 ${theme === "light" ? "text-gray-600" : theme === "dark" ? "text-gray-400" : "text-white/80"}`}
-												>
-													{link.description}
-												</p>
-											)}
-											{isSpecialLink &&
-												link.special_code &&
-												link.special_type &&
-												link.special_type !== "custom" && (
-													<p
-														className={`text-sm mt-1 ${theme === "light" ? "text-purple-600" : theme === "dark" ? "text-purple-400" : "text-white/90"} font-medium`}
-													>
-														{getSpecialLinkDisplay(
-															link.special_type as SpecialLinkType,
-															link.special_code,
-														)}
-													</p>
-												)}
+								<div className="flex items-center gap-4">
+									{isSpecialLink && specialTemplate && (
+										<div className="flex-shrink-0">
+											<div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center">
+												<span className="text-3xl">{specialTemplate.icon}</span>
+											</div>
 										</div>
+									)}
+									<div className="flex-1 min-w-0">
+										<h3
+											className={`text-base font-semibold ${textClasses[theme]} truncate`}
+										>
+											{link.title}
+										</h3>
+										{link.description && (
+											<p
+												className={`text-sm mt-0.5 ${theme === "light" ? "text-gray-600" : theme === "dark" ? "text-gray-400" : "text-white/80"} truncate`}
+											>
+												{link.description}
+											</p>
+										)}
 									</div>
-									<ExternalLink
-										className={`w-5 h-5 ${theme === "light" ? "text-gray-400" : theme === "dark" ? "text-gray-500" : "text-white/70"} group-hover:${theme === "light" ? "text-purple-600" : theme === "dark" ? "text-purple-400" : "text-white"} transition-colors`}
-									/>
 								</div>
 							</a>
 						);

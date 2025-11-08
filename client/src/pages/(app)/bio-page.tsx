@@ -231,7 +231,7 @@ export default function BioPageManager() {
 				{bioPage && (
 					<Button
 						variant="outline"
-						onClick={() => window.open(`/${bioPage.slug}`, "_blank")}
+						onClick={() => window.open(`/@${bioPage.slug}`, "_blank")}
 					>
 						<Eye className="w-4 h-4 mr-2" />
 						Ver Página
@@ -278,7 +278,7 @@ export default function BioPageManager() {
 										}
 									/>
 									<p className="text-sm text-muted-foreground">
-										Tu página estará en: /{formData.slug || "tu-slug"}
+										Tu página estará en: /@{formData.slug || "tu-slug"}
 									</p>
 								</div>
 							)}

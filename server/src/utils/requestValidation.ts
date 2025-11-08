@@ -1,10 +1,10 @@
-import type { Reply, Request } from "../types";
+import type { FastifyReply, FastifyRequest } from "fastify";
 
 const requestValidation = (
 	// biome-ignore lint/suspicious/noExplicitAny: Accepting any Zod schema
 	schema: any,
 ) => {
-	return async (req: Request, reply: Reply) => {
+	return async (req: FastifyRequest, reply: FastifyReply) => {
 		if (!schema) return;
 
 		const result = schema.safeParse(req.body);
