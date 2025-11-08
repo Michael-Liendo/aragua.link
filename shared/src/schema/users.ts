@@ -35,6 +35,16 @@ export const UserForUpdateSchema = UserSchema.omit({
 	last_login_at: true,
 }).partial();
 
+export const AdminChangePasswordSchema = z.object({
+	userId: z.uuid(),
+	newPassword: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+export const AdminUpdateUserRoleSchema = z.object({
+	userId: z.uuid(),
+	plan: PlanTypeEnum,
+});
+
 export type PlanType = z.infer<typeof PlanTypeEnum>;
 
 export interface IUser extends z.infer<typeof UserSchema> {}
@@ -45,6 +55,12 @@ export interface IUserForRegister
 export interface IUserForLogin extends z.infer<typeof UserForLoginSchema> {}
 
 export interface IUserForUpdate extends z.infer<typeof UserForUpdateSchema> {}
+
+export interface IAdminChangePassword
+	extends z.infer<typeof AdminChangePasswordSchema> {}
+
+export interface IAdminUpdateUserRole
+	extends z.infer<typeof AdminUpdateUserRoleSchema> {}
 
 export interface ILoggedInUser {
 	token: string;

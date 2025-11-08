@@ -12,4 +12,5 @@ export enum PrivateRoutesEnum {
 	Links = "/app/links",
 	LinkAnalytics = "/app/links/:linkId/analytics",
 	BioPage = "/app/bio",
+	Admin = "/app/admin",
 }

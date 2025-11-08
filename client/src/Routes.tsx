@@ -14,6 +14,7 @@ import {
 	PrivateRoutesEnum,
 	PublicRoutesEnum,
 } from "./data/routesEnums";
+import AdminPage from "./pages/(app)/admin";
 import BioPageManager from "./pages/(app)/bio-page";
 import Home from "./pages/(app)/home";
 import LinkAnalyticsPage from "./pages/(app)/link-analytics";
@@ -82,6 +83,11 @@ const PrivateRoutes: JSX.Element[] = [
 		key={PrivateRoutesEnum.BioPage}
 		path={PrivateRoutesEnum.BioPage}
 		Component={BioPageManager}
+	/>,
+	<Route
+		key={PrivateRoutesEnum.Admin}
+		path={PrivateRoutesEnum.Admin}
+		Component={AdminPage}
 	/>,
 ];
 

@@ -1,4 +1,11 @@
-import { HomeIcon, Link2, MenuIcon, Palette, XIcon } from "lucide-react";
+import {
+	HomeIcon,
+	Link2,
+	MenuIcon,
+	Palette,
+	Shield,
+	XIcon,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
 	Sidebar,
@@ -15,6 +22,7 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { PrivateRoutesEnum } from "@/data/routesEnums";
+import { useAuth } from "@/features/auth";
 import { useIsMobile } from "@/features/ui";
 import { NavUser } from "./nav-user";
 
@@ -51,9 +59,27 @@ const navMain: { title?: string; items: NavItem[] }[] = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { pathname } = useLocation();
+	const { user } = useAuth();
 
 	const isMobile = useIsMobile();
 	const { toggleSidebar, open: isOpen } = useSidebar();
+
+	const isAdmin = user?.email === "michael.m.liendo.r@gmail.com";
+
+	// Add admin link if user is admin
+	const navigationItems = [...navMain];
+	if (isAdmin) {
+		navigationItems.push({
+			title: "Administración",
+			items: [
+				{
+					title: "Panel Admin",
+					url: PrivateRoutesEnum.Admin,
+					icon: Shield,
+				},
+			],
+		});
+	}
 
 	return (
 		<>
@@ -85,7 +111,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					</div>
 				</SidebarHeader>
 				<SidebarContent>
-					{navMain.map((item, idx) => (
+					{navigationItems.map((item, idx) => (
 						<SidebarGroup key={item.title ?? idx}>
 							{item.title && (
 								<SidebarGroupLabel>{item.title}</SidebarGroupLabel>

@@ -1,5 +1,6 @@
 import type { IFindAllDatabase, IPaginationRequest } from "@aragualink/shared";
 import { InternalServerError } from "../utils/errorHandler";
+import { hashPassword } from "../utils/password";
 import database from "./database";
 
 export class AdminRepository {
@@ -70,5 +71,121 @@ export class AdminRepository {
 
 	static async remove(master_name: string, id: string): Promise<void> {
 		await database(master_name).where({ id }).delete();
+	}
+
+	static async getDashboardMetrics(): Promise<{
+		users: { total: number; free: number; pro: number; enterprise: number };
+		links: { total: number; active: number; inactive: number };
+		clicks: {
+			total: number;
+			today: number;
+			thisWeek: number;
+			thisMonth: number;
+		};
+		bioPages: { total: number };
+	}> {
+		// Get user counts by plan
+		const usersTotal = await database("users").count("id as count").first();
+		const usersFree = await database("users")
+			.where({ plan: "FREE" })
+			.count("id as count")
+			.first();
+		const usersPro = await database("users")
+			.where({ plan: "PRO" })
+			.count("id as count")
+			.first();
+		const usersEnterprise = await database("users")
+			.where({ plan: "ENTERPRISE" })
+			.count("id as count")
+			.first();
+
+		// Get link counts
+		const linksTotal = await database("links").count("id as count").first();
+		const linksActive = await database("links")
+			.where({ is_active: true })
+			.count("id as count")
+			.first();
+		const linksInactive = await database("links")
+			.where({ is_active: false })
+			.count("id as count")
+			.first();
+
+		// Get click counts
+		const clicksTotal = await database("link_analytics")
+			.count("id as count")
+			.first();
+		const clicksToday = await database("link_analytics")
+			.where("created_at", ">=", database.raw("CURRENT_DATE"))
+			.count("id as count")
+			.first();
+		const clicksThisWeek = await database("link_analytics")
+			.where(
+				"created_at",
+				">=",
+				database.raw("CURRENT_DATE - INTERVAL '7 days'"),
+			)
+			.count("id as count")
+			.first();
+		const clicksThisMonth = await database("link_analytics")
+			.where(
+				"created_at",
+				">=",
+				database.raw("CURRENT_DATE - INTERVAL '30 days'"),
+			)
+			.count("id as count")
+			.first();
+
+		// Get bio pages count
+		const bioPagesTotal = await database("bio_pages")
+			.count("id as count")
+			.first();
+
+		return {
+			users: {
+				total: Number(usersTotal?.count || 0),
+				free: Number(usersFree?.count || 0),
+				pro: Number(usersPro?.count || 0),
+				enterprise: Number(usersEnterprise?.count || 0),
+			},
+			links: {
+				total: Number(linksTotal?.count || 0),
+				active: Number(linksActive?.count || 0),
+				inactive: Number(linksInactive?.count || 0),
+			},
+			clicks: {
+				total: Number(clicksTotal?.count || 0),
+				today: Number(clicksToday?.count || 0),
+				thisWeek: Number(clicksThisWeek?.count || 0),
+				thisMonth: Number(clicksThisMonth?.count || 0),
+			},
+			bioPages: {
+				total: Number(bioPagesTotal?.count || 0),
+			},
+		};
+	}
+
+	static async changeUserPassword(
+		userId: string,
+		newPassword: string,
+	): Promise<void> {
+		const hashedPassword = await hashPassword(newPassword);
+
+		const updated = await database("users")
+			.where({ id: userId })
+			.update({ password: hashedPassword });
+
+		if (!updated) {
+			throw new InternalServerError("Error updating user password");
+		}
+	}
+
+	static async updateUserRole(userId: string, plan: string): Promise<void> {
+		const updated = await database("users")
+			.where({ id: userId })
+			.update({ plan });
+
+		if (!updated) {
+			throw new InternalServerError("Error updating user role");
+		}
 	}
 }

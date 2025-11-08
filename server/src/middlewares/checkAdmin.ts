@@ -29,10 +29,10 @@ export async function checkRequestJwt(request: Request) {
 			throw new UnauthorizedError("Access denied");
 		}
 
-		// TODO: Implement role check
-		// biome-ignore lint/correctness/noConstantCondition: todo
-		if (true) {
-			throw new UnauthorizedError("TODO");
+		// Check if user is admin
+		const ADMIN_EMAIL = "michael.m.liendo.r@gmail.com";
+		if (user.email !== ADMIN_EMAIL) {
+			throw new UnauthorizedError("Access denied: Admin privileges required");
 		}
 
 		request.user = user;

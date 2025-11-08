@@ -1,8 +1,22 @@
-import { validateMasterName } from "@aragualink/shared";
+import {
+	AdminChangePasswordSchema,
+	AdminUpdateUserRoleSchema,
+	validateMasterName,
+} from "@aragualink/shared";
 import type { FastifyInstance, RegisterOptions } from "fastify";
-import { create, findAll, findOne, remove, update } from "../controllers/admin";
+import {
+	changeUserPassword,
+	create,
+	findAll,
+	findOne,
+	getDashboardMetrics,
+	remove,
+	update,
+	updateUserRole,
+} from "../controllers/admin";
 import { checkAdmin } from "../middlewares/checkAdmin";
 import type { Reply, Request } from "../types";
+import requestValidation from "../utils/requestValidation";
 
 export default function admin(
 	fastify: FastifyInstance,
@@ -10,6 +24,29 @@ export default function admin(
 	done: () => void,
 ) {
 	fastify.register(checkAdmin);
+
+	// Dashboard metrics route (no master_name validation needed)
+	fastify.route({
+		method: "GET",
+		url: "/metrics",
+		handler: getDashboardMetrics,
+	});
+
+	// Change user password
+	fastify.route({
+		method: "POST",
+		url: "/users/change-password",
+		preValidation: requestValidation(AdminChangePasswordSchema),
+		handler: changeUserPassword,
+	});
+
+	// Update user role
+	fastify.route({
+		method: "POST",
+		url: "/users/update-role",
+		preValidation: requestValidation(AdminUpdateUserRoleSchema),
+		handler: updateUserRole,
+	});
 
 	fastify.addHook("preHandler", async (req: Request, res: Reply) => {
 		const { master_name } = req.params as { master_name: string };

@@ -1,4 +1,8 @@
-import type { IPaginationRequest } from "@aragualink/shared";
+import type {
+	IAdminChangePassword,
+	IAdminUpdateUserRole,
+	IPaginationRequest,
+} from "@aragualink/shared";
 import Services from "../services";
 import type { Reply, Request } from "../types";
 
@@ -74,4 +78,38 @@ export async function remove(request: Request, reply: Reply) {
 	await Services.admin.delete(master_name, master_id);
 
 	return reply.code(204).send();
+}
+
+export async function getDashboardMetrics(request: Request, reply: Reply) {
+	const metrics = await Services.admin.getDashboardMetrics();
+
+	return reply.code(200).send({
+		success: true,
+		message: "Ok",
+		data: metrics,
+	});
+}
+
+export async function changeUserPassword(request: Request, reply: Reply) {
+	const { userId, newPassword } = request.body as IAdminChangePassword;
+
+	await Services.admin.changeUserPassword(userId, newPassword);
+
+	return reply.code(200).send({
+		success: true,
+		message: "Password updated successfully",
+		data: null,
+	});
+}
+
+export async function updateUserRole(request: Request, reply: Reply) {
+	const { userId, plan } = request.body as IAdminUpdateUserRole;
+
+	await Services.admin.updateUserRole(userId, plan);
+
+	return reply.code(200).send({
+		success: true,
+		message: "User role updated successfully",
+		data: null,
+	});
 }

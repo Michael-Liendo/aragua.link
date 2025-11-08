@@ -1,3 +1,4 @@
+import AdminService from "./admin";
 import { AnalyticsService } from "./analytics";
 import { AuthService } from "./auth";
 import { BioPagesService } from "./bioPages";
@@ -10,4 +11,5 @@ export default class Services {
 	static links = LinksService;
 	static analytics = AnalyticsService;
 	static bioPages = BioPagesService;
+	static admin = AdminService;
 }
