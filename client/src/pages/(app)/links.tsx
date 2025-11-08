@@ -22,12 +22,17 @@ export default function LinksPage() {
 
 	// Check if user has PRO plan
 	const hasPro = user?.plan === "PRO" || user?.plan === "ENTERPRISE";
+	const isFree = user?.plan === "FREE";
+	const FREE_PLAN_LINK_LIMIT = 2;
 
 	// Fetch links
 	const { data: links = [], isLoading } = useQuery({
 		queryKey: ["links"],
 		queryFn: () => Services.links.getAll(),
 	});
+
+	// Check if FREE user has reached limit
+	const hasReachedFreeLimit = isFree && links.length >= FREE_PLAN_LINK_LIMIT;
 
 	// Delete mutation
 	const deleteMutation = useMutation({
@@ -83,11 +88,10 @@ export default function LinksPage() {
 	}
 
 	const handleCreateClick = () => {
-		if (!hasPro) {
+		if (hasReachedFreeLimit) {
 			toast({
-				title: "Plan PRO requerido",
-				description:
-					"Necesitas un plan PRO para crear enlaces. Contacta a un administrador.",
+				title: "Límite alcanzado",
+				description: `El plan FREE permite hasta ${FREE_PLAN_LINK_LIMIT} enlaces. Actualiza a PRO para crear más enlaces.`,
 			});
 			return;
 		}
@@ -112,16 +116,18 @@ export default function LinksPage() {
 				</Button>
 			</div>
 
-			{/* Alert para usuarios sin plan PRO */}
-			{!hasPro && (
+			{/* Alert para usuarios FREE */}
+			{isFree && (
 				<Alert className="mb-6 border-amber-500 bg-amber-50 dark:bg-amber-950">
 					<AlertCircle className="h-4 w-4 text-amber-600" />
 					<AlertTitle className="text-amber-900 dark:text-amber-100">
-						Plan PRO Requerido
+						Plan FREE - Límite de {FREE_PLAN_LINK_LIMIT} enlaces
 					</AlertTitle>
 					<AlertDescription className="text-amber-800 dark:text-amber-200">
-						Para crear y gestionar enlaces necesitas un plan PRO. Por favor,
-						contacta a un administrador para activar tu suscripción.
+						Estás usando {links.length} de {FREE_PLAN_LINK_LIMIT} enlaces
+						disponibles.
+						{hasReachedFreeLimit &&
+							" Has alcanzado el límite. Actualiza a PRO para crear hasta 200 enlaces y acceder a analytics."}
 					</AlertDescription>
 				</Alert>
 			)}
@@ -133,9 +139,7 @@ export default function LinksPage() {
 						No tienes enlaces todavía
 					</h3>
 					<p className="text-muted-foreground mb-6">
-						{hasPro
-							? "Crea tu primer enlace para comenzar"
-							: "Necesitas un plan PRO para crear enlaces"}
+						Crea tu primer enlace para comenzar
 					</p>
 					<Button onClick={handleCreateClick} size="lg" className="gap-2">
 						<Plus className="h-5 w-5" />
@@ -148,6 +152,7 @@ export default function LinksPage() {
 					onEdit={handleEdit}
 					onDelete={handleDelete}
 					onReorder={handleReorder}
+					userPlan={user?.plan}
 				/>
 			)}
 
@@ -158,6 +163,7 @@ export default function LinksPage() {
 					queryClient.invalidateQueries({ queryKey: ["links"] });
 					setCreateOpen(false);
 				}}
+				userPlan={user?.plan}
 			/>
 
 			{editLink && (

@@ -30,14 +30,17 @@ interface CreateLinkDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	onSuccess: () => void;
+	userPlan?: string;
 }
 
 export function CreateLinkDialog({
 	open,
 	onOpenChange,
 	onSuccess,
+	userPlan,
 }: CreateLinkDialogProps) {
 	const [showSpecialLinks, setShowSpecialLinks] = useState(false);
+	const isPro = userPlan === "PRO" || userPlan === "ENTERPRISE";
 
 	const createMutation = useMutation({
 		mutationFn: (link: ILinkForCreate) => Services.links.create(link),
@@ -197,15 +200,25 @@ export function CreateLinkDialog({
 						)}
 
 						<div className="space-y-2">
-							<Label htmlFor="short_code">Código Corto *</Label>
+							<div className="flex items-center justify-between">
+								<Label htmlFor="short_code">Código Corto *</Label>
+								{!isPro && (
+									<span className="text-xs text-muted-foreground">
+										Personalización disponible en PRO
+									</span>
+								)}
+							</div>
 							<div className="flex gap-2">
 								<Input
 									id="short_code"
 									name="short_code"
-									placeholder="mi-enlace"
+									placeholder={
+										isPro ? "mi-enlace" : "Se generará automáticamente"
+									}
 									value={formik.values.short_code}
 									onChange={formik.handleChange}
 									className="flex-1"
+									disabled={!isPro}
 								/>
 								<Button
 									type="button"
@@ -221,8 +234,14 @@ export function CreateLinkDialog({
 								</p>
 							)}
 							<p className="text-sm text-muted-foreground">
-								Tu enlace será: {window.location.origin}/
-								{formik.values.short_code || "..."}
+								{isPro ? (
+									<>
+										Tu enlace será: {window.location.origin}/
+										{formik.values.short_code || "..."}
+									</>
+								) : (
+									"Los usuarios FREE reciben códigos generados automáticamente"
+								)}
 							</p>
 						</div>
 

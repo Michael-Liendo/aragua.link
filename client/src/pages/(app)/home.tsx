@@ -1,5 +1,6 @@
 import { AlertCircle, BarChart3, Link2, QrCode } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { PrivateRoutesEnum } from "@/data/routesEnums";
 import { useAuth } from "@/features/auth";
 
 function Home() {
@@ -29,21 +30,27 @@ function Home() {
 			)}
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-				<div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+				<a
+					href={PrivateRoutesEnum.Links}
+					className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+				>
 					<Link2 className="w-12 h-12 mb-4 text-primary" />
 					<h3 className="text-xl font-semibold mb-2">Acorta URLs</h3>
 					<p className="text-muted-foreground">
 						Crea enlaces cortos y personalizados para compartir fácilmente
 					</p>
-				</div>
+				</a>
 
-				<div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+				<a
+					href={PrivateRoutesEnum.Links}
+					className="border rounded-lg p-6 hover:shadow-lg transition-shadow"
+				>
 					<QrCode className="w-12 h-12 mb-4 text-primary" />
 					<h3 className="text-xl font-semibold mb-2">Códigos QR</h3>
 					<p className="text-muted-foreground">
 						Genera códigos QR automáticamente para tus enlaces
 					</p>
-				</div>
+				</a>
 
 				<div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
 					<BarChart3 className="w-12 h-12 mb-4 text-primary" />

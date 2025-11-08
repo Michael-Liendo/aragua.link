@@ -73,8 +73,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 			<Sidebar collapsible="icon" {...props}>
 				<SidebarHeader>
-					<div className="p-4">
-						<h2 className="text-lg font-semibold">AraguaLink</h2>
+					<div className="flex items-center gap-2 p-4">
+						<img
+							src="/logo.png"
+							alt="AraguaLink Logo"
+							className="h-8 w-8 object-contain"
+						/>
+						<h2 className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
+							AraguaLink
+						</h2>
 					</div>
 				</SidebarHeader>
 				<SidebarContent>

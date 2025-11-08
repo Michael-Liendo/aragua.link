@@ -11,11 +11,14 @@ import {
 	Edit,
 	ExternalLink,
 	GripVertical,
+	Lock,
 	MoreVertical,
 	Power,
 	PowerOff,
+	QrCode,
 	Trash2,
 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,16 +31,25 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "@/features/ui/useToast";
+import { QRCodeDialog } from "./QRCodeDialog";
 
 interface LinksListProps {
 	links: ILink[];
 	onEdit: (link: ILink) => void;
 	onDelete: (id: string) => void;
 	onReorder: (links: ILink[]) => void;
+	userPlan?: string;
 }
 
-export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
+export function LinksList({
+	links,
+	onEdit,
+	onDelete,
+	userPlan,
+}: LinksListProps) {
 	const navigate = useNavigate();
+	const [qrLink, setQrLink] = useState<ILink | null>(null);
+	const isFree = userPlan === "FREE";
 
 	const copyToClipboard = (text: string) => {
 		navigator.clipboard.writeText(text);
@@ -99,12 +111,29 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
 											<DropdownMenuItem
-												onClick={() =>
-													navigate(`/app/links/${link.id}/analytics`)
-												}
+												onClick={() => {
+													if (isFree) {
+														toast({
+															title: "Plan PRO requerido",
+															description:
+																"Actualiza a PRO para acceder a analytics y métricas detalladas.",
+														});
+														return;
+													}
+													navigate(`/app/links/${link.id}/analytics`);
+												}}
+												disabled={isFree}
 											>
-												<BarChart3 className="h-4 w-4 mr-2" />
-												Ver Analytics
+												{isFree ? (
+													<Lock className="h-4 w-4 mr-2" />
+												) : (
+													<BarChart3 className="h-4 w-4 mr-2" />
+												)}
+												Ver Analytics {isFree && "(PRO)"}
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => setQrLink(link)}>
+												<QrCode className="h-4 w-4 mr-2" />
+												Ver Código QR
 											</DropdownMenuItem>
 											<DropdownMenuSeparator />
 											<DropdownMenuItem onClick={() => onEdit(link)}>
@@ -231,6 +260,15 @@ export function LinksList({ links, onEdit, onDelete }: LinksListProps) {
 					</div>
 				</Card>
 			))}
+
+			{qrLink && (
+				<QRCodeDialog
+					open={!!qrLink}
+					onOpenChange={(open) => !open && setQrLink(null)}
+					url={getShortUrl(qrLink.short_code)}
+					title={qrLink.title}
+				/>
+			)}
 		</div>
 	);
 }
