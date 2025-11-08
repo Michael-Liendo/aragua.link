@@ -1,3 +1,4 @@
+import type { ILink, IUser } from "@aragualink/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	BarChart3,
@@ -44,7 +45,7 @@ export default function AdminPage() {
 	const [activeTab, setActiveTab] = useState("metrics");
 	const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
 	const [roleDialogOpen, setRoleDialogOpen] = useState(false);
-	const [selectedUser, setSelectedUser] = useState<any>(null);
+	const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 	const [newPassword, setNewPassword] = useState("");
 	const [newRole, setNewRole] = useState("");
 
@@ -328,13 +329,15 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{usersData?.data.map((user: any) => (
+											{usersData?.data.map((user: IUser) => (
 												<tr
 													key={user.id}
 													className="border-b hover:bg-muted/50"
 												>
 													<td className="p-2 text-sm">{user.email}</td>
-													<td className="p-2 text-sm">{user.name}</td>
+													<td className="p-2 text-sm">
+														{user.first_name} {user.last_name}
+													</td>
 													<td className="p-2">
 														<span
 															className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
@@ -420,7 +423,7 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{linksData?.data.map((link: any) => (
+											{linksData?.data.map((link: ILink) => (
 												<tr
 													key={link.id}
 													className="border-b hover:bg-muted/50"

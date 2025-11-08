@@ -18,6 +18,18 @@ import { checkAdmin } from "../middlewares/checkAdmin";
 import type { Reply, Request } from "../types";
 import requestValidation from "../utils/requestValidation";
 
+// Validation handler for master_name
+const validateMasterNameHandler = async (req: Request, res: Reply) => {
+	const { master_name } = req.params as { master_name: string };
+	if (!validateMasterName(master_name)) {
+		return res.status(400).send({
+			success: false,
+			error: "NOT_FOUND_MASTER_NAME",
+			message: "Invalid master_name",
+		});
+	}
+};
+
 export default function admin(
 	fastify: FastifyInstance,
 	_: RegisterOptions,
@@ -48,44 +60,39 @@ export default function admin(
 		handler: updateUserRole,
 	});
 
-	fastify.addHook("preHandler", async (req: Request, res: Reply) => {
-		const { master_name } = req.params as { master_name: string };
-		if (!validateMasterName(master_name)) {
-			return res.status(400).send({
-				success: false,
-				error: "NOT_FOUND_MASTER_NAME",
-				message: "Invalid master_name",
-			});
-		}
-	});
-
+	// CRUD routes with master_name validation
 	fastify.route({
 		method: "GET",
 		url: "/findAll/:master_name",
+		preHandler: validateMasterNameHandler,
 		handler: findAll,
 	});
 
 	fastify.route({
 		method: "GET",
 		url: "/findOne/:master_name/:master_id",
+		preHandler: validateMasterNameHandler,
 		handler: findOne,
 	});
 
 	fastify.route({
 		method: "POST",
 		url: "/create/:master_name",
+		preHandler: validateMasterNameHandler,
 		handler: create,
 	});
 
 	fastify.route({
 		method: "PUT",
 		url: "/update/:master_name/:master_id",
+		preHandler: validateMasterNameHandler,
 		handler: update,
 	});
 
 	fastify.route({
 		method: "DELETE",
 		url: "/delete/:master_name/:master_id",
+		preHandler: validateMasterNameHandler,
 		handler: remove,
 	});
 
