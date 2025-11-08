@@ -19,22 +19,24 @@ export default function RedirectPage() {
 			}
 
 			try {
-				// Primero, intentar cargar como bio page
-				try {
-					const bioPageData =
-						await Services.bioPages.getPublicBioPage(shortCode);
-					if (bioPageData) {
-						// Si es una bio page, guardarla para renderizar
-						setBioPage(bioPageData);
-						setIsBioPage(true);
+				// Si el shortCode empieza con @, es una bio page
+				if (shortCode.startsWith("@")) {
+					const slug = shortCode.substring(1); // Remover el @
+					try {
+						const bioPageData = await Services.bioPages.getPublicBioPage(slug);
+						if (bioPageData) {
+							setBioPage(bioPageData);
+							setIsBioPage(true);
+							return;
+						}
+					} catch {
+						setError("Página bio no encontrada");
 						return;
 					}
-				} catch {
-					// No es una bio page, continuar con link normal
-					setIsBioPage(false);
 				}
 
-				// Si no es bio page, intentar como link normal
+				// Si no empieza con @, es un link normal
+				setIsBioPage(false);
 				const response = await customFetch(`/links/s/${shortCode}`);
 				const data = await response.json();
 
