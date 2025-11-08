@@ -1,10 +1,15 @@
+import type { IPublicBioPage } from "@aragualink/shared";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Services from "@/services";
 import customFetch from "@/utils/fetch";
+import BioPage from "./BioPage";
 
 export default function RedirectPage() {
 	const { shortCode } = useParams<{ shortCode: string }>();
 	const [error, setError] = useState<string | null>(null);
+	const [bioPage, setBioPage] = useState<IPublicBioPage | null>(null);
+	const [isBioPage, setIsBioPage] = useState<boolean | null>(null);
 
 	useEffect(() => {
 		const redirect = async () => {
@@ -14,7 +19,22 @@ export default function RedirectPage() {
 			}
 
 			try {
-				// Obtener información del link desde el backend usando fetch personalizado
+				// Primero, intentar cargar como bio page
+				try {
+					const bioPageData =
+						await Services.bioPages.getPublicBioPage(shortCode);
+					if (bioPageData) {
+						// Si es una bio page, guardarla para renderizar
+						setBioPage(bioPageData);
+						setIsBioPage(true);
+						return;
+					}
+				} catch {
+					// No es una bio page, continuar con link normal
+					setIsBioPage(false);
+				}
+
+				// Si no es bio page, intentar como link normal
 				const response = await customFetch(`/links/s/${shortCode}`);
 				const data = await response.json();
 
@@ -43,6 +63,11 @@ export default function RedirectPage() {
 
 		redirect();
 	}, [shortCode]);
+
+	// Si es una bio page, renderizar el componente BioPage
+	if (isBioPage && bioPage) {
+		return <BioPage bioPageData={bioPage} />;
+	}
 
 	if (error) {
 		return (

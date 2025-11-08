@@ -1,5 +1,12 @@
-import type { ILink, ILinkForUpdate } from "@aragualink/shared";
-import { LinkForUpdateSchema } from "@aragualink/shared";
+import {
+	detectSpecialLinkType,
+	extractSpecialLinkCode,
+	getSpecialLinkDisplay,
+	type ILink,
+	type ILinkForUpdate,
+	LinkForUpdateSchema,
+	SPECIAL_LINK_TEMPLATES,
+} from "@aragualink/shared";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { Check, X } from "lucide-react";
@@ -65,6 +72,8 @@ export function EditLinkDialog({
 			url: link.url,
 			description: link.description || "",
 			is_active: link.is_active,
+			special_type: link.special_type || null,
+			special_code: link.special_code || null,
 		},
 		validationSchema: toFormikValidationSchema(LinkForUpdateSchema),
 		validateOnChange: false,
@@ -82,6 +91,8 @@ export function EditLinkDialog({
 				url: link.url,
 				description: link.description || "",
 				is_active: link.is_active,
+				special_type: link.special_type || null,
+				special_code: link.special_code || null,
 			},
 		});
 	}, [link]);
@@ -111,20 +122,70 @@ export function EditLinkDialog({
 						)}
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="edit-url">URL de Destino *</Label>
-						<Input
-							id="edit-url"
-							name="url"
-							type="url"
-							placeholder="https://ejemplo.com"
-							value={formik.values.url}
-							onChange={formik.handleChange}
-						/>
-						{formik.errors.url && (
-							<p className="text-sm text-destructive">{formik.errors.url}</p>
-						)}
-					</div>
+					{/* Mostrar link especial o URL normal */}
+					{(() => {
+						// Detectar si es un link especial
+						let type = link.special_type;
+						let code = link.special_code;
+
+						// Si no están guardados, detectar automáticamente
+						if (!type || !code) {
+							const detectedType = detectSpecialLinkType(link.url);
+							if (detectedType !== "custom") {
+								const extracted = extractSpecialLinkCode(link.url);
+								if (extracted) {
+									type = extracted.type;
+									code = extracted.code;
+								}
+							}
+						}
+
+						// Si es un link especial, mostrar formato especial
+						if (type && code && type !== "custom") {
+							return (
+								<div className="space-y-2">
+									<Label>Link Especial</Label>
+									<div className="p-3 bg-muted rounded-md flex items-center gap-2">
+										<span className="text-2xl">
+											{SPECIAL_LINK_TEMPLATES[type]?.icon}
+										</span>
+										<div>
+											<p className="font-medium">
+												{SPECIAL_LINK_TEMPLATES[type]?.name}
+											</p>
+											<p className="text-sm text-muted-foreground">
+												{getSpecialLinkDisplay(type, code)}
+											</p>
+										</div>
+									</div>
+									<p className="text-sm text-muted-foreground">
+										Los links especiales no se pueden editar. Crea uno nuevo si
+										necesitas cambiar el destino.
+									</p>
+								</div>
+							);
+						}
+
+						// Si es un link normal, mostrar campo editable
+						return (
+							<div className="space-y-2">
+								<Label htmlFor="edit-url">URL de Destino *</Label>
+								<Input
+									id="edit-url"
+									name="url"
+									type="url"
+									placeholder="https://ejemplo.com"
+									value={formik.values.url}
+									onChange={formik.handleChange}
+								/>
+								{formik.errors.url && (
+									<p className="text-sm text-destructive">
+										{formik.errors.url}
+									</p>
+								)}
+							</div>
+						);
+					})()}
 
 					<div className="space-y-2">
 						<Label>Código Corto</Label>

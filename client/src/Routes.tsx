@@ -14,11 +14,13 @@ import {
 	PrivateRoutesEnum,
 	PublicRoutesEnum,
 } from "./data/routesEnums";
+import BioPageManager from "./pages/(app)/bio-page";
 import Home from "./pages/(app)/home";
 import LinkAnalyticsPage from "./pages/(app)/link-analytics";
 import LinksPage from "./pages/(app)/links";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
+import BioPage from "./pages/(public)/BioPage";
 import Landing from "./pages/(public)/Landing";
 import RedirectPage from "./pages/(public)/Redirect";
 
@@ -77,6 +79,11 @@ const PrivateRoutes: JSX.Element[] = [
 		path={PrivateRoutesEnum.LinkAnalytics}
 		Component={LinkAnalyticsPage}
 	/>,
+	<Route
+		key={PrivateRoutesEnum.BioPage}
+		path={PrivateRoutesEnum.BioPage}
+		Component={BioPageManager}
+	/>,
 ];
 
 const AuthRoutes: JSX.Element[] = [
@@ -98,5 +105,6 @@ const PublicRoutes: JSX.Element[] = [
 		path={PublicRoutesEnum.Landing}
 		Component={Landing}
 	/>,
+	<Route key="bio" path="/@:slug" Component={BioPage} />,
 	<Route key="redirect" path="/:shortCode" Component={RedirectPage} />,
 ];

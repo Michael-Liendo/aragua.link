@@ -3,6 +3,7 @@ import type { ErrorWithDetails } from "../utils/errorHandler";
 import admin from "./admin";
 import analytics from "./analytics";
 import auth from "./auth";
+import bioPages from "./bioPages";
 import links from "./links";
 import user from "./user";
 
@@ -50,6 +51,7 @@ export default function routes(
 	fastify.register(admin, { prefix: "/admin" });
 	fastify.register(links, { prefix: "/links" });
 	fastify.register(analytics, { prefix: "/analytics" });
+	fastify.register(bioPages, { prefix: "/bio" });
 
 	done();
 }

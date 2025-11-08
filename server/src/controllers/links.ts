@@ -89,11 +89,12 @@ export async function getLinkByShortCode(request: Request, reply: Reply) {
 
 /**
  * Track click and redirect (public endpoint)
+ * Redirects to links, bio pages are handled by the frontend
  */
 export async function trackAndRedirect(request: Request, reply: Reply) {
 	const { shortCode } = request.params as { shortCode: string };
 
-	// Get link first
+	// Get link
 	const link = await Services.links.getByShortCode(shortCode);
 
 	// Extract tracking data from request
