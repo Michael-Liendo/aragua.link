@@ -279,7 +279,7 @@ export default function Landing() {
 								<div className="text-center mb-6">
 									<h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
 									<div className="flex items-baseline justify-center gap-2 mb-4">
-										<span className="text-5xl font-bold text-white">$9.99</span>
+										<span className="text-5xl font-bold text-white">$7.99</span>
 										<span className="text-white/80">/mes</span>
 									</div>
 									<p className="text-white/90">Para profesionales y negocios</p>
