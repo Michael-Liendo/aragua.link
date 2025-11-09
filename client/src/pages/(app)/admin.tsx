@@ -6,13 +6,33 @@ import {
 	Key,
 	Link2,
 	Loader2,
+	MessageCircle,
 	MousePointerClick,
 	Palette,
+	Send,
 	Shield,
+	TrendingUp,
 	Users,
 	X,
 } from "lucide-react";
 import { useState } from "react";
+import {
+	Area,
+	AreaChart,
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	Legend,
+	Line,
+	LineChart,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -190,7 +210,7 @@ export default function AdminPage() {
 						</div>
 					) : (
 						<>
-							{/* Users Stats */}
+							{/* Main Stats */}
 							<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 								<Card>
 									<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -202,6 +222,12 @@ export default function AdminPage() {
 									<CardContent>
 										<div className="text-2xl font-bold">
 											{metrics?.users.total || 0}
+										</div>
+										<div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+											<TrendingUp className="h-3 w-3" />
+											<span>
+												+{metrics?.users.newThisWeek || 0} esta semana
+											</span>
 										</div>
 										<p className="text-xs text-muted-foreground mt-1">
 											FREE: {metrics?.users.free || 0} | PRO:{" "}
@@ -241,7 +267,7 @@ export default function AdminPage() {
 											{metrics?.clicks.total || 0}
 										</div>
 										<p className="text-xs text-muted-foreground mt-1">
-											Hoy: {metrics?.clicks.today || 0}
+											Promedio: {metrics?.clicks.averagePerLink || 0} por enlace
 										</p>
 									</CardContent>
 								</Card>
@@ -258,11 +284,85 @@ export default function AdminPage() {
 											{metrics?.bioPages.total || 0}
 										</div>
 										<p className="text-xs text-muted-foreground mt-1">
-											Total creadas
+											Activas: {metrics?.bioPages.active || 0}
 										</p>
 									</CardContent>
 								</Card>
 							</div>
+
+							{/* Chat Links Stats */}
+							<Card>
+								<CardHeader>
+									<CardTitle className="flex items-center gap-2">
+										<MessageCircle className="h-5 w-5" />
+										Enlaces de Chat y Comunidades
+									</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+										<div className="space-y-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-green-900 dark:text-green-100">
+													💬 WhatsApp Grupos
+												</p>
+												<span className="text-2xl font-bold text-green-700 dark:text-green-300">
+													{metrics?.links.whatsappGroups || 0}
+												</span>
+											</div>
+										</div>
+										<div className="space-y-2 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-green-900 dark:text-green-100">
+													📱 WhatsApp Chats
+												</p>
+												<span className="text-2xl font-bold text-green-700 dark:text-green-300">
+													{metrics?.links.whatsappChats || 0}
+												</span>
+											</div>
+										</div>
+										<div className="space-y-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+													✈️ Telegram Grupos
+												</p>
+												<span className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+													{metrics?.links.telegramGroups || 0}
+												</span>
+											</div>
+										</div>
+										<div className="space-y-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+													📢 Telegram Canales
+												</p>
+												<span className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+													{metrics?.links.telegramChannels || 0}
+												</span>
+											</div>
+										</div>
+										<div className="space-y-2 p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-purple-900 dark:text-purple-100">
+													🎮 Discord Servers
+												</p>
+												<span className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+													{metrics?.links.discordInvites || 0}
+												</span>
+											</div>
+										</div>
+										<div className="space-y-2 p-3 bg-gray-50 dark:bg-gray-950/20 rounded-lg border border-gray-200 dark:border-gray-900">
+											<div className="flex items-center justify-between">
+												<p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+													🔗 Enlaces Custom
+												</p>
+												<span className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+													{metrics?.links.customLinks || 0}
+												</span>
+											</div>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
 
 							{/* Clicks Stats */}
 							<Card>
@@ -273,7 +373,15 @@ export default function AdminPage() {
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<div className="grid gap-4 md:grid-cols-3">
+									<div className="grid gap-4 md:grid-cols-4">
+										<div className="space-y-1">
+											<p className="text-sm font-medium text-muted-foreground">
+												Hoy
+											</p>
+											<p className="text-2xl font-bold">
+												{metrics?.clicks.today || 0}
+											</p>
+										</div>
 										<div className="space-y-1">
 											<p className="text-sm font-medium text-muted-foreground">
 												Última Semana
@@ -301,6 +409,268 @@ export default function AdminPage() {
 									</div>
 								</CardContent>
 							</Card>
+
+							{/* User Growth Stats */}
+							<Card>
+								<CardHeader>
+									<CardTitle className="flex items-center gap-2">
+										<TrendingUp className="h-5 w-5" />
+										Crecimiento de Usuarios
+									</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className="grid gap-4 md:grid-cols-3">
+										<div className="space-y-1">
+											<p className="text-sm font-medium text-muted-foreground">
+												Nuevos esta Semana
+											</p>
+											<p className="text-2xl font-bold text-green-600">
+												+{metrics?.users.newThisWeek || 0}
+											</p>
+										</div>
+										<div className="space-y-1">
+											<p className="text-sm font-medium text-muted-foreground">
+												Nuevos este Mes
+											</p>
+											<p className="text-2xl font-bold text-green-600">
+												+{metrics?.users.newThisMonth || 0}
+											</p>
+										</div>
+										<div className="space-y-1">
+											<p className="text-sm font-medium text-muted-foreground">
+												Total Usuarios
+											</p>
+											<p className="text-2xl font-bold">
+												{metrics?.users.total || 0}
+											</p>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
+
+							{/* Charts Grid */}
+							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+								{/* User Distribution by Plan */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="flex items-center gap-2">
+											<Users className="h-5 w-5" />
+											Distribución de Usuarios por Plan
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="h-80">
+											<ResponsiveContainer width="100%" height="100%">
+												<BarChart
+													data={[
+														{
+															plan: "FREE",
+															usuarios: metrics?.users.free || 0,
+															fill: "hsl(var(--chart-1))",
+														},
+														{
+															plan: "PRO",
+															usuarios: metrics?.users.pro || 0,
+															fill: "hsl(var(--chart-2))",
+														},
+														{
+															plan: "ENTERPRISE",
+															usuarios: metrics?.users.enterprise || 0,
+															fill: "hsl(var(--chart-3))",
+														},
+													]}
+													margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+												>
+													<CartesianGrid
+														strokeDasharray="3 3"
+														className="stroke-muted"
+													/>
+													<XAxis dataKey="plan" tick={{ fontSize: 12 }} />
+													<YAxis tick={{ fontSize: 12 }} />
+													<Tooltip
+														contentStyle={{
+															backgroundColor: "hsl(var(--background))",
+															border: "1px solid hsl(var(--border))",
+															borderRadius: "6px",
+														}}
+														labelStyle={{ color: "hsl(var(--foreground))" }}
+													/>
+													<Bar
+														dataKey="usuarios"
+														radius={[8, 8, 0, 0]}
+														label={{ position: "top" }}
+													>
+														{[
+															{ fill: "hsl(var(--chart-1))" },
+															{ fill: "hsl(var(--chart-2))" },
+															{ fill: "hsl(var(--chart-3))" },
+														].map((entry, index) => (
+															<Cell key={`cell-${index}`} fill={entry.fill} />
+														))}
+													</Bar>
+												</BarChart>
+											</ResponsiveContainer>
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Link Types Distribution */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="flex items-center gap-2">
+											<Link2 className="h-5 w-5" />
+											Distribución de Enlaces por Tipo
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="h-80">
+											<ResponsiveContainer width="100%" height="100%">
+												<PieChart>
+													<Pie
+														data={[
+															{
+																name: "WhatsApp Grupos",
+																value: metrics?.links.whatsappGroups || 0,
+															},
+															{
+																name: "WhatsApp Chats",
+																value: metrics?.links.whatsappChats || 0,
+															},
+															{
+																name: "Telegram Grupos",
+																value: metrics?.links.telegramGroups || 0,
+															},
+															{
+																name: "Telegram Canales",
+																value: metrics?.links.telegramChannels || 0,
+															},
+															{
+																name: "Discord",
+																value: metrics?.links.discordInvites || 0,
+															},
+															{
+																name: "Custom",
+																value: metrics?.links.customLinks || 0,
+															},
+														].filter((item) => item.value > 0)}
+														cx="50%"
+														cy="50%"
+														labelLine={false}
+														label={({ name, percent }) =>
+															`${name}: ${(percent * 100).toFixed(0)}%`
+														}
+														outerRadius={100}
+														fill="#8884d8"
+														dataKey="value"
+													>
+														{[0, 1, 2, 3, 4, 5].map((index) => (
+															<Cell
+																key={`cell-${index}`}
+																fill={
+																	[
+																		"hsl(var(--chart-1))",
+																		"hsl(var(--chart-2))",
+																		"hsl(var(--chart-3))",
+																		"hsl(var(--chart-4))",
+																		"hsl(var(--chart-5))",
+																		"hsl(var(--muted-foreground))",
+																	][index]
+																}
+															/>
+														))}
+													</Pie>
+													<Tooltip
+														contentStyle={{
+															backgroundColor: "hsl(var(--background))",
+															border: "1px solid hsl(var(--border))",
+															borderRadius: "6px",
+														}}
+													/>
+												</PieChart>
+											</ResponsiveContainer>
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Clicks Overview */}
+								<Card className="lg:col-span-2">
+									<CardHeader>
+										<CardTitle className="flex items-center gap-2">
+											<MousePointerClick className="h-5 w-5" />
+											Resumen de Clicks
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="h-80">
+											<ResponsiveContainer width="100%" height="100%">
+												<AreaChart
+													data={[
+														{
+															periodo: "Hoy",
+															clicks: metrics?.clicks.today || 0,
+														},
+														{
+															periodo: "Semana",
+															clicks: metrics?.clicks.thisWeek || 0,
+														},
+														{
+															periodo: "Mes",
+															clicks: metrics?.clicks.thisMonth || 0,
+														},
+														{
+															periodo: "Total",
+															clicks: metrics?.clicks.total || 0,
+														},
+													]}
+													margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+												>
+													<defs>
+														<linearGradient
+															id="colorClicks"
+															x1="0"
+															y1="0"
+															x2="0"
+															y2="1"
+														>
+															<stop
+																offset="5%"
+																stopColor="hsl(var(--primary))"
+																stopOpacity={0.8}
+															/>
+															<stop
+																offset="95%"
+																stopColor="hsl(var(--primary))"
+																stopOpacity={0}
+															/>
+														</linearGradient>
+													</defs>
+													<CartesianGrid
+														strokeDasharray="3 3"
+														className="stroke-muted"
+													/>
+													<XAxis dataKey="periodo" tick={{ fontSize: 12 }} />
+													<YAxis tick={{ fontSize: 12 }} />
+													<Tooltip
+														contentStyle={{
+															backgroundColor: "hsl(var(--background))",
+															border: "1px solid hsl(var(--border))",
+															borderRadius: "6px",
+														}}
+														labelStyle={{ color: "hsl(var(--foreground))" }}
+													/>
+													<Area
+														type="monotone"
+														dataKey="clicks"
+														stroke="hsl(var(--primary))"
+														fillOpacity={1}
+														fill="url(#colorClicks)"
+													/>
+												</AreaChart>
+											</ResponsiveContainer>
+										</div>
+									</CardContent>
+								</Card>
+							</div>
 						</>
 					)}
 				</TabsContent>

@@ -74,15 +74,33 @@ export class AdminRepository {
 	}
 
 	static async getDashboardMetrics(): Promise<{
-		users: { total: number; free: number; pro: number; enterprise: number };
-		links: { total: number; active: number; inactive: number };
+		users: {
+			total: number;
+			free: number;
+			pro: number;
+			enterprise: number;
+			newThisWeek: number;
+			newThisMonth: number;
+		};
+		links: {
+			total: number;
+			active: number;
+			inactive: number;
+			whatsappChats: number;
+			whatsappGroups: number;
+			telegramGroups: number;
+			telegramChannels: number;
+			discordInvites: number;
+			customLinks: number;
+		};
 		clicks: {
 			total: number;
 			today: number;
 			thisWeek: number;
 			thisMonth: number;
+			averagePerLink: number;
 		};
-		bioPages: { total: number };
+		bioPages: { total: number; active: number };
 	}> {
 		// Get user counts by plan
 		const usersTotal = await database("users").count("id as count").first();
@@ -98,6 +116,22 @@ export class AdminRepository {
 			.where({ plan: "ENTERPRISE" })
 			.count("id as count")
 			.first();
+		const usersNewWeek = await database("users")
+			.where(
+				"created_at",
+				">=",
+				database.raw("CURRENT_DATE - INTERVAL '7 days'"),
+			)
+			.count("id as count")
+			.first();
+		const usersNewMonth = await database("users")
+			.where(
+				"created_at",
+				">=",
+				database.raw("CURRENT_DATE - INTERVAL '30 days'"),
+			)
+			.count("id as count")
+			.first();
 
 		// Get link counts
 		const linksTotal = await database("links").count("id as count").first();
@@ -107,6 +141,33 @@ export class AdminRepository {
 			.first();
 		const linksInactive = await database("links")
 			.where({ is_active: false })
+			.count("id as count")
+			.first();
+
+		// Get special link type counts
+		const whatsappChats = await database("links")
+			.where({ special_type: "whatsapp_chat" })
+			.count("id as count")
+			.first();
+		const whatsappGroups = await database("links")
+			.where({ special_type: "whatsapp_group" })
+			.count("id as count")
+			.first();
+		const telegramGroups = await database("links")
+			.where({ special_type: "telegram_group" })
+			.count("id as count")
+			.first();
+		const telegramChannels = await database("links")
+			.where({ special_type: "telegram_channel" })
+			.count("id as count")
+			.first();
+		const discordInvites = await database("links")
+			.where({ special_type: "discord_invite" })
+			.count("id as count")
+			.first();
+		const customLinks = await database("links")
+			.where({ special_type: "custom" })
+			.orWhereNull("special_type")
 			.count("id as count")
 			.first();
 
@@ -135,8 +196,18 @@ export class AdminRepository {
 			.count("id as count")
 			.first();
 
+		// Calculate average clicks per link
+		const totalLinks = Number(linksTotal?.count || 0);
+		const totalClicks = Number(clicksTotal?.count || 0);
+		const averagePerLink =
+			totalLinks > 0 ? Math.round(totalClicks / totalLinks) : 0;
+
 		// Get bio pages count
 		const bioPagesTotal = await database("bio_pages")
+			.count("id as count")
+			.first();
+		const bioPagesActive = await database("bio_pages")
+			.whereNotNull("theme")
 			.count("id as count")
 			.first();
 
@@ -146,20 +217,30 @@ export class AdminRepository {
 				free: Number(usersFree?.count || 0),
 				pro: Number(usersPro?.count || 0),
 				enterprise: Number(usersEnterprise?.count || 0),
+				newThisWeek: Number(usersNewWeek?.count || 0),
+				newThisMonth: Number(usersNewMonth?.count || 0),
 			},
 			links: {
 				total: Number(linksTotal?.count || 0),
 				active: Number(linksActive?.count || 0),
 				inactive: Number(linksInactive?.count || 0),
+				whatsappChats: Number(whatsappChats?.count || 0),
+				whatsappGroups: Number(whatsappGroups?.count || 0),
+				telegramGroups: Number(telegramGroups?.count || 0),
+				telegramChannels: Number(telegramChannels?.count || 0),
+				discordInvites: Number(discordInvites?.count || 0),
+				customLinks: Number(customLinks?.count || 0),
 			},
 			clicks: {
 				total: Number(clicksTotal?.count || 0),
 				today: Number(clicksToday?.count || 0),
 				thisWeek: Number(clicksThisWeek?.count || 0),
 				thisMonth: Number(clicksThisMonth?.count || 0),
+				averagePerLink,
 			},
 			bioPages: {
 				total: Number(bioPagesTotal?.count || 0),
+				active: Number(bioPagesActive?.count || 0),
 			},
 		};
 	}

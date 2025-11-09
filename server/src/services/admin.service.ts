@@ -65,15 +65,33 @@ export default class AdminService {
 	}
 
 	static async getDashboardMetrics(): Promise<{
-		users: { total: number; free: number; pro: number; enterprise: number };
-		links: { total: number; active: number; inactive: number };
+		users: {
+			total: number;
+			free: number;
+			pro: number;
+			enterprise: number;
+			newThisWeek: number;
+			newThisMonth: number;
+		};
+		links: {
+			total: number;
+			active: number;
+			inactive: number;
+			whatsappChats: number;
+			whatsappGroups: number;
+			telegramGroups: number;
+			telegramChannels: number;
+			discordInvites: number;
+			customLinks: number;
+		};
 		clicks: {
 			total: number;
 			today: number;
 			thisWeek: number;
 			thisMonth: number;
+			averagePerLink: number;
 		};
-		bioPages: { total: number };
+		bioPages: { total: number; active: number };
 	}> {
 		const metrics = await Repository.admin.getDashboardMetrics();
 		return metrics;

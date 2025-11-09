@@ -11,9 +11,27 @@ import {
 	Users,
 } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	Legend,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+} from "@/components/ui/chart";
 import { PrivateRoutesEnum } from "@/data/routesEnums";
 import { useAuth } from "@/features/auth";
 import { useSEO } from "@/features/seo";
@@ -260,30 +278,48 @@ export default function LinkAnalyticsPage() {
 					</CardHeader>
 					<CardContent>
 						{analytics.top_devices.length > 0 ? (
-							<div className="space-y-4">
-								{analytics.top_devices.map((item, idx) => (
-									<div key={idx} className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{idx + 1}.</span>
-											<span className="capitalize">
-												{item.device_type || "Desconocido"}
-											</span>
-										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-32 bg-muted rounded-full h-2">
-												<div
-													className="bg-primary h-2 rounded-full"
-													style={{
-														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
-													}}
+							<div className="h-64">
+								<ResponsiveContainer width="100%" height="100%">
+									<PieChart>
+										<Pie
+											data={analytics.top_devices.map((item) => ({
+												name: item.device_type || "Desconocido",
+												value: item.clicks,
+											}))}
+											cx="50%"
+											cy="50%"
+											labelLine={false}
+											label={({ name, percent }) =>
+												`${name}: ${(percent * 100).toFixed(0)}%`
+											}
+											outerRadius={80}
+											fill="#8884d8"
+											dataKey="value"
+										>
+											{analytics.top_devices.map((_entry, index) => (
+												<Cell
+													key={`cell-${index}`}
+													fill={
+														[
+															"hsl(var(--chart-1))",
+															"hsl(var(--chart-2))",
+															"hsl(var(--chart-3))",
+															"hsl(var(--chart-4))",
+															"hsl(var(--chart-5))",
+														][index % 5]
+													}
 												/>
-											</div>
-											<span className="font-semibold w-12 text-right">
-												{item.clicks}
-											</span>
-										</div>
-									</div>
-								))}
+											))}
+										</Pie>
+										<Tooltip
+											contentStyle={{
+												backgroundColor: "hsl(var(--background))",
+												border: "1px solid hsl(var(--border))",
+												borderRadius: "6px",
+											}}
+										/>
+									</PieChart>
+								</ResponsiveContainer>
 							</div>
 						) : (
 							<p className="text-muted-foreground text-center py-8">
@@ -303,28 +339,48 @@ export default function LinkAnalyticsPage() {
 					</CardHeader>
 					<CardContent>
 						{analytics.top_browsers.length > 0 ? (
-							<div className="space-y-4">
-								{analytics.top_browsers.map((item, idx) => (
-									<div key={idx} className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{idx + 1}.</span>
-											<span>{item.browser || "Desconocido"}</span>
-										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-32 bg-muted rounded-full h-2">
-												<div
-													className="bg-primary h-2 rounded-full"
-													style={{
-														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
-													}}
+							<div className="h-64">
+								<ResponsiveContainer width="100%" height="100%">
+									<PieChart>
+										<Pie
+											data={analytics.top_browsers.map((item) => ({
+												name: item.browser || "Desconocido",
+												value: item.clicks,
+											}))}
+											cx="50%"
+											cy="50%"
+											labelLine={false}
+											label={({ name, percent }) =>
+												`${name}: ${(percent * 100).toFixed(0)}%`
+											}
+											outerRadius={80}
+											fill="#8884d8"
+											dataKey="value"
+										>
+											{analytics.top_browsers.map((_entry, index) => (
+												<Cell
+													key={`cell-${index}`}
+													fill={
+														[
+															"hsl(var(--chart-1))",
+															"hsl(var(--chart-2))",
+															"hsl(var(--chart-3))",
+															"hsl(var(--chart-4))",
+															"hsl(var(--chart-5))",
+														][index % 5]
+													}
 												/>
-											</div>
-											<span className="font-semibold w-12 text-right">
-												{item.clicks}
-											</span>
-										</div>
-									</div>
-								))}
+											))}
+										</Pie>
+										<Tooltip
+											contentStyle={{
+												backgroundColor: "hsl(var(--background))",
+												border: "1px solid hsl(var(--border))",
+												borderRadius: "6px",
+											}}
+										/>
+									</PieChart>
+								</ResponsiveContainer>
 							</div>
 						) : (
 							<p className="text-muted-foreground text-center py-8">
@@ -345,44 +401,44 @@ export default function LinkAnalyticsPage() {
 				</CardHeader>
 				<CardContent>
 					{analytics.clicks_by_day.length > 0 ? (
-						<div className="h-64 flex items-end justify-between gap-1">
-							{analytics.clicks_by_day.map((item, idx) => {
-								const maxClicks = Math.max(
-									...analytics.clicks_by_day.map((d) => d.clicks),
-								);
-								const height =
-									maxClicks > 0 ? (item.clicks / maxClicks) * 100 : 0;
-
-								return (
-									<div
-										key={idx}
-										className="flex-1 flex flex-col items-center gap-2"
-									>
-										<div className="relative w-full group">
-											<div
-												className="bg-primary rounded-t hover:bg-primary/80 transition-all cursor-pointer"
-												style={{ height: `${height}%`, minHeight: "4px" }}
-											/>
-											<div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-												{item.clicks} clicks
-												<br />
-												{new Date(item.date).toLocaleDateString("es-ES", {
-													month: "short",
-													day: "numeric",
-												})}
-											</div>
-										</div>
-										{idx % 5 === 0 && (
-											<span className="text-xs text-muted-foreground">
-												{new Date(item.date).toLocaleDateString("es-ES", {
-													month: "short",
-													day: "numeric",
-												})}
-											</span>
-										)}
-									</div>
-								);
-							})}
+						<div className="h-80">
+							<ResponsiveContainer width="100%" height="100%">
+								<BarChart
+									data={analytics.clicks_by_day.map((item) => ({
+										date: new Date(item.date).toLocaleDateString("es-ES", {
+											month: "short",
+											day: "numeric",
+										}),
+										clicks: item.clicks,
+										fullDate: new Date(item.date).toLocaleDateString("es-ES"),
+									}))}
+									margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+								>
+									<CartesianGrid
+										strokeDasharray="3 3"
+										className="stroke-muted"
+									/>
+									<XAxis
+										dataKey="date"
+										tick={{ fontSize: 12 }}
+										interval="preserveStartEnd"
+									/>
+									<YAxis tick={{ fontSize: 12 }} />
+									<Tooltip
+										contentStyle={{
+											backgroundColor: "hsl(var(--background))",
+											border: "1px solid hsl(var(--border))",
+											borderRadius: "6px",
+										}}
+										labelStyle={{ color: "hsl(var(--foreground))" }}
+									/>
+									<Bar
+										dataKey="clicks"
+										fill="hsl(var(--primary))"
+										radius={[4, 4, 0, 0]}
+									/>
+								</BarChart>
+							</ResponsiveContainer>
 						</div>
 					) : (
 						<p className="text-muted-foreground text-center py-8">
