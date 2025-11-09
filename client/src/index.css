@@ -33,6 +33,9 @@
 	--color-chart-3: var(--chart-3);
 	--color-chart-4: var(--chart-4);
 	--color-chart-5: var(--chart-5);
+	--color-chart-6: var(--chart-6);
+	--color-chart-7: var(--chart-7);
+	--color-chart-8: var(--chart-8);
 	--color-sidebar: var(--sidebar);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar-primary: var(--sidebar-primary);
@@ -68,12 +71,15 @@
 	--border: oklch(0.9 0.02 85);
 	--input: oklch(0.9 0.02 85);
 	--ring: oklch(0.75 0.15 75);
-	/* Charts: Amber/Orange palette */
-	--chart-1: oklch(0.75 0.15 75);
-	--chart-2: oklch(0.72 0.18 55);
-	--chart-3: oklch(0.68 0.2 45);
-	--chart-4: oklch(0.8 0.12 85);
-	--chart-5: oklch(0.65 0.22 40);
+	/* Charts: Vibrant color palette */
+	--chart-1: oklch(0.75 0.15 75); /* Amber */
+	--chart-2: oklch(0.72 0.18 55); /* Orange */
+	--chart-3: oklch(0.65 0.2 140); /* Green */
+	--chart-4: oklch(0.7 0.18 250); /* Blue */
+	--chart-5: oklch(0.68 0.2 320); /* Purple */
+	--chart-6: oklch(0.72 0.18 25); /* Red-Orange */
+	--chart-7: oklch(0.7 0.16 180); /* Cyan */
+	--chart-8: oklch(0.68 0.18 290); /* Violet */
 	/* Sidebar: Amber tones */
 	--sidebar: oklch(0.98 0.01 85);
 	--sidebar-foreground: oklch(0.2 0.02 70);
@@ -109,12 +115,15 @@
 	--border: oklch(0.3 0.02 70);
 	--input: oklch(0.3 0.02 70);
 	--ring: oklch(0.78 0.14 80);
-	/* Charts: Amber/Orange palette for dark */
-	--chart-1: oklch(0.78 0.14 80);
-	--chart-2: oklch(0.7 0.2 50);
-	--chart-3: oklch(0.65 0.22 40);
-	--chart-4: oklch(0.82 0.1 90);
-	--chart-5: oklch(0.6 0.24 35);
+	/* Charts: Vibrant color palette for dark */
+	--chart-1: oklch(0.78 0.14 80); /* Amber */
+	--chart-2: oklch(0.75 0.2 50); /* Orange */
+	--chart-3: oklch(0.7 0.22 140); /* Green */
+	--chart-4: oklch(0.72 0.2 250); /* Blue */
+	--chart-5: oklch(0.7 0.22 320); /* Purple */
+	--chart-6: oklch(0.75 0.2 25); /* Red-Orange */
+	--chart-7: oklch(0.72 0.18 180); /* Cyan */
+	--chart-8: oklch(0.7 0.2 290); /* Violet */
 	/* Sidebar: Dark amber tones */
 	--sidebar: oklch(0.18 0.01 70);
 	--sidebar-foreground: oklch(0.95 0.01 85);

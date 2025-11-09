@@ -501,9 +501,9 @@ export default function AdminPage() {
 														label={{ position: "top" }}
 													>
 														{[
-															{ fill: "hsl(var(--chart-1))" },
-															{ fill: "hsl(var(--chart-2))" },
-															{ fill: "hsl(var(--chart-3))" },
+															{ fill: "#3b82f6" }, // Blue for FREE
+															{ fill: "#f59e0b" }, // Amber for PRO
+															{ fill: "#a855f7" }, // Purple for ENTERPRISE
 														].map((entry, index) => (
 															<Cell key={`cell-${index}`} fill={entry.fill} />
 														))}
@@ -568,12 +568,12 @@ export default function AdminPage() {
 																key={`cell-${index}`}
 																fill={
 																	[
-																		"hsl(var(--chart-1))",
-																		"hsl(var(--chart-2))",
-																		"hsl(var(--chart-3))",
-																		"hsl(var(--chart-4))",
-																		"hsl(var(--chart-5))",
-																		"hsl(var(--muted-foreground))",
+																		"#10b981", // Green for WhatsApp Groups
+																		"#22c55e", // Light Green for WhatsApp Chats
+																		"#3b82f6", // Blue for Telegram Groups
+																		"#06b6d4", // Cyan for Telegram Channels
+																		"#a855f7", // Purple for Discord
+																		"#f97316", // Orange for Custom
 																	][index]
 																}
 															/>
@@ -634,13 +634,13 @@ export default function AdminPage() {
 														>
 															<stop
 																offset="5%"
-																stopColor="hsl(var(--primary))"
+																stopColor="#f97316"
 																stopOpacity={0.8}
 															/>
 															<stop
 																offset="95%"
-																stopColor="hsl(var(--primary))"
-																stopOpacity={0}
+																stopColor="#f97316"
+																stopOpacity={0.1}
 															/>
 														</linearGradient>
 													</defs>
@@ -661,7 +661,8 @@ export default function AdminPage() {
 													<Area
 														type="monotone"
 														dataKey="clicks"
-														stroke="hsl(var(--primary))"
+														stroke="#f97316"
+														strokeWidth={2}
 														fillOpacity={1}
 														fill="url(#colorClicks)"
 													/>

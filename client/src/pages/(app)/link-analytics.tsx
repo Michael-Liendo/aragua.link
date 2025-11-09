@@ -301,12 +301,15 @@ export default function LinkAnalyticsPage() {
 													key={`cell-${index}`}
 													fill={
 														[
-															"hsl(var(--chart-1))",
-															"hsl(var(--chart-2))",
-															"hsl(var(--chart-3))",
-															"hsl(var(--chart-4))",
-															"hsl(var(--chart-5))",
-														][index % 5]
+															"#f59e0b", // Amber
+															"#f97316", // Orange
+															"#10b981", // Green
+															"#3b82f6", // Blue
+															"#a855f7", // Purple
+															"#ef4444", // Red
+															"#06b6d4", // Cyan
+															"#8b5cf6", // Violet
+														][index % 8]
 													}
 												/>
 											))}
@@ -362,12 +365,15 @@ export default function LinkAnalyticsPage() {
 													key={`cell-${index}`}
 													fill={
 														[
-															"hsl(var(--chart-1))",
-															"hsl(var(--chart-2))",
-															"hsl(var(--chart-3))",
-															"hsl(var(--chart-4))",
-															"hsl(var(--chart-5))",
-														][index % 5]
+															"#3b82f6", // Blue
+															"#f97316", // Orange
+															"#ef4444", // Red
+															"#10b981", // Green
+															"#a855f7", // Purple
+															"#06b6d4", // Cyan
+															"#f59e0b", // Amber
+															"#8b5cf6", // Violet
+														][index % 8]
 													}
 												/>
 											))}
@@ -432,11 +438,7 @@ export default function LinkAnalyticsPage() {
 										}}
 										labelStyle={{ color: "hsl(var(--foreground))" }}
 									/>
-									<Bar
-										dataKey="clicks"
-										fill="hsl(var(--primary))"
-										radius={[4, 4, 0, 0]}
-									/>
+									<Bar dataKey="clicks" fill="#f97316" radius={[4, 4, 0, 0]} />
 								</BarChart>
 							</ResponsiveContainer>
 						</div>
