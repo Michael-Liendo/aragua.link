@@ -80,14 +80,14 @@ export default function AdminPage() {
 	// Fetch users
 	const { data: usersData, isLoading: usersLoading } = useQuery({
 		queryKey: ["adminUsers"],
-		queryFn: () => Services.admin.getAll("users", 0, 50),
+		queryFn: () => Services.admin.getAll<IUser>("users", 0, 50),
 		enabled: isAdmin && activeTab === "users",
 	});
 
 	// Fetch links
 	const { data: linksData, isLoading: linksLoading } = useQuery({
 		queryKey: ["adminLinks"],
-		queryFn: () => Services.admin.getAll("links", 0, 50),
+		queryFn: () => Services.admin.getAll<ILink>("links", 0, 50),
 		enabled: isAdmin && activeTab === "links",
 	});
 
