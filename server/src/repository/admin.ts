@@ -101,6 +101,15 @@ export class AdminRepository {
 			averagePerLink: number;
 		};
 		bioPages: { total: number; active: number };
+		topCountries: Array<{
+			country: string;
+			country_code: string;
+			clicks: number;
+		}>;
+		topCities: Array<{ city: string; country: string; clicks: number }>;
+		topDevices: Array<{ device_type: string; clicks: number }>;
+		topBrowsers: Array<{ browser: string; clicks: number }>;
+		topReferrers: Array<{ referrer_domain: string; clicks: number }>;
 	}> {
 		// Get user counts by plan
 		const usersTotal = await database("users").count("id as count").first();
@@ -211,6 +220,54 @@ export class AdminRepository {
 			.count("id as count")
 			.first();
 
+		// Get top countries
+		const topCountries = await database("click_events")
+			.select("country", "country_code")
+			.count("id as clicks")
+			.whereNotNull("country")
+			.whereNotNull("country_code")
+			.groupBy("country", "country_code")
+			.orderBy("clicks", "desc")
+			.limit(10);
+
+		// Get top cities
+		const topCities = await database("click_events")
+			.select("city", "country")
+			.count("id as clicks")
+			.whereNotNull("city")
+			.whereNotNull("country")
+			.groupBy("city", "country")
+			.orderBy("clicks", "desc")
+			.limit(10);
+
+		// Get top devices
+		const topDevices = await database("click_events")
+			.select("device_type")
+			.count("id as clicks")
+			.whereNotNull("device_type")
+			.groupBy("device_type")
+			.orderBy("clicks", "desc")
+			.limit(10);
+
+		// Get top browsers
+		const topBrowsers = await database("click_events")
+			.select("browser")
+			.count("id as clicks")
+			.whereNotNull("browser")
+			.groupBy("browser")
+			.orderBy("clicks", "desc")
+			.limit(10);
+
+		// Get top referrers
+		const topReferrers = await database("click_events")
+			.select("referrer_domain")
+			.count("id as clicks")
+			.whereNotNull("referrer_domain")
+			.where("referrer_domain", "!=", "")
+			.groupBy("referrer_domain")
+			.orderBy("clicks", "desc")
+			.limit(10);
+
 		return {
 			users: {
 				total: Number(usersTotal?.count || 0),
@@ -242,6 +299,28 @@ export class AdminRepository {
 				total: Number(bioPagesTotal?.count || 0),
 				active: Number(bioPagesActive?.count || 0),
 			},
+			topCountries: topCountries.map((item) => ({
+				country: String(item.country),
+				country_code: String(item.country_code),
+				clicks: Number(item.clicks),
+			})),
+			topCities: topCities.map((item) => ({
+				city: String(item.city),
+				country: String(item.country),
+				clicks: Number(item.clicks),
+			})),
+			topDevices: topDevices.map((item) => ({
+				device_type: String(item.device_type),
+				clicks: Number(item.clicks),
+			})),
+			topBrowsers: topBrowsers.map((item) => ({
+				browser: String(item.browser),
+				clicks: Number(item.clicks),
+			})),
+			topReferrers: topReferrers.map((item) => ({
+				referrer_domain: String(item.referrer_domain),
+				clicks: Number(item.clicks),
+			})),
 		};
 	}
 

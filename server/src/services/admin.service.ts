@@ -92,6 +92,15 @@ export default class AdminService {
 			averagePerLink: number;
 		};
 		bioPages: { total: number; active: number };
+		topCountries: Array<{
+			country: string;
+			country_code: string;
+			clicks: number;
+		}>;
+		topCities: Array<{ city: string; country: string; clicks: number }>;
+		topDevices: Array<{ device_type: string; clicks: number }>;
+		topBrowsers: Array<{ browser: string; clicks: number }>;
+		topReferrers: Array<{ referrer_domain: string; clicks: number }>;
 	}> {
 		const metrics = await Repository.admin.getDashboardMetrics();
 		return metrics;

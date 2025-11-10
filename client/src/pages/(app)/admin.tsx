@@ -813,6 +813,196 @@ export default function AdminPage() {
 									</CardContent>
 								</Card>
 							</div>
+
+							{/* New Analytics Sections */}
+							<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+								{/* Top Countries */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="text-sm font-medium">
+											Top Países
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="space-y-2">
+											{metrics?.topCountries.slice(0, 5).map((country, idx) => (
+												<div
+													key={country.country_code}
+													className="flex items-center justify-between"
+												>
+													<div className="flex items-center gap-2">
+														<span className="text-xs font-medium text-muted-foreground">
+															#{idx + 1}
+														</span>
+														<span className="text-sm font-medium">
+															{country.country}
+														</span>
+													</div>
+													<span className="text-sm font-bold">
+														{country.clicks}
+													</span>
+												</div>
+											))}
+											{(!metrics?.topCountries ||
+												metrics.topCountries.length === 0) && (
+												<p className="text-sm text-muted-foreground text-center py-4">
+													No hay datos disponibles
+												</p>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Top Cities */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="text-sm font-medium">
+											Top Ciudades
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="space-y-2">
+											{metrics?.topCities.slice(0, 5).map((city, idx) => (
+												<div
+													key={`${city.city}-${city.country}`}
+													className="flex items-center justify-between"
+												>
+													<div className="flex items-center gap-2">
+														<span className="text-xs font-medium text-muted-foreground">
+															#{idx + 1}
+														</span>
+														<span className="text-sm font-medium">
+															{city.city}, {city.country}
+														</span>
+													</div>
+													<span className="text-sm font-bold">
+														{city.clicks}
+													</span>
+												</div>
+											))}
+											{(!metrics?.topCities ||
+												metrics.topCities.length === 0) && (
+												<p className="text-sm text-muted-foreground text-center py-4">
+													No hay datos disponibles
+												</p>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Top Devices */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="text-sm font-medium">
+											Top Dispositivos
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="space-y-2">
+											{metrics?.topDevices.map((device, idx) => (
+												<div
+													key={device.device_type}
+													className="flex items-center justify-between"
+												>
+													<div className="flex items-center gap-2">
+														<span className="text-xs font-medium text-muted-foreground">
+															#{idx + 1}
+														</span>
+														<span className="text-sm font-medium capitalize">
+															{device.device_type}
+														</span>
+													</div>
+													<span className="text-sm font-bold">
+														{device.clicks}
+													</span>
+												</div>
+											))}
+											{(!metrics?.topDevices ||
+												metrics.topDevices.length === 0) && (
+												<p className="text-sm text-muted-foreground text-center py-4">
+													No hay datos disponibles
+												</p>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Top Browsers */}
+								<Card>
+									<CardHeader>
+										<CardTitle className="text-sm font-medium">
+											Top Navegadores
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="space-y-2">
+											{metrics?.topBrowsers.slice(0, 5).map((browser, idx) => (
+												<div
+													key={browser.browser}
+													className="flex items-center justify-between"
+												>
+													<div className="flex items-center gap-2">
+														<span className="text-xs font-medium text-muted-foreground">
+															#{idx + 1}
+														</span>
+														<span className="text-sm font-medium">
+															{browser.browser}
+														</span>
+													</div>
+													<span className="text-sm font-bold">
+														{browser.clicks}
+													</span>
+												</div>
+											))}
+											{(!metrics?.topBrowsers ||
+												metrics.topBrowsers.length === 0) && (
+												<p className="text-sm text-muted-foreground text-center py-4">
+													No hay datos disponibles
+												</p>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+
+								{/* Top Referrers */}
+								<Card className="md:col-span-2">
+									<CardHeader>
+										<CardTitle className="text-sm font-medium">
+											Top Referrers
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<div className="space-y-2">
+											{metrics?.topReferrers
+												.slice(0, 5)
+												.map((referrer, idx) => (
+													<div
+														key={referrer.referrer_domain}
+														className="flex items-center justify-between"
+													>
+														<div className="flex items-center gap-2">
+															<span className="text-xs font-medium text-muted-foreground">
+																#{idx + 1}
+															</span>
+															<span className="text-sm font-medium truncate max-w-xs">
+																{referrer.referrer_domain}
+															</span>
+														</div>
+														<span className="text-sm font-bold">
+															{referrer.clicks}
+														</span>
+													</div>
+												))}
+											{(!metrics?.topReferrers ||
+												metrics.topReferrers.length === 0) && (
+												<p className="text-sm text-muted-foreground text-center py-4">
+													No hay datos disponibles
+												</p>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+							</div>
 						</>
 					)}
 				</TabsContent>

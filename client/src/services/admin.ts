@@ -36,6 +36,15 @@ export interface DashboardMetrics {
 		averagePerLink: number;
 	};
 	bioPages: { total: number; active: number };
+	topCountries: Array<{
+		country: string;
+		country_code: string;
+		clicks: number;
+	}>;
+	topCities: Array<{ city: string; country: string; clicks: number }>;
+	topDevices: Array<{ device_type: string; clicks: number }>;
+	topBrowsers: Array<{ browser: string; clicks: number }>;
+	topReferrers: Array<{ referrer_domain: string; clicks: number }>;
 }
 
 // Generic type for getAll response
