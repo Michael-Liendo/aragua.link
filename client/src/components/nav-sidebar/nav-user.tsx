@@ -24,7 +24,7 @@ export function NavUser() {
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
-	const [editOpen, setEditOpen] = useState(false);
+	const [_editOpen, setEditOpen] = useState(false);
 	function openEditModal() {
 		setEditOpen(true);
 	}

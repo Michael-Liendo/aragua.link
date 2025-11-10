@@ -154,14 +154,30 @@ export default class AnalyticsService {
 		const monthAgo = new Date(today);
 		monthAgo.setDate(monthAgo.getDate() - 30);
 
-		// Get clicks for different periods
-		const [clicksToday, clicksThisWeek, clicksThisMonth, topLinks] =
-			await Promise.all([
-				Repository.analytics.getClicksInPeriod(userId, today, now),
-				Repository.analytics.getClicksInPeriod(userId, weekAgo, now),
-				Repository.analytics.getClicksInPeriod(userId, monthAgo, now),
-				Repository.analytics.getTopLinksByUserId(userId, 10),
-			]);
+		// Get clicks for different periods and detailed analytics
+		const [
+			clicksToday,
+			clicksThisWeek,
+			clicksThisMonth,
+			topLinks,
+			topCountries,
+			topCities,
+			topDevices,
+			topBrowsers,
+			topReferrers,
+			clicksByDay,
+		] = await Promise.all([
+			Repository.analytics.getClicksInPeriod(userId, today, now),
+			Repository.analytics.getClicksInPeriod(userId, weekAgo, now),
+			Repository.analytics.getClicksInPeriod(userId, monthAgo, now),
+			Repository.analytics.getTopLinksByUserId(userId, 10),
+			Repository.analytics.getTopCountriesByUserId(userId, 10),
+			Repository.analytics.getTopCitiesByUserId(userId, 10),
+			Repository.analytics.getTopDevicesByUserId(userId),
+			Repository.analytics.getTopBrowsersByUserId(userId, 10),
+			Repository.analytics.getTopReferrersByUserId(userId, 10),
+			Repository.analytics.getClicksByDayForUser(userId, 30),
+		]);
 
 		// Calculate total clicks across all links
 		const totalClicks = links.reduce((sum, link) => sum + link.clicks, 0);
@@ -185,6 +201,12 @@ export default class AnalyticsService {
 			clicks_this_week: clicksThisWeek,
 			clicks_this_month: clicksThisMonth,
 			top_links: topLinks,
+			top_countries: topCountries,
+			top_cities: topCities,
+			top_devices: topDevices,
+			top_browsers: topBrowsers,
+			top_referrers: topReferrers,
+			clicks_by_day: clicksByDay,
 		};
 	}
 

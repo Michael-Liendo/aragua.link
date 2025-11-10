@@ -152,6 +152,56 @@ export const UserAnalyticsSchema = z.object({
 			clicks: z.number().int(),
 		}),
 	),
+
+	// Top países
+	top_countries: z.array(
+		z.object({
+			country: z.string(),
+			country_code: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top ciudades
+	top_cities: z.array(
+		z.object({
+			city: z.string(),
+			country: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top dispositivos
+	top_devices: z.array(
+		z.object({
+			device_type: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top navegadores
+	top_browsers: z.array(
+		z.object({
+			browser: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top referrers
+	top_referrers: z.array(
+		z.object({
+			referrer_domain: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Clicks por día (últimos 30 días)
+	clicks_by_day: z.array(
+		z.object({
+			date: z.string(), // YYYY-MM-DD
+			clicks: z.number().int(),
+		}),
+	),
 });
 
 export interface IClickEvent extends z.infer<typeof ClickEventSchema> {}

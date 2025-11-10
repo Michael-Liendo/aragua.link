@@ -290,4 +290,139 @@ export class Analytics {
 
 		return result?.last_click ? new Date(result.last_click) : null;
 	}
+
+	/**
+	 * Get top countries for a user (all their links)
+	 */
+	static async getTopCountriesByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ country: string; country_code: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("country")
+			.select("country", "country_code")
+			.count("* as clicks")
+			.groupBy("country", "country_code")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			country: String(r.country),
+			country_code: String(r.country_code),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top cities for a user (all their links)
+	 */
+	static async getTopCitiesByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ city: string; country: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("city")
+			.select("city", "country")
+			.count("* as clicks")
+			.groupBy("city", "country")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			city: String(r.city),
+			country: String(r.country),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top devices for a user (all their links)
+	 */
+	static async getTopDevicesByUserId(
+		userId: string,
+	): Promise<Array<{ device_type: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("device_type")
+			.select("device_type")
+			.count("* as clicks")
+			.groupBy("device_type")
+			.orderBy("clicks", "desc");
+
+		return results.map((r: AnyRecord) => ({
+			device_type: String(r.device_type),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top browsers for a user (all their links)
+	 */
+	static async getTopBrowsersByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ browser: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("browser")
+			.select("browser")
+			.count("* as clicks")
+			.groupBy("browser")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			browser: String(r.browser),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top referrers for a user (all their links)
+	 */
+	static async getTopReferrersByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ referrer_domain: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("referrer_domain")
+			.select("referrer_domain")
+			.count("* as clicks")
+			.groupBy("referrer_domain")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			referrer_domain: String(r.referrer_domain),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get clicks by day for a user (last N days, all links)
+	 */
+	static async getClicksByDayForUser(
+		userId: string,
+		days = 30,
+	): Promise<Array<{ date: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.where(
+				"created_at",
+				">=",
+				database.raw(`NOW() - INTERVAL '${days} days'`),
+			)
+			.select(database.raw("DATE(created_at) as date"))
+			.count("* as clicks")
+			.groupBy(database.raw("DATE(created_at)"))
+			.orderBy("date", "asc");
+
+		return results.map((r: AnyRecord) => ({
+			date: String(r.date),
+			clicks: Number(r.clicks),
+		}));
+	}
 }

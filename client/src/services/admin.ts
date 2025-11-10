@@ -1,3 +1,11 @@
+import type {
+	IBioPage,
+	ILink,
+	IPaginationResponse,
+	ISResponse,
+	IUser,
+	TMasterName,
+} from "@aragualink/shared";
 import customFetch from "@/utils/fetch";
 
 export interface DashboardMetrics {
@@ -30,6 +38,12 @@ export interface DashboardMetrics {
 	bioPages: { total: number; active: number };
 }
 
+// Generic type for getAll response
+interface GetAllResponse<T> {
+	data: T[];
+	pagination: IPaginationResponse;
+}
+
 export default class AdminService {
 	static async getDashboardMetrics(): Promise<DashboardMetrics> {
 		const response = await customFetch("/admin/metrics");
@@ -37,47 +51,53 @@ export default class AdminService {
 		return data.data;
 	}
 
-	static async getAll(
-		masterName: string,
+	static async getAll<T = IUser | ILink | IBioPage>(
+		masterName: TMasterName,
 		page = 0,
 		limit = 100,
-	): Promise<{ data: any[]; pagination: any }> {
+	): Promise<GetAllResponse<T>> {
 		const response = await customFetch(
 			`/admin/findAll/${masterName}?page=${page}&limit=${limit}`,
 		);
-		const data = await response.json();
-		return { data: data.data, pagination: data.pagination };
+		const data: ISResponse<GetAllResponse<T>> = await response.json();
+		return { data: data.data.data, pagination: data.data.pagination };
 	}
 
-	static async getOne(masterName: string, id: string): Promise<any> {
+	static async getOne<T = IUser | ILink | IBioPage>(
+		masterName: TMasterName,
+		id: string,
+	): Promise<T> {
 		const response = await customFetch(`/admin/findOne/${masterName}/${id}`);
-		const data = await response.json();
+		const data: ISResponse<T> = await response.json();
 		return data.data;
 	}
 
-	static async create(masterName: string, payload: any): Promise<any> {
+	static async create<T = IUser | ILink | IBioPage>(
+		masterName: TMasterName,
+		payload: Partial<T>,
+	): Promise<T> {
 		const response = await customFetch(`/admin/create/${masterName}`, {
 			method: "POST",
 			body: JSON.stringify(payload),
 		});
-		const data = await response.json();
+		const data: ISResponse<T> = await response.json();
 		return data.data;
 	}
 
-	static async update(
-		masterName: string,
+	static async update<T = IUser | ILink | IBioPage>(
+		masterName: TMasterName,
 		id: string,
-		payload: any,
-	): Promise<any> {
+		payload: Partial<T>,
+	): Promise<T> {
 		const response = await customFetch(`/admin/update/${masterName}/${id}`, {
 			method: "PUT",
 			body: JSON.stringify(payload),
 		});
-		const data = await response.json();
+		const data: ISResponse<T> = await response.json();
 		return data.data;
 	}
 
-	static async delete(masterName: string, id: string): Promise<void> {
+	static async delete(masterName: TMasterName, id: string): Promise<void> {
 		await customFetch(`/admin/delete/${masterName}/${id}`, {
 			method: "DELETE",
 		});

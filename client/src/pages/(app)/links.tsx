@@ -21,7 +21,7 @@ export default function LinksPage() {
 	const [editLink, setEditLink] = useState<ILink | null>(null);
 
 	// Check if user has PRO plan
-	const hasPro = user?.plan === "PRO" || user?.plan === "ENTERPRISE";
+	const _hasPro = user?.plan === "PRO" || user?.plan === "ENTERPRISE";
 	const isFree = user?.plan === "FREE";
 	const FREE_PLAN_LINK_LIMIT = 2;
 

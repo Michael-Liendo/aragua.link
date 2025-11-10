@@ -75,12 +75,15 @@ export default function AnalyticsPage() {
 		// Hoja 2: Top Enlaces
 		if (analytics.top_links.length > 0) {
 			const topLinksData = [
-				["Posición", "Título", "Código Corto", "Clics"],
+				["Posición", "Título", "Código Corto", "Clics", "Porcentaje"],
 				...analytics.top_links.map((link, index) => [
 					index + 1,
 					link.title,
 					link.short_code,
 					link.clicks,
+					analytics.total_clicks > 0
+						? `${((link.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
 				]),
 			];
 			const ws2 = XLSX.utils.aoa_to_sheet(topLinksData);
@@ -97,6 +100,105 @@ export default function AnalyticsPage() {
 		];
 		const ws3 = XLSX.utils.aoa_to_sheet(periodStats);
 		XLSX.utils.book_append_sheet(wb, ws3, "Estadísticas por Período");
+
+		// Hoja 4: Top Países
+		if (analytics.top_countries.length > 0) {
+			const topCountriesData = [
+				["Posición", "País", "Código", "Clics", "Porcentaje"],
+				...analytics.top_countries.map((country, index) => [
+					index + 1,
+					country.country,
+					country.country_code,
+					country.clicks,
+					analytics.total_clicks > 0
+						? `${((country.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws4 = XLSX.utils.aoa_to_sheet(topCountriesData);
+			XLSX.utils.book_append_sheet(wb, ws4, "Top Países");
+		}
+
+		// Hoja 5: Top Ciudades
+		if (analytics.top_cities.length > 0) {
+			const topCitiesData = [
+				["Posición", "Ciudad", "País", "Clics", "Porcentaje"],
+				...analytics.top_cities.map((city, index) => [
+					index + 1,
+					city.city,
+					city.country,
+					city.clicks,
+					analytics.total_clicks > 0
+						? `${((city.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws5 = XLSX.utils.aoa_to_sheet(topCitiesData);
+			XLSX.utils.book_append_sheet(wb, ws5, "Top Ciudades");
+		}
+
+		// Hoja 6: Dispositivos
+		if (analytics.top_devices.length > 0) {
+			const topDevicesData = [
+				["Tipo de Dispositivo", "Clics", "Porcentaje"],
+				...analytics.top_devices.map((device) => [
+					device.device_type,
+					device.clicks,
+					analytics.total_clicks > 0
+						? `${((device.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws6 = XLSX.utils.aoa_to_sheet(topDevicesData);
+			XLSX.utils.book_append_sheet(wb, ws6, "Dispositivos");
+		}
+
+		// Hoja 7: Navegadores
+		if (analytics.top_browsers.length > 0) {
+			const topBrowsersData = [
+				["Posición", "Navegador", "Clics", "Porcentaje"],
+				...analytics.top_browsers.map((browser, index) => [
+					index + 1,
+					browser.browser,
+					browser.clicks,
+					analytics.total_clicks > 0
+						? `${((browser.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws7 = XLSX.utils.aoa_to_sheet(topBrowsersData);
+			XLSX.utils.book_append_sheet(wb, ws7, "Navegadores");
+		}
+
+		// Hoja 8: Referrers
+		if (analytics.top_referrers.length > 0) {
+			const topReferrersData = [
+				["Posición", "Dominio Referrer", "Clics", "Porcentaje"],
+				...analytics.top_referrers.map((referrer, index) => [
+					index + 1,
+					referrer.referrer_domain,
+					referrer.clicks,
+					analytics.total_clicks > 0
+						? `${((referrer.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws8 = XLSX.utils.aoa_to_sheet(topReferrersData);
+			XLSX.utils.book_append_sheet(wb, ws8, "Referrers");
+		}
+
+		// Hoja 9: Clicks por Día (Últimos 30 días)
+		if (analytics.clicks_by_day.length > 0) {
+			const clicksByDayData = [
+				["Fecha", "Clics"],
+				...analytics.clicks_by_day.map((day) => [
+					new Date(day.date).toLocaleDateString("es-ES"),
+					day.clicks,
+				]),
+			];
+			const ws9 = XLSX.utils.aoa_to_sheet(clicksByDayData);
+			XLSX.utils.book_append_sheet(wb, ws9, "Clicks por Día");
+		}
 
 		// Generar el archivo
 		const fileName = `Mis_Metricas_${new Date().toISOString().split("T")[0]}.xlsx`;
