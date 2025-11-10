@@ -1,4 +1,5 @@
 import {
+	BarChart3,
 	HomeIcon,
 	Link2,
 	MenuIcon,
@@ -47,6 +48,11 @@ const navMain: { title?: string; items: NavItem[] }[] = [
 				title: "Mis Enlaces",
 				url: PrivateRoutesEnum.Links,
 				icon: Link2,
+			},
+			{
+				title: "Mis Métricas",
+				url: PrivateRoutesEnum.Analytics,
+				icon: BarChart3,
 			},
 			{
 				title: "Página Bio",

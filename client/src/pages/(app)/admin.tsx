@@ -3,13 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	BarChart3,
 	Check,
+	Download,
 	Key,
 	Link2,
 	Loader2,
 	MessageCircle,
 	MousePointerClick,
 	Palette,
-	Send,
 	Shield,
 	TrendingUp,
 	Users,
@@ -23,9 +23,6 @@ import {
 	BarChart,
 	CartesianGrid,
 	Cell,
-	Legend,
-	Line,
-	LineChart,
 	Pie,
 	PieChart,
 	ResponsiveContainer,
@@ -33,6 +30,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+import * as XLSX from "xlsx";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -171,6 +169,138 @@ export default function AdminPage() {
 		}
 	};
 
+	const handleExportToExcel = () => {
+		if (!metrics) return;
+
+		// Crear un nuevo libro de trabajo
+		const wb = XLSX.utils.book_new();
+
+		// Hoja 1: Resumen General
+		const summaryData = [
+			["AraguaLink - Reporte de Métricas"],
+			["Fecha de generación:", new Date().toLocaleDateString("es-ES")],
+			[""],
+			["USUARIOS"],
+			["Total de usuarios:", metrics.users.total],
+			["Usuarios FREE:", metrics.users.free],
+			["Usuarios PRO:", metrics.users.pro],
+			["Usuarios ENTERPRISE:", metrics.users.enterprise],
+			["Nuevos esta semana:", metrics.users.newThisWeek],
+			["Nuevos este mes:", metrics.users.newThisMonth],
+			[""],
+			["ENLACES"],
+			["Total de enlaces:", metrics.links.total],
+			["Enlaces activos:", metrics.links.active],
+			["Enlaces inactivos:", metrics.links.inactive],
+			["WhatsApp Grupos:", metrics.links.whatsappGroups],
+			["WhatsApp Chats:", metrics.links.whatsappChats],
+			["Telegram Grupos:", metrics.links.telegramGroups],
+			["Telegram Canales:", metrics.links.telegramChannels],
+			["Discord Servers:", metrics.links.discordInvites],
+			["Enlaces Custom:", metrics.links.customLinks],
+			[""],
+			["CLICS"],
+			["Total de clics:", metrics.clicks.total],
+			["Clics hoy:", metrics.clicks.today],
+			["Clics esta semana:", metrics.clicks.thisWeek],
+			["Clics este mes:", metrics.clicks.thisMonth],
+			["Promedio por enlace:", metrics.clicks.averagePerLink],
+			[""],
+			["PÁGINAS BIO"],
+			["Total de páginas bio:", metrics.bioPages.total],
+			["Páginas bio activas:", metrics.bioPages.active],
+		];
+		const ws1 = XLSX.utils.aoa_to_sheet(summaryData);
+		XLSX.utils.book_append_sheet(wb, ws1, "Resumen General");
+
+		// Hoja 2: Distribución de Usuarios
+		const usersDistribution = [
+			["Plan", "Cantidad", "Porcentaje"],
+			[
+				"FREE",
+				metrics.users.free,
+				`${((metrics.users.free / metrics.users.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"PRO",
+				metrics.users.pro,
+				`${((metrics.users.pro / metrics.users.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"ENTERPRISE",
+				metrics.users.enterprise,
+				`${((metrics.users.enterprise / metrics.users.total) * 100).toFixed(1)}%`,
+			],
+			["TOTAL", metrics.users.total, "100%"],
+		];
+		const ws2 = XLSX.utils.aoa_to_sheet(usersDistribution);
+		XLSX.utils.book_append_sheet(wb, ws2, "Distribución Usuarios");
+
+		// Hoja 3: Tipos de Enlaces
+		const linksTypes = [
+			["Tipo de Enlace", "Cantidad", "Porcentaje"],
+			[
+				"WhatsApp Grupos",
+				metrics.links.whatsappGroups,
+				`${((metrics.links.whatsappGroups / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"WhatsApp Chats",
+				metrics.links.whatsappChats,
+				`${((metrics.links.whatsappChats / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"Telegram Grupos",
+				metrics.links.telegramGroups,
+				`${((metrics.links.telegramGroups / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"Telegram Canales",
+				metrics.links.telegramChannels,
+				`${((metrics.links.telegramChannels / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"Discord Servers",
+				metrics.links.discordInvites,
+				`${((metrics.links.discordInvites / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			[
+				"Enlaces Custom",
+				metrics.links.customLinks,
+				`${((metrics.links.customLinks / metrics.links.total) * 100).toFixed(1)}%`,
+			],
+			["TOTAL", metrics.links.total, "100%"],
+		];
+		const ws3 = XLSX.utils.aoa_to_sheet(linksTypes);
+		XLSX.utils.book_append_sheet(wb, ws3, "Tipos de Enlaces");
+
+		// Hoja 4: Estadísticas de Clics
+		const clicksStats = [
+			["Período", "Cantidad de Clics"],
+			["Hoy", metrics.clicks.today],
+			["Esta Semana", metrics.clicks.thisWeek],
+			["Este Mes", metrics.clicks.thisMonth],
+			["Total Histórico", metrics.clicks.total],
+			["", ""],
+			["Promedio por enlace", metrics.clicks.averagePerLink],
+		];
+		const ws4 = XLSX.utils.aoa_to_sheet(clicksStats);
+		XLSX.utils.book_append_sheet(wb, ws4, "Estadísticas de Clics");
+
+		// Generar el archivo
+		const fileName = `AraguaLink_Metricas_${new Date().toISOString().split("T")[0]}.xlsx`;
+		XLSX.writeFile(wb, fileName);
+
+		toast({
+			description: (
+				<div className="flex items-center justify-between w-full space-x-4">
+					<Check className="text-green-600 ml-auto" />
+					<span>Métricas exportadas exitosamente</span>
+				</div>
+			),
+		});
+	};
+
 	if (!isAdmin) {
 		return (
 			<div className="flex items-center justify-center h-64">
@@ -188,11 +318,22 @@ export default function AdminPage() {
 
 	return (
 		<div className="space-y-6">
-			<div>
-				<h1 className="text-3xl font-bold">Panel de Administración</h1>
-				<p className="text-muted-foreground mt-1">
-					Vista general del sistema y gestión de datos
-				</p>
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-3xl font-bold">Panel de Administración</h1>
+					<p className="text-muted-foreground mt-1">
+						Vista general del sistema y gestión de datos
+					</p>
+				</div>
+				{activeTab === "metrics" && metrics && (
+					<Button
+						onClick={handleExportToExcel}
+						className="flex items-center gap-2"
+					>
+						<Download className="w-4 h-4" />
+						Exportar a Excel
+					</Button>
+				)}
 			</div>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
