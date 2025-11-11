@@ -825,24 +825,26 @@ export default function AdminPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-2">
-											{metrics?.topCountries.slice(0, 5).map((country, idx) => (
-												<div
-													key={country.country_code}
-													className="flex items-center justify-between"
-												>
-													<div className="flex items-center gap-2">
-														<span className="text-xs font-medium text-muted-foreground">
-															#{idx + 1}
-														</span>
-														<span className="text-sm font-medium">
-															{country.country}
+											{metrics?.topCountries
+												?.slice(0, 5)
+												.map((country, idx) => (
+													<div
+														key={country.country_code}
+														className="flex items-center justify-between"
+													>
+														<div className="flex items-center gap-2">
+															<span className="text-xs font-medium text-muted-foreground">
+																#{idx + 1}
+															</span>
+															<span className="text-sm font-medium">
+																{country.country}
+															</span>
+														</div>
+														<span className="text-sm font-bold">
+															{country.clicks}
 														</span>
 													</div>
-													<span className="text-sm font-bold">
-														{country.clicks}
-													</span>
-												</div>
-											))}
+												))}
 											{(!metrics?.topCountries ||
 												metrics.topCountries.length === 0) && (
 												<p className="text-sm text-muted-foreground text-center py-4">
@@ -862,7 +864,7 @@ export default function AdminPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-2">
-											{metrics?.topCities.slice(0, 5).map((city, idx) => (
+											{metrics?.topCities?.slice(0, 5).map((city, idx) => (
 												<div
 													key={`${city.city}-${city.country}`}
 													className="flex items-center justify-between"
@@ -899,7 +901,7 @@ export default function AdminPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-2">
-											{metrics?.topDevices.map((device, idx) => (
+											{metrics?.topDevices?.map((device, idx) => (
 												<div
 													key={device.device_type}
 													className="flex items-center justify-between"
@@ -936,7 +938,7 @@ export default function AdminPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-2">
-											{metrics?.topBrowsers.slice(0, 5).map((browser, idx) => (
+											{metrics?.topBrowsers?.slice(0, 5).map((browser, idx) => (
 												<div
 													key={browser.browser}
 													className="flex items-center justify-between"
@@ -974,7 +976,7 @@ export default function AdminPage() {
 									<CardContent>
 										<div className="space-y-2">
 											{metrics?.topReferrers
-												.slice(0, 5)
+												?.slice(0, 5)
 												.map((referrer, idx) => (
 													<div
 														key={referrer.referrer_domain}
@@ -1031,7 +1033,7 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{usersData?.data.map((user: IUser) => (
+											{usersData?.data?.map((user: IUser) => (
 												<tr
 													key={user.id}
 													className="border-b hover:bg-muted/50"
@@ -1085,11 +1087,11 @@ export default function AdminPage() {
 														</div>
 													</td>
 												</tr>
-											))}
+											)) || []}
 										</tbody>
 									</table>
 								</div>
-								{usersData?.data.length === 0 && (
+								{(!usersData?.data || usersData.data.length === 0) && (
 									<p className="text-center text-muted-foreground py-8">
 										No hay usuarios registrados
 									</p>
@@ -1125,7 +1127,7 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{linksData?.data.map((link: ILink) => (
+											{linksData?.data?.map((link: ILink) => (
 												<tr
 													key={link.id}
 													className="border-b hover:bg-muted/50"
@@ -1152,11 +1154,11 @@ export default function AdminPage() {
 													</td>
 													<td className="p-2 text-sm">{link.clicks || 0}</td>
 												</tr>
-											))}
+											)) || []}
 										</tbody>
 									</table>
 								</div>
-								{linksData?.data.length === 0 && (
+								{(!linksData?.data || linksData.data.length === 0) && (
 									<p className="text-center text-muted-foreground py-8">
 										No hay enlaces creados
 									</p>
