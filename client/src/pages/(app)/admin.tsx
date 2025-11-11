@@ -1033,7 +1033,7 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{usersData?.data?.map((user: IUser) => (
+											{(usersData?.data || []).map((user: IUser) => (
 												<tr
 													key={user.id}
 													className="border-b hover:bg-muted/50"
@@ -1087,7 +1087,7 @@ export default function AdminPage() {
 														</div>
 													</td>
 												</tr>
-											)) || []}
+											))}
 										</tbody>
 									</table>
 								</div>
@@ -1127,7 +1127,7 @@ export default function AdminPage() {
 											</tr>
 										</thead>
 										<tbody>
-											{linksData?.data?.map((link: ILink) => (
+											{(linksData?.data || []).map((link: ILink) => (
 												<tr
 													key={link.id}
 													className="border-b hover:bg-muted/50"
@@ -1154,7 +1154,7 @@ export default function AdminPage() {
 													</td>
 													<td className="p-2 text-sm">{link.clicks || 0}</td>
 												</tr>
-											)) || []}
+											))}
 										</tbody>
 									</table>
 								</div>

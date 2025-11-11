@@ -68,8 +68,9 @@ export default class AdminService {
 		const response = await customFetch(
 			`/admin/findAll/${masterName}?page=${page}&limit=${limit}`,
 		);
-		const data: ISResponse<GetAllResponse<T>> = await response.json();
-		return { data: data.data.data, pagination: data.data.pagination };
+		const result = await response.json();
+		// Backend returns: { success, message, data: T[], pagination }
+		return { data: result.data, pagination: result.pagination };
 	}
 
 	static async getOne<T = IUser | ILink | IBioPage>(
