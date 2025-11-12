@@ -124,6 +124,30 @@ export const LinkAnalyticsSchema = z.object({
 		}),
 	),
 
+	// Top UTM sources
+	top_utm_sources: z.array(
+		z.object({
+			utm_source: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top UTM mediums
+	top_utm_mediums: z.array(
+		z.object({
+			utm_medium: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top UTM campaigns
+	top_utm_campaigns: z.array(
+		z.object({
+			utm_campaign: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
 	// Clicks por día (últimos 30 días)
 	clicks_by_day: z.array(
 		z.object({
@@ -191,6 +215,30 @@ export const UserAnalyticsSchema = z.object({
 	top_referrers: z.array(
 		z.object({
 			referrer_domain: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top UTM sources
+	top_utm_sources: z.array(
+		z.object({
+			utm_source: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top UTM mediums
+	top_utm_mediums: z.array(
+		z.object({
+			utm_medium: z.string(),
+			clicks: z.number().int(),
+		}),
+	),
+
+	// Top UTM campaigns
+	top_utm_campaigns: z.array(
+		z.object({
+			utm_campaign: z.string(),
 			clicks: z.number().int(),
 		}),
 	),

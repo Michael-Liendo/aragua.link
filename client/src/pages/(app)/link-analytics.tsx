@@ -6,6 +6,7 @@ import {
 	MapPin,
 	Monitor,
 	MousePointerClick,
+	Tag,
 	TrendingUp,
 	Users,
 } from "lucide-react";
@@ -380,6 +381,178 @@ export default function LinkAnalyticsPage() {
 										/>
 									</PieChart>
 								</ResponsiveContainer>
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* Top Referrers */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Globe className="h-5 w-5" />
+							Top Referrers
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_referrers.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_referrers.map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[200px]">
+												{item.referrer_domain || "Directo"}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-32 bg-muted rounded-full h-2">
+												<div
+													className="bg-primary h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* UTM Sources */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Sources
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_sources.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_sources.map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[200px]">
+												{item.utm_source}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-32 bg-muted rounded-full h-2">
+												<div
+													className="bg-amber-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* UTM Mediums */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Mediums
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_mediums.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_mediums.map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[200px]">
+												{item.utm_medium}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-32 bg-muted rounded-full h-2">
+												<div
+													className="bg-green-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* UTM Campaigns */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Campaigns
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_campaigns.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_campaigns.map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[200px]">
+												{item.utm_campaign}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-32 bg-muted rounded-full h-2">
+												<div
+													className="bg-purple-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
 							</div>
 						) : (
 							<p className="text-muted-foreground text-center py-8">

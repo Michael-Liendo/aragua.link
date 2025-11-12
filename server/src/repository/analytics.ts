@@ -425,4 +425,136 @@ export class Analytics {
 			clicks: Number(r.clicks),
 		}));
 	}
+
+	/**
+	 * Get top UTM sources for a link
+	 */
+	static async getTopUtmSourcesByLinkId(
+		linkId: string,
+		limit = 10,
+	): Promise<Array<{ utm_source: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ link_id: linkId })
+			.whereNotNull("utm_source")
+			.select("utm_source")
+			.count("* as clicks")
+			.groupBy("utm_source")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_source: String(r.utm_source),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top UTM mediums for a link
+	 */
+	static async getTopUtmMediumsByLinkId(
+		linkId: string,
+		limit = 10,
+	): Promise<Array<{ utm_medium: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ link_id: linkId })
+			.whereNotNull("utm_medium")
+			.select("utm_medium")
+			.count("* as clicks")
+			.groupBy("utm_medium")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_medium: String(r.utm_medium),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top UTM campaigns for a link
+	 */
+	static async getTopUtmCampaignsByLinkId(
+		linkId: string,
+		limit = 10,
+	): Promise<Array<{ utm_campaign: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ link_id: linkId })
+			.whereNotNull("utm_campaign")
+			.select("utm_campaign")
+			.count("* as clicks")
+			.groupBy("utm_campaign")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_campaign: String(r.utm_campaign),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top UTM sources for a user (all their links)
+	 */
+	static async getTopUtmSourcesByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ utm_source: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("utm_source")
+			.select("utm_source")
+			.count("* as clicks")
+			.groupBy("utm_source")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_source: String(r.utm_source),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top UTM mediums for a user (all their links)
+	 */
+	static async getTopUtmMediumsByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ utm_medium: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("utm_medium")
+			.select("utm_medium")
+			.count("* as clicks")
+			.groupBy("utm_medium")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_medium: String(r.utm_medium),
+			clicks: Number(r.clicks),
+		}));
+	}
+
+	/**
+	 * Get top UTM campaigns for a user (all their links)
+	 */
+	static async getTopUtmCampaignsByUserId(
+		userId: string,
+		limit = 10,
+	): Promise<Array<{ utm_campaign: string; clicks: number }>> {
+		const results = await database("click_events")
+			.where({ user_id: userId })
+			.whereNotNull("utm_campaign")
+			.select("utm_campaign")
+			.count("* as clicks")
+			.groupBy("utm_campaign")
+			.orderBy("clicks", "desc")
+			.limit(limit);
+
+		return results.map((r: AnyRecord) => ({
+			utm_campaign: String(r.utm_campaign),
+			clicks: Number(r.clicks),
+		}));
+	}
 }

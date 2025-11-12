@@ -111,6 +111,9 @@ export default class AnalyticsService {
 			topDevices,
 			topBrowsers,
 			topReferrers,
+			topUtmSources,
+			topUtmMediums,
+			topUtmCampaigns,
 			clicksByDay,
 			lastClickedAt,
 		] = await Promise.all([
@@ -121,6 +124,9 @@ export default class AnalyticsService {
 			Repository.analytics.getTopDevicesByLinkId(linkId),
 			Repository.analytics.getTopBrowsersByLinkId(linkId, 10),
 			Repository.analytics.getTopReferrersByLinkId(linkId, 10),
+			Repository.analytics.getTopUtmSourcesByLinkId(linkId, 10),
+			Repository.analytics.getTopUtmMediumsByLinkId(linkId, 10),
+			Repository.analytics.getTopUtmCampaignsByLinkId(linkId, 10),
 			Repository.analytics.getClicksByDay(linkId, 30),
 			Repository.analytics.getLastClickDate(linkId),
 		]);
@@ -135,6 +141,9 @@ export default class AnalyticsService {
 			top_devices: topDevices,
 			top_browsers: topBrowsers,
 			top_referrers: topReferrers,
+			top_utm_sources: topUtmSources,
+			top_utm_mediums: topUtmMediums,
+			top_utm_campaigns: topUtmCampaigns,
 			clicks_by_day: clicksByDay,
 		};
 	}
@@ -165,6 +174,9 @@ export default class AnalyticsService {
 			topDevices,
 			topBrowsers,
 			topReferrers,
+			topUtmSources,
+			topUtmMediums,
+			topUtmCampaigns,
 			clicksByDay,
 		] = await Promise.all([
 			Repository.analytics.getClicksInPeriod(userId, today, now),
@@ -176,6 +188,9 @@ export default class AnalyticsService {
 			Repository.analytics.getTopDevicesByUserId(userId),
 			Repository.analytics.getTopBrowsersByUserId(userId, 10),
 			Repository.analytics.getTopReferrersByUserId(userId, 10),
+			Repository.analytics.getTopUtmSourcesByUserId(userId, 10),
+			Repository.analytics.getTopUtmMediumsByUserId(userId, 10),
+			Repository.analytics.getTopUtmCampaignsByUserId(userId, 10),
 			Repository.analytics.getClicksByDayForUser(userId, 30),
 		]);
 
@@ -206,6 +221,9 @@ export default class AnalyticsService {
 			top_devices: topDevices,
 			top_browsers: topBrowsers,
 			top_referrers: topReferrers,
+			top_utm_sources: topUtmSources,
+			top_utm_mediums: topUtmMediums,
+			top_utm_campaigns: topUtmCampaigns,
 			clicks_by_day: clicksByDay,
 		};
 	}

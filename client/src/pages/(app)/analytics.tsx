@@ -6,6 +6,7 @@ import {
 	Link2,
 	Loader2,
 	MousePointerClick,
+	Tag,
 	TrendingUp,
 } from "lucide-react";
 import {
@@ -187,7 +188,58 @@ export default function AnalyticsPage() {
 			XLSX.utils.book_append_sheet(wb, ws8, "Referrers");
 		}
 
-		// Hoja 9: Clicks por Día (Últimos 30 días)
+		// Hoja 9: UTM Sources
+		if (analytics.top_utm_sources.length > 0) {
+			const topUtmSourcesData = [
+				["Posición", "UTM Source", "Clics", "Porcentaje"],
+				...analytics.top_utm_sources.map((source, index) => [
+					index + 1,
+					source.utm_source,
+					source.clicks,
+					analytics.total_clicks > 0
+						? `${((source.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws9 = XLSX.utils.aoa_to_sheet(topUtmSourcesData);
+			XLSX.utils.book_append_sheet(wb, ws9, "UTM Sources");
+		}
+
+		// Hoja 10: UTM Mediums
+		if (analytics.top_utm_mediums.length > 0) {
+			const topUtmMediumsData = [
+				["Posición", "UTM Medium", "Clics", "Porcentaje"],
+				...analytics.top_utm_mediums.map((medium, index) => [
+					index + 1,
+					medium.utm_medium,
+					medium.clicks,
+					analytics.total_clicks > 0
+						? `${((medium.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws10 = XLSX.utils.aoa_to_sheet(topUtmMediumsData);
+			XLSX.utils.book_append_sheet(wb, ws10, "UTM Mediums");
+		}
+
+		// Hoja 11: UTM Campaigns
+		if (analytics.top_utm_campaigns.length > 0) {
+			const topUtmCampaignsData = [
+				["Posición", "UTM Campaign", "Clics", "Porcentaje"],
+				...analytics.top_utm_campaigns.map((campaign, index) => [
+					index + 1,
+					campaign.utm_campaign,
+					campaign.clicks,
+					analytics.total_clicks > 0
+						? `${((campaign.clicks / analytics.total_clicks) * 100).toFixed(1)}%`
+						: "0%",
+				]),
+			];
+			const ws11 = XLSX.utils.aoa_to_sheet(topUtmCampaignsData);
+			XLSX.utils.book_append_sheet(wb, ws11, "UTM Campaigns");
+		}
+
+		// Hoja 12: Clicks por Día (Últimos 30 días)
 		if (analytics.clicks_by_day.length > 0) {
 			const clicksByDayData = [
 				["Fecha", "Clics"],
@@ -466,6 +518,138 @@ export default function AnalyticsPage() {
 											</div>
 											<span className="font-semibold w-12 text-right">
 												{link.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+			</div>
+
+			{/* UTM Parameters Grid */}
+			<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{/* UTM Sources */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Sources
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_sources.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_sources.slice(0, 5).map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[150px]">
+												{item.utm_source}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-24 bg-muted rounded-full h-2">
+												<div
+													className="bg-amber-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* UTM Mediums */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Mediums
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_mediums.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_mediums.slice(0, 5).map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[150px]">
+												{item.utm_medium}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-24 bg-muted rounded-full h-2">
+												<div
+													className="bg-green-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<p className="text-muted-foreground text-center py-8">
+								No hay datos disponibles
+							</p>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* UTM Campaigns */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Tag className="h-5 w-5" />
+							UTM Campaigns
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{analytics.top_utm_campaigns.length > 0 ? (
+							<div className="space-y-4">
+								{analytics.top_utm_campaigns.slice(0, 5).map((item, idx) => (
+									<div key={idx} className="flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<span className="font-medium">{idx + 1}.</span>
+											<span className="truncate max-w-[150px]">
+												{item.utm_campaign}
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-24 bg-muted rounded-full h-2">
+												<div
+													className="bg-purple-500 h-2 rounded-full"
+													style={{
+														width: `${(item.clicks / analytics.total_clicks) * 100}%`,
+													}}
+												/>
+											</div>
+											<span className="font-semibold w-12 text-right">
+												{item.clicks}
 											</span>
 										</div>
 									</div>
