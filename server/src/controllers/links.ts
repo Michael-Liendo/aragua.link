@@ -1,4 +1,9 @@
-import type { ILinkForCreate, ILinkForUpdate, IUser } from "@aragualink/shared";
+import type {
+	IBulkLinkCreate,
+	ILinkForCreate,
+	ILinkForUpdate,
+	IUser,
+} from "@aragualink/shared";
 import Repository from "../repository";
 import Services from "../services";
 import type { Reply, Request } from "../types";
@@ -160,5 +165,21 @@ export async function getPublicProfile(request: Request, reply: Reply) {
 			user: safeUser,
 			links,
 		},
+	});
+}
+
+/**
+ * Create multiple links at once (bulk creation)
+ */
+export async function createBulkLinks(request: Request, reply: Reply) {
+	const { id: userId } = request.user as Required<IUser>;
+	const { links } = request.body as IBulkLinkCreate;
+
+	const result = await Services.links.createBulk(userId, links);
+
+	return reply.code(201).send({
+		success: true,
+		message: `${result.success} enlaces creados, ${result.failed} fallidos`,
+		data: result,
 	});
 }

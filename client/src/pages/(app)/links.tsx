@@ -1,6 +1,6 @@
 import type { ILink } from "@aragualink/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, Link2, Plus } from "lucide-react";
+import { AlertCircle, Link2, Plus, Upload } from "lucide-react";
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { useAuth } from "@/features/auth";
 import { useSEO } from "@/features/seo";
 import { toast } from "@/features/ui/useToast";
 import Services from "@/services";
+import { BulkCreateLinkDialog } from "./links/BulkCreateLinkDialog";
 import { CreateLinkDialog } from "./links/CreateLinkDialog";
 import { EditLinkDialog } from "./links/EditLinkDialog";
 import { LinksList } from "./links/LinksList";
@@ -18,6 +19,7 @@ export default function LinksPage() {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	const [createOpen, setCreateOpen] = useState(false);
+	const [bulkCreateOpen, setBulkCreateOpen] = useState(false);
 	const [editLink, setEditLink] = useState<ILink | null>(null);
 
 	// Check if user has PRO plan
@@ -110,10 +112,21 @@ export default function LinksPage() {
 						Gestiona todos tus enlaces en un solo lugar
 					</p>
 				</div>
-				<Button onClick={handleCreateClick} size="lg" className="gap-2">
-					<Plus className="h-5 w-5" />
-					Crear Enlace
-				</Button>
+				<div className="flex gap-2">
+					<Button
+						onClick={() => setBulkCreateOpen(true)}
+						size="lg"
+						variant="outline"
+						className="gap-2"
+					>
+						<Upload className="h-5 w-5" />
+						Importar Excel
+					</Button>
+					<Button onClick={handleCreateClick} size="lg" className="gap-2">
+						<Plus className="h-5 w-5" />
+						Crear Enlace
+					</Button>
+				</div>
 			</div>
 
 			{/* Alert para usuarios FREE */}
@@ -177,6 +190,15 @@ export default function LinksPage() {
 					}}
 				/>
 			)}
+
+			<BulkCreateLinkDialog
+				open={bulkCreateOpen}
+				onOpenChange={setBulkCreateOpen}
+				onSuccess={() => {
+					queryClient.invalidateQueries({ queryKey: ["links"] });
+					setBulkCreateOpen(false);
+				}}
+			/>
 		</div>
 	);
 }

@@ -1,4 +1,5 @@
 import {
+	type IBulkLinkResult,
 	type ILink,
 	type ILinkForCreate,
 	type ILinkForUpdate,
@@ -124,6 +125,24 @@ export class LinksService {
 
 		if (!response.success) {
 			throw new Error("Error fetching public profile");
+		}
+
+		return response.data;
+	}
+
+	/**
+	 * Create multiple links at once
+	 */
+	static async createBulk(links: ILinkForCreate[]): Promise<IBulkLinkResult> {
+		const request = await fetch("/links/my/bulk", {
+			method: "POST",
+			body: JSON.stringify({ links }),
+		});
+
+		const response: ISResponse<IBulkLinkResult> = await request.json();
+
+		if (!response.success) {
+			throw new Error(response.message || "Error creating bulk links");
 		}
 
 		return response.data;

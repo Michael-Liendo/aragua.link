@@ -59,3 +59,26 @@ export const LinkStatsSchema = z.object({
 });
 
 export interface ILinkStats extends z.infer<typeof LinkStatsSchema> {}
+
+// Bulk creation schema
+export const BulkLinkCreateSchema = z.object({
+	links: z.array(LinkForCreateSchema).min(1).max(100),
+});
+
+export interface IBulkLinkCreate extends z.infer<typeof BulkLinkCreateSchema> {}
+
+// Bulk creation result
+export const BulkLinkResultSchema = z.object({
+	success: z.number().int().min(0),
+	failed: z.number().int().min(0),
+	errors: z.array(
+		z.object({
+			index: z.number().int(),
+			error: z.string(),
+			link: LinkForCreateSchema.partial(),
+		}),
+	),
+	created_links: z.array(LinkSchema),
+});
+
+export interface IBulkLinkResult extends z.infer<typeof BulkLinkResultSchema> {}

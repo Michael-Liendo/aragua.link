@@ -1,4 +1,9 @@
-import type { ILink, ILinkForCreate, ILinkForUpdate } from "@aragualink/shared";
+import type {
+	IBulkLinkResult,
+	ILink,
+	ILinkForCreate,
+	ILinkForUpdate,
+} from "@aragualink/shared";
 import Repository from "../repository";
 import { BadRequestError, NotFoundError } from "../utils/errorHandler";
 
@@ -167,5 +172,75 @@ export default class LinksService {
 			linkPositions,
 		);
 		return reordered;
+	}
+
+	/**
+	 * Create multiple links at once
+	 */
+	static async createBulk(
+		userId: string,
+		linksDTO: ILinkForCreate[],
+	): Promise<IBulkLinkResult> {
+		const result: IBulkLinkResult = {
+			success: 0,
+			failed: 0,
+			errors: [],
+			created_links: [],
+		};
+
+		// Get existing short codes to check for duplicates
+		const existingShortCodes = new Set<string>();
+		const allLinks = await Repository.links.getLinksByUserId(userId);
+		for (const link of allLinks) {
+			existingShortCodes.add(link.short_code);
+		}
+
+		// Process each link
+		for (let i = 0; i < linksDTO.length; i++) {
+			const linkDTO = linksDTO[i];
+
+			try {
+				// Validate short code is unique
+				if (existingShortCodes.has(linkDTO.short_code)) {
+					throw new Error(
+						`El código corto "${linkDTO.short_code}" ya está en uso`,
+					);
+				}
+
+				// Validate short code doesn't conflict with bio pages
+				const bioPageWithSameSlug = await Repository.bioPages.getBySlug(
+					linkDTO.short_code,
+				);
+				if (bioPageWithSameSlug) {
+					throw new Error(
+						`El código corto "${linkDTO.short_code}" ya está en uso por una página bio`,
+					);
+				}
+
+				// Validate URL format
+				try {
+					new URL(linkDTO.url);
+				} catch {
+					throw new Error("Formato de URL inválido");
+				}
+
+				// Create the link
+				const link = await Repository.links.createLink(userId, linkDTO);
+				result.created_links.push(link);
+				result.success++;
+
+				// Add to existing short codes to prevent duplicates in the same batch
+				existingShortCodes.add(linkDTO.short_code);
+			} catch (error) {
+				result.failed++;
+				result.errors.push({
+					index: i,
+					error: error instanceof Error ? error.message : "Error desconocido",
+					link: linkDTO,
+				});
+			}
+		}
+
+		return result;
 	}
 }

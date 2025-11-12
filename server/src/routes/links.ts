@@ -1,6 +1,11 @@
-import { LinkForCreateSchema, LinkForUpdateSchema } from "@aragualink/shared";
+import {
+	BulkLinkCreateSchema,
+	LinkForCreateSchema,
+	LinkForUpdateSchema,
+} from "@aragualink/shared";
 import type { FastifyInstance, RegisterOptions } from "fastify";
 import {
+	createBulkLinks,
 	createLink,
 	deleteLink,
 	getAllLinks,
@@ -66,6 +71,14 @@ export default function links(
 				method: "POST",
 				url: "/reorder",
 				handler: reorderLinks,
+			});
+
+			// Create multiple links at once
+			authenticatedRoutes.route({
+				method: "POST",
+				url: "/bulk",
+				preValidation: requestValidation(BulkLinkCreateSchema),
+				handler: createBulkLinks,
 			});
 		},
 		{ prefix: "/my" },
