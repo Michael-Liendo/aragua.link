@@ -105,10 +105,21 @@ export async function trackAndRedirect(request: Request, reply: Reply) {
 	// Extract tracking data from request
 	const ipAddress = getClientIP(request);
 	const userAgent = request.headers["user-agent"] || null;
-	const referrerHeader = request.headers.referer || request.headers.referrer;
-	const referrer = Array.isArray(referrerHeader)
-		? referrerHeader[0]
-		: referrerHeader || null;
+
+	// Priorizar el header personalizado X-Original-Referrer enviado desde el frontend
+	// Este contiene el referrer real (Instagram, Facebook, etc.) capturado con document.referrer
+	const originalReferrerHeader = request.headers["x-original-referrer"];
+	const standardReferrerHeader =
+		request.headers.referer || request.headers.referrer;
+
+	const referrer = originalReferrerHeader
+		? Array.isArray(originalReferrerHeader)
+			? originalReferrerHeader[0]
+			: originalReferrerHeader
+		: Array.isArray(standardReferrerHeader)
+			? standardReferrerHeader[0]
+			: standardReferrerHeader || null;
+
 	const acceptLang = request.headers["accept-language"];
 	const language =
 		(Array.isArray(acceptLang) ? acceptLang[0] : acceptLang)?.split(",")[0] ||

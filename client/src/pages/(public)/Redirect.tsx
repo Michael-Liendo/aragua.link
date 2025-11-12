@@ -48,9 +48,15 @@ export default function RedirectPage() {
 				// Extraer UTM parameters de la URL actual
 				const urlParams = new URLSearchParams(window.location.search);
 
-				// Enviar tracking al backend (sin esperar respuesta)
+				// Capturar el referrer original (Instagram, Facebook, etc.)
+				const originalReferrer = document.referrer;
+
+				// Enviar tracking al backend con el referrer original
 				customFetch(`/links/r/${shortCode}?${urlParams.toString()}`, {
 					method: "GET",
+					headers: {
+						"X-Original-Referrer": originalReferrer || "",
+					},
 				}).catch(() => {
 					// Ignorar errores de tracking, no debe bloquear la redirección
 				});

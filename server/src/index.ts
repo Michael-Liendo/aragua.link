@@ -15,6 +15,7 @@ const fastify = Fastify();
 // Cors
 fastify.register(cors, {
 	origin: EnvConfig().CORS_ORIGIN.split(","),
+	allowedHeaders: ["Content-Type", "Authorization", "X-Original-Referrer"],
 });
 
 // Declare a route

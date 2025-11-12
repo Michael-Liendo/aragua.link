@@ -143,10 +143,15 @@ export const SPECIAL_LINK_TEMPLATES: Record<
 		urlPattern: (code: string) => {
 			// Usa el esquema 'googlechrome://' o 'googlechromes://' para forzar apertura externa
 			// En iOS, esto abrirá Safari si Chrome no está instalado
-			const url = code.startsWith("http://") || code.startsWith("https://") ? code : `https://${code}`;
+			const url =
+				code.startsWith("http://") || code.startsWith("https://")
+					? code
+					: `https://${code}`;
 			// Usar intent:// para Android y googlechromes:// para iOS
 			// Formato que funciona en ambos: usar el URL directo pero marcado para apertura externa
-			return url.replace("https://", "googlechromes://").replace("http://", "googlechrome://");
+			return url
+				.replace("https://", "googlechromes://")
+				.replace("http://", "googlechrome://");
 		},
 		extractCode: (url: string) => {
 			// Extrae la URL original desde el esquema de Chrome
@@ -163,7 +168,9 @@ export const SPECIAL_LINK_TEMPLATES: Record<
 			return null;
 		},
 		displayFormat: (code: string) => {
-			const cleanUrl = code.replace("googlechromes://", "https://").replace("googlechrome://", "http://");
+			const cleanUrl = code
+				.replace("googlechromes://", "https://")
+				.replace("googlechrome://", "http://");
 			try {
 				const urlObj = new URL(cleanUrl);
 				return `🌐 ${urlObj.hostname}`;
@@ -196,13 +203,13 @@ export function detectSpecialLinkType(url: string): SpecialLinkType {
 	if (url.includes("t.me/joinchat")) return "telegram_group";
 	if (url.includes("t.me/")) return "telegram_channel";
 	if (url.includes("discord.gg")) return "discord_invite";
-	
+
 	// Detectar esquemas personalizados (external_app)
 	const schemeMatch = url.match(/^([a-z][a-z0-9+.-]*):/);
 	if (schemeMatch && schemeMatch[1] !== "http" && schemeMatch[1] !== "https") {
 		return "external_app";
 	}
-	
+
 	return "custom";
 }
 
