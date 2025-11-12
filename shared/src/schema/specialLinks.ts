@@ -9,6 +9,8 @@ export const SpecialLinkTypeEnum = z.enum([
 	"telegram_group",
 	"telegram_channel",
 	"discord_invite",
+	"external_app", // Para apps externas (solo móviles)
+	"external_browser", // Para abrir en navegador externo (solo móviles)
 	"custom", // Para links normales
 ]);
 
@@ -109,6 +111,67 @@ export const SPECIAL_LINK_TEMPLATES: Record<
 		},
 		displayFormat: (code: string) => `Discord: ${code}`,
 	},
+	external_app: {
+		type: "external_app",
+		name: "App Externa (Solo Móviles)",
+		description:
+			"Link con esquema personalizado para abrir apps externas. Ejemplos: whatsapp://, spotify://, etc. ⚠️ Solo funciona en dispositivos móviles",
+		icon: "📲",
+		placeholder: "whatsapp://send?phone=584121234567",
+		urlPattern: (code: string) => code,
+		extractCode: (url: string) => {
+			// Verifica que tenga un esquema personalizado (no http/https)
+			const match = url.match(/^([a-z][a-z0-9+.-]*):/);
+			if (match && match[1] !== "http" && match[1] !== "https") {
+				return url;
+			}
+			return null;
+		},
+		displayFormat: (code: string) => {
+			const schemeMatch = code.match(/^([a-z][a-z0-9+.-]*):/);
+			const scheme = schemeMatch ? schemeMatch[1] : "App";
+			return `${scheme.charAt(0).toUpperCase() + scheme.slice(1)} (Móvil)`;
+		},
+	},
+	external_browser: {
+		type: "external_browser",
+		name: "Navegador Externo (Solo Móviles)",
+		description:
+			"Abre el link en el navegador externo del dispositivo (Chrome, Safari, etc.) en lugar del navegador in-app de Instagram. ⚠️ Solo funciona en dispositivos móviles",
+		icon: "🌐",
+		placeholder: "https://michaelliendo.com",
+		urlPattern: (code: string) => {
+			// Usa el esquema 'googlechrome://' o 'googlechromes://' para forzar apertura externa
+			// En iOS, esto abrirá Safari si Chrome no está instalado
+			const url = code.startsWith("http://") || code.startsWith("https://") ? code : `https://${code}`;
+			// Usar intent:// para Android y googlechromes:// para iOS
+			// Formato que funciona en ambos: usar el URL directo pero marcado para apertura externa
+			return url.replace("https://", "googlechromes://").replace("http://", "googlechrome://");
+		},
+		extractCode: (url: string) => {
+			// Extrae la URL original desde el esquema de Chrome
+			if (url.startsWith("googlechromes://")) {
+				return url.replace("googlechromes://", "https://");
+			}
+			if (url.startsWith("googlechrome://")) {
+				return url.replace("googlechrome://", "http://");
+			}
+			// Si ya es http/https, lo devuelve tal cual
+			if (url.startsWith("http://") || url.startsWith("https://")) {
+				return url;
+			}
+			return null;
+		},
+		displayFormat: (code: string) => {
+			const cleanUrl = code.replace("googlechromes://", "https://").replace("googlechrome://", "http://");
+			try {
+				const urlObj = new URL(cleanUrl);
+				return `🌐 ${urlObj.hostname}`;
+			} catch {
+				return `🌐 ${cleanUrl}`;
+			}
+		},
+	},
 	custom: {
 		type: "custom",
 		name: "Link Personalizado",
@@ -133,6 +196,13 @@ export function detectSpecialLinkType(url: string): SpecialLinkType {
 	if (url.includes("t.me/joinchat")) return "telegram_group";
 	if (url.includes("t.me/")) return "telegram_channel";
 	if (url.includes("discord.gg")) return "discord_invite";
+	
+	// Detectar esquemas personalizados (external_app)
+	const schemeMatch = url.match(/^([a-z][a-z0-9+.-]*):/);
+	if (schemeMatch && schemeMatch[1] !== "http" && schemeMatch[1] !== "https") {
+		return "external_app";
+	}
+	
 	return "custom";
 }
 
