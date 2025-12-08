@@ -101,29 +101,33 @@ export default function LinksPage() {
 	};
 
 	return (
-		<div className="container mx-auto p-6 max-w-5xl">
-			<div className="flex items-center justify-between mb-8">
+		<div className="container mx-auto p-4 sm:p-6 max-w-5xl">
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
 				<div>
-					<h1 className="text-3xl font-bold flex items-center gap-2">
-						<Link2 className="h-8 w-8" />
+					<h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+						<Link2 className="h-6 w-6 sm:h-8 sm:w-8 shrink-0" />
 						Mis Enlaces
 					</h1>
-					<p className="text-muted-foreground mt-2">
+					<p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base">
 						Gestiona todos tus enlaces en un solo lugar
 					</p>
 				</div>
-				<div className="flex gap-2">
+				<div className="flex flex-col xs:flex-row gap-2 w-full sm:w-auto">
 					<Button
 						onClick={() => setBulkCreateOpen(true)}
-						size="lg"
+						size="default"
 						variant="outline"
-						className="gap-2"
+						className="gap-2 w-full sm:w-auto"
 					>
-						<Upload className="h-5 w-5" />
-						Importar Excel
+						<Upload className="h-4 w-4 sm:h-5 sm:w-5" />
+						<span className="sm:inline">Importar</span>
 					</Button>
-					<Button onClick={handleCreateClick} size="lg" className="gap-2">
-						<Plus className="h-5 w-5" />
+					<Button
+						onClick={handleCreateClick}
+						size="default"
+						className="gap-2 w-full sm:w-auto"
+					>
+						<Plus className="h-4 w-4 sm:h-5 sm:w-5" />
 						Crear Enlace
 					</Button>
 				</div>
@@ -146,16 +150,16 @@ export default function LinksPage() {
 			)}
 
 			{links.length === 0 ? (
-				<div className="text-center py-12 border-2 border-dashed rounded-lg">
-					<Link2 className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-					<h3 className="text-xl font-semibold mb-2">
+				<div className="text-center py-8 sm:py-12 px-4 border-2 border-dashed rounded-lg">
+					<Link2 className="h-12 w-12 sm:h-16 sm:w-16 mx-auto text-muted-foreground mb-4" />
+					<h3 className="text-lg sm:text-xl font-semibold mb-2">
 						No tienes enlaces todavía
 					</h3>
-					<p className="text-muted-foreground mb-6">
+					<p className="text-muted-foreground mb-6 text-sm sm:text-base">
 						Crea tu primer enlace para comenzar
 					</p>
-					<Button onClick={handleCreateClick} size="lg" className="gap-2">
-						<Plus className="h-5 w-5" />
+					<Button onClick={handleCreateClick} size="default" className="gap-2">
+						<Plus className="h-4 w-4 sm:h-5 sm:w-5" />
 						Crear Primer Enlace
 					</Button>
 				</div>

@@ -64,48 +64,58 @@ export function LinksList({
 	};
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-3 sm:space-y-4">
 			{links.map((link) => (
-				<Card key={link.id} className="p-6 hover:shadow-lg transition-shadow">
-					<div className="flex items-start gap-4">
-						{/* Drag handle */}
+				<Card
+					key={link.id}
+					className="p-3 sm:p-6 hover:shadow-lg transition-shadow overflow-hidden"
+				>
+					<div className="flex items-start gap-2 sm:gap-4">
+						{/* Drag handle - hidden on mobile */}
 						<button
 							type="button"
-							className="mt-2 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+							className="hidden sm:block mt-2 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
 						>
 							<GripVertical className="h-5 w-5" />
 						</button>
 
 						{/* Link content */}
-						<div className="flex-1 min-w-0">
-							<div className="flex items-start justify-between gap-4 mb-2">
-								<div className="flex-1 min-w-0">
-									<h3 className="text-lg font-semibold truncate">
+						<div className="flex-1 min-w-0 overflow-hidden">
+							<div className="flex items-start justify-between gap-2 mb-2">
+								<div className="flex-1 min-w-0 overflow-hidden">
+									<h3 className="text-sm sm:text-lg font-semibold truncate">
 										{link.title}
 									</h3>
 									{link.description && (
-										<p className="text-sm text-muted-foreground mt-1">
+										<p className="text-xs sm:text-sm text-muted-foreground mt-1 line-clamp-2">
 											{link.description}
 										</p>
 									)}
 								</div>
-								<div className="flex items-center gap-2">
-									<Badge variant={link.is_active ? "default" : "secondary"}>
+								<div className="flex items-center gap-1 shrink-0">
+									<Badge
+										variant={link.is_active ? "default" : "secondary"}
+										className="text-xs px-1.5 sm:px-2.5 h-6"
+									>
 										{link.is_active ? (
 											<>
-												<Power className="h-3 w-3 mr-1" />
-												Activo
+												<Power className="h-3 w-3 sm:mr-1" />
+												<span className="hidden sm:inline">Activo</span>
 											</>
 										) : (
 											<>
-												<PowerOff className="h-3 w-3 mr-1" />
-												Inactivo
+												<PowerOff className="h-3 w-3 sm:mr-1" />
+												<span className="hidden sm:inline">Inactivo</span>
 											</>
 										)}
 									</Badge>
 									<DropdownMenu>
 										<DropdownMenuTrigger asChild>
-											<Button variant="ghost" size="sm">
+											<Button
+												variant="ghost"
+												size="sm"
+												className="h-7 w-7 sm:h-8 sm:w-8 p-0"
+											>
 												<MoreVertical className="h-4 w-4" />
 											</Button>
 										</DropdownMenuTrigger>
@@ -172,25 +182,28 @@ export function LinksList({
 							</div>
 
 							{/* URLs */}
-							<div className="space-y-2 mt-4">
-								<div className="flex items-center gap-2 text-sm">
+							<div className="space-y-2 mt-3">
+								<div className="flex flex-col gap-1 text-xs sm:text-sm overflow-hidden">
 									<span className="text-muted-foreground font-medium">
 										Enlace corto:
 									</span>
-									<code className="px-2 py-1 bg-muted rounded text-primary font-mono">
-										{getShortUrl(link.short_code)}
-									</code>
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={() =>
-											copyToClipboard(getShortUrl(link.short_code))
-										}
-									>
-										<Copy className="h-3 w-3" />
-									</Button>
+									<div className="flex items-center gap-1 min-w-0">
+										<code className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-muted rounded text-primary font-mono text-[11px] sm:text-sm truncate flex-1 min-w-0">
+											{getShortUrl(link.short_code)}
+										</code>
+										<Button
+											variant="ghost"
+											size="sm"
+											className="h-6 w-6 p-0 shrink-0"
+											onClick={() =>
+												copyToClipboard(getShortUrl(link.short_code))
+											}
+										>
+											<Copy className="h-3 w-3" />
+										</Button>
+									</div>
 								</div>
-								<div className="flex items-center gap-2 text-sm">
+								<div className="flex flex-col gap-1 text-xs sm:text-sm overflow-hidden">
 									<span className="text-muted-foreground font-medium">
 										Destino:
 									</span>
@@ -214,11 +227,11 @@ export function LinksList({
 										// Si es un link especial, mostrar formato especial
 										if (type && code && type !== "custom") {
 											return (
-												<div className="flex items-center gap-2">
-													<span className="text-lg">
+												<div className="flex items-center gap-1 min-w-0 overflow-hidden">
+													<span className="text-sm sm:text-lg shrink-0">
 														{SPECIAL_LINK_TEMPLATES[type]?.icon}
 													</span>
-													<span className="font-medium">
+													<span className="font-medium text-xs sm:text-sm truncate">
 														{getSpecialLinkDisplay(type, code)}
 													</span>
 												</div>
@@ -231,7 +244,7 @@ export function LinksList({
 												href={link.url}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-primary hover:underline truncate max-w-md"
+												className="text-primary hover:underline truncate text-[11px] sm:text-sm block"
 											>
 												{link.url}
 											</a>
@@ -241,13 +254,13 @@ export function LinksList({
 							</div>
 
 							{/* Stats */}
-							<div className="flex items-center gap-6 mt-4 pt-4 border-t">
-								<div className="flex items-center gap-2 text-sm">
-									<BarChart3 className="h-4 w-4 text-muted-foreground" />
+							<div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 pt-3 border-t">
+								<div className="flex items-center gap-1.5 text-xs sm:text-sm">
+									<BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
 									<span className="font-semibold">{link.clicks}</span>
 									<span className="text-muted-foreground">clicks</span>
 								</div>
-								<div className="text-sm text-muted-foreground">
+								<div className="text-[10px] sm:text-sm text-muted-foreground">
 									Creado:{" "}
 									{new Date(link.created_at).toLocaleDateString("es-ES", {
 										year: "numeric",

@@ -290,17 +290,17 @@ export default function AnalyticsPage() {
 	}
 
 	return (
-		<div className="space-y-6">
-			<div className="flex items-center justify-between">
+		<div className="space-y-4 sm:space-y-6">
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
-					<h1 className="text-3xl font-bold">Mis Métricas</h1>
-					<p className="text-muted-foreground mt-1">
+					<h1 className="text-2xl sm:text-3xl font-bold">Mis Métricas</h1>
+					<p className="text-muted-foreground mt-1 text-sm sm:text-base">
 						Vista general de tus enlaces y estadísticas
 					</p>
 				</div>
 				<Button
 					onClick={handleExportToExcel}
-					className="flex items-center gap-2"
+					className="flex items-center gap-2 w-full sm:w-auto"
 				>
 					<Download className="w-4 h-4" />
 					Exportar a Excel
@@ -370,54 +370,62 @@ export default function AnalyticsPage() {
 
 			{/* Clicks Stats */}
 			<Card>
-				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
-						<BarChart3 className="h-5 w-5" />
+				<CardHeader className="pb-2 sm:pb-6">
+					<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+						<BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
 						Estadísticas de Clics
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="grid gap-4 md:grid-cols-4">
+					<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
 						<div className="space-y-1">
-							<p className="text-sm font-medium text-muted-foreground">Hoy</p>
-							<p className="text-2xl font-bold">{analytics.clicks_today}</p>
+							<p className="text-xs sm:text-sm font-medium text-muted-foreground">
+								Hoy
+							</p>
+							<p className="text-xl sm:text-2xl font-bold">
+								{analytics.clicks_today}
+							</p>
 						</div>
 						<div className="space-y-1">
-							<p className="text-sm font-medium text-muted-foreground">
+							<p className="text-xs sm:text-sm font-medium text-muted-foreground">
 								Última Semana
 							</p>
-							<p className="text-2xl font-bold">{analytics.clicks_this_week}</p>
+							<p className="text-xl sm:text-2xl font-bold">
+								{analytics.clicks_this_week}
+							</p>
 						</div>
 						<div className="space-y-1">
-							<p className="text-sm font-medium text-muted-foreground">
+							<p className="text-xs sm:text-sm font-medium text-muted-foreground">
 								Último Mes
 							</p>
-							<p className="text-2xl font-bold">
+							<p className="text-xl sm:text-2xl font-bold">
 								{analytics.clicks_this_month}
 							</p>
 						</div>
 						<div className="space-y-1">
-							<p className="text-sm font-medium text-muted-foreground">
+							<p className="text-xs sm:text-sm font-medium text-muted-foreground">
 								Total Histórico
 							</p>
-							<p className="text-2xl font-bold">{analytics.total_clicks}</p>
+							<p className="text-xl sm:text-2xl font-bold">
+								{analytics.total_clicks}
+							</p>
 						</div>
 					</div>
 				</CardContent>
 			</Card>
 
 			{/* Charts Grid */}
-			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
 				{/* Clicks Distribution */}
 				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<MousePointerClick className="h-5 w-5" />
+					<CardHeader className="pb-2 sm:pb-6">
+						<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+							<MousePointerClick className="h-4 w-4 sm:h-5 sm:w-5" />
 							Distribución de Clics
 						</CardTitle>
 					</CardHeader>
-					<CardContent>
-						<div className="h-80">
+					<CardContent className="px-2 sm:px-6">
+						<div className="h-64 sm:h-80">
 							<ResponsiveContainer width="100%" height="100%">
 								<PieChart>
 									<Pie
@@ -449,7 +457,11 @@ export default function AnalyticsPage() {
 										label={({ name, percent }) =>
 											`${name}: ${(percent * 100).toFixed(0)}%`
 										}
-										outerRadius={100}
+										outerRadius={
+											typeof window !== "undefined" && window.innerWidth < 640
+												? 70
+												: 100
+										}
 										fill="#8884d8"
 										dataKey="value"
 									>
@@ -472,6 +484,7 @@ export default function AnalyticsPage() {
 											backgroundColor: "hsl(var(--background))",
 											border: "1px solid hsl(var(--border))",
 											borderRadius: "6px",
+											fontSize: "12px",
 										}}
 									/>
 								</PieChart>
@@ -482,24 +495,26 @@ export default function AnalyticsPage() {
 
 				{/* Top Links */}
 				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<TrendingUp className="h-5 w-5" />
+					<CardHeader className="pb-2 sm:pb-6">
+						<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+							<TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
 							Top Enlaces
 						</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="px-3 sm:px-6">
 						{analytics.top_links.length > 0 ? (
-							<div className="space-y-4">
+							<div className="space-y-3 sm:space-y-4">
 								{analytics.top_links.map((link, idx) => (
 									<div
 										key={link.link_id}
-										className="flex items-center justify-between"
+										className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2"
 									>
 										<div className="flex items-center gap-2 flex-1 min-w-0">
-											<span className="font-medium">{idx + 1}.</span>
-											<div className="flex flex-col min-w-0">
-												<span className="font-medium truncate">
+											<span className="font-medium text-sm shrink-0">
+												{idx + 1}.
+											</span>
+											<div className="flex flex-col min-w-0 overflow-hidden">
+												<span className="font-medium truncate text-sm">
 													{link.title}
 												</span>
 												<span className="text-xs text-muted-foreground">
@@ -507,8 +522,8 @@ export default function AnalyticsPage() {
 												</span>
 											</div>
 										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-32 bg-muted rounded-full h-2">
+										<div className="flex items-center gap-2 pl-5 sm:pl-0">
+											<div className="flex-1 sm:w-24 bg-muted rounded-full h-2">
 												<div
 													className="bg-primary h-2 rounded-full"
 													style={{
@@ -516,7 +531,7 @@ export default function AnalyticsPage() {
 													}}
 												/>
 											</div>
-											<span className="font-semibold w-12 text-right">
+											<span className="font-semibold w-10 text-right text-sm">
 												{link.clicks}
 											</span>
 										</div>
@@ -524,7 +539,7 @@ export default function AnalyticsPage() {
 								))}
 							</div>
 						) : (
-							<p className="text-muted-foreground text-center py-8">
+							<p className="text-muted-foreground text-center py-8 text-sm">
 								No hay datos disponibles
 							</p>
 						)}
@@ -533,28 +548,33 @@ export default function AnalyticsPage() {
 			</div>
 
 			{/* UTM Parameters Grid */}
-			<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 				{/* UTM Sources */}
 				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<Tag className="h-5 w-5" />
+					<CardHeader className="pb-2 sm:pb-6">
+						<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+							<Tag className="h-4 w-4 sm:h-5 sm:w-5" />
 							UTM Sources
 						</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="px-3 sm:px-6">
 						{analytics.top_utm_sources.length > 0 ? (
-							<div className="space-y-4">
+							<div className="space-y-3 sm:space-y-4">
 								{analytics.top_utm_sources.slice(0, 5).map((item, idx) => (
-									<div key={idx} className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{idx + 1}.</span>
-											<span className="truncate max-w-[150px]">
+									<div
+										key={idx}
+										className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2"
+									>
+										<div className="flex items-center gap-2 min-w-0 flex-1">
+											<span className="font-medium text-sm shrink-0">
+												{idx + 1}.
+											</span>
+											<span className="truncate text-sm">
 												{item.utm_source}
 											</span>
 										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-24 bg-muted rounded-full h-2">
+										<div className="flex items-center gap-2 pl-5 sm:pl-0">
+											<div className="flex-1 sm:w-16 bg-muted rounded-full h-2">
 												<div
 													className="bg-amber-500 h-2 rounded-full"
 													style={{
@@ -562,7 +582,7 @@ export default function AnalyticsPage() {
 													}}
 												/>
 											</div>
-											<span className="font-semibold w-12 text-right">
+											<span className="font-semibold w-10 text-right text-sm">
 												{item.clicks}
 											</span>
 										</div>
@@ -570,7 +590,7 @@ export default function AnalyticsPage() {
 								))}
 							</div>
 						) : (
-							<p className="text-muted-foreground text-center py-8">
+							<p className="text-muted-foreground text-center py-8 text-sm">
 								No hay datos disponibles
 							</p>
 						)}
@@ -579,25 +599,30 @@ export default function AnalyticsPage() {
 
 				{/* UTM Mediums */}
 				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<Tag className="h-5 w-5" />
+					<CardHeader className="pb-2 sm:pb-6">
+						<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+							<Tag className="h-4 w-4 sm:h-5 sm:w-5" />
 							UTM Mediums
 						</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="px-3 sm:px-6">
 						{analytics.top_utm_mediums.length > 0 ? (
-							<div className="space-y-4">
+							<div className="space-y-3 sm:space-y-4">
 								{analytics.top_utm_mediums.slice(0, 5).map((item, idx) => (
-									<div key={idx} className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{idx + 1}.</span>
-											<span className="truncate max-w-[150px]">
+									<div
+										key={idx}
+										className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2"
+									>
+										<div className="flex items-center gap-2 min-w-0 flex-1">
+											<span className="font-medium text-sm shrink-0">
+												{idx + 1}.
+											</span>
+											<span className="truncate text-sm">
 												{item.utm_medium}
 											</span>
 										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-24 bg-muted rounded-full h-2">
+										<div className="flex items-center gap-2 pl-5 sm:pl-0">
+											<div className="flex-1 sm:w-16 bg-muted rounded-full h-2">
 												<div
 													className="bg-green-500 h-2 rounded-full"
 													style={{
@@ -605,7 +630,7 @@ export default function AnalyticsPage() {
 													}}
 												/>
 											</div>
-											<span className="font-semibold w-12 text-right">
+											<span className="font-semibold w-10 text-right text-sm">
 												{item.clicks}
 											</span>
 										</div>
@@ -613,7 +638,7 @@ export default function AnalyticsPage() {
 								))}
 							</div>
 						) : (
-							<p className="text-muted-foreground text-center py-8">
+							<p className="text-muted-foreground text-center py-8 text-sm">
 								No hay datos disponibles
 							</p>
 						)}
@@ -622,25 +647,30 @@ export default function AnalyticsPage() {
 
 				{/* UTM Campaigns */}
 				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<Tag className="h-5 w-5" />
+					<CardHeader className="pb-2 sm:pb-6">
+						<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+							<Tag className="h-4 w-4 sm:h-5 sm:w-5" />
 							UTM Campaigns
 						</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="px-3 sm:px-6">
 						{analytics.top_utm_campaigns.length > 0 ? (
-							<div className="space-y-4">
+							<div className="space-y-3 sm:space-y-4">
 								{analytics.top_utm_campaigns.slice(0, 5).map((item, idx) => (
-									<div key={idx} className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{idx + 1}.</span>
-											<span className="truncate max-w-[150px]">
+									<div
+										key={idx}
+										className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2"
+									>
+										<div className="flex items-center gap-2 min-w-0 flex-1">
+											<span className="font-medium text-sm shrink-0">
+												{idx + 1}.
+											</span>
+											<span className="truncate text-sm">
 												{item.utm_campaign}
 											</span>
 										</div>
-										<div className="flex items-center gap-2">
-											<div className="w-24 bg-muted rounded-full h-2">
+										<div className="flex items-center gap-2 pl-5 sm:pl-0">
+											<div className="flex-1 sm:w-16 bg-muted rounded-full h-2">
 												<div
 													className="bg-purple-500 h-2 rounded-full"
 													style={{
@@ -648,7 +678,7 @@ export default function AnalyticsPage() {
 													}}
 												/>
 											</div>
-											<span className="font-semibold w-12 text-right">
+											<span className="font-semibold w-10 text-right text-sm">
 												{item.clicks}
 											</span>
 										</div>
@@ -656,7 +686,7 @@ export default function AnalyticsPage() {
 								))}
 							</div>
 						) : (
-							<p className="text-muted-foreground text-center py-8">
+							<p className="text-muted-foreground text-center py-8 text-sm">
 								No hay datos disponibles
 							</p>
 						)}
@@ -666,14 +696,14 @@ export default function AnalyticsPage() {
 
 			{/* Period Comparison Chart */}
 			<Card>
-				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
-						<BarChart3 className="h-5 w-5" />
+				<CardHeader className="pb-2 sm:pb-6">
+					<CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+						<BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
 						Comparación por Período
 					</CardTitle>
 				</CardHeader>
-				<CardContent>
-					<div className="h-80">
+				<CardContent className="px-2 sm:px-6">
+					<div className="h-64 sm:h-80">
 						<ResponsiveContainer width="100%" height="100%">
 							<BarChart
 								data={[
@@ -694,23 +724,24 @@ export default function AnalyticsPage() {
 										clicks: analytics.total_clicks,
 									},
 								]}
-								margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+								margin={{ top: 20, right: 10, left: -10, bottom: 5 }}
 							>
 								<CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-								<XAxis dataKey="periodo" tick={{ fontSize: 12 }} />
-								<YAxis tick={{ fontSize: 12 }} />
+								<XAxis dataKey="periodo" tick={{ fontSize: 11 }} />
+								<YAxis tick={{ fontSize: 11 }} width={40} />
 								<Tooltip
 									contentStyle={{
 										backgroundColor: "hsl(var(--background))",
 										border: "1px solid hsl(var(--border))",
 										borderRadius: "6px",
+										fontSize: "12px",
 									}}
 									labelStyle={{ color: "hsl(var(--foreground))" }}
 								/>
 								<Bar
 									dataKey="clicks"
 									radius={[8, 8, 0, 0]}
-									label={{ position: "top" }}
+									label={{ position: "top", fontSize: 10 }}
 								>
 									{[0, 1, 2, 3].map((index) => (
 										<Cell
