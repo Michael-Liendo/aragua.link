@@ -1,5 +1,7 @@
 export enum PublicRoutesEnum {
 	Landing = "/",
+	Terms = "/terminos",
+	Privacy = "/privacidad",
 }
 
 export enum AuthRoutesEnum {

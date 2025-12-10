@@ -23,7 +23,9 @@ import LinksPage from "./pages/(app)/links";
 import Login from "./pages/(auth)/Login";
 import Register from "./pages/(auth)/Register";
 import Landing from "./pages/(public)/Landing";
+import PrivacyPage from "./pages/(public)/Privacy";
 import RedirectPage from "./pages/(public)/Redirect";
+import TermsPage from "./pages/(public)/Terms";
 
 const PrivateRoutesWrapper = () => {
 	const { token, authInitialized } = useAuth();
@@ -115,6 +117,16 @@ const PublicRoutes: JSX.Element[] = [
 		key={PublicRoutesEnum.Landing}
 		path={PublicRoutesEnum.Landing}
 		Component={Landing}
+	/>,
+	<Route
+		key={PublicRoutesEnum.Terms}
+		path={PublicRoutesEnum.Terms}
+		Component={TermsPage}
+	/>,
+	<Route
+		key={PublicRoutesEnum.Privacy}
+		path={PublicRoutesEnum.Privacy}
+		Component={PrivacyPage}
 	/>,
 	<Route key="redirect" path="/:shortCode" Component={RedirectPage} />,
 ];

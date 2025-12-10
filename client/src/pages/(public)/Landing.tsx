@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { StructuredData } from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { AuthRoutesEnum } from "@/data/routesEnums";
+import { AuthRoutesEnum, PublicRoutesEnum } from "@/data/routesEnums";
 import { useSEO } from "@/features/seo";
 
 export default function Landing() {
@@ -390,24 +390,24 @@ export default function Landing() {
 							</span>
 						</div>
 						<div className="flex gap-6">
-							<button
-								type="button"
+							<Link
+								to={PublicRoutesEnum.Terms}
 								className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
 							>
 								Términos
-							</button>
-							<button
-								type="button"
+							</Link>
+							<Link
+								to={PublicRoutesEnum.Privacy}
 								className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
 							>
 								Privacidad
-							</button>
-							<button
-								type="button"
+							</Link>
+							<a
+								href="mailto:contacto@aragua.link"
 								className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
 							>
 								Contacto
-							</button>
+							</a>
 						</div>
 					</div>
 				</footer>
