@@ -15,6 +15,7 @@ export async function seed(knex: Knex): Promise<void> {
 		email: faker.internet.email().toLowerCase(),
 		phone: faker.phone.number(),
 		password: passwordHash,
+		plan: "PRO",
 	}));
 
 	await knex("users").insert(users);

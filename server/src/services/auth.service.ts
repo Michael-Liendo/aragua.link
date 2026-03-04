@@ -63,6 +63,7 @@ export default class Auth {
 			last_name,
 			email,
 			password: hashedPassword,
+			plan: "PRO" as const,
 		};
 
 		const user = await Repository.users.createUser({

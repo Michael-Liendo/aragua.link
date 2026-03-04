@@ -2,6 +2,11 @@ import type { IUser, IUserForRegister } from "@aragualink/shared";
 import { InternalServerError } from "../utils/errorHandler";
 import database from "./database";
 
+/** DTO for creating a user; plan defaults to PRO for unlimited usage */
+export type IUserForCreate = IUserForRegister & {
+	plan?: "FREE" | "PRO" | "ENTERPRISE";
+};
+
 export class Users {
 	/**
 	 * getUserByEmail - get a user with the email
@@ -29,7 +34,7 @@ export class Users {
 	 * @param userDTO IUserForRegister
 	 * @returns string id
 	 */
-	static async createUser(userDTO: IUserForRegister): Promise<IUser> {
+	static async createUser(userDTO: IUserForCreate): Promise<IUser> {
 		const [user] = await database<IUser>("users")
 			.insert(userDTO)
 			.returning("*");
