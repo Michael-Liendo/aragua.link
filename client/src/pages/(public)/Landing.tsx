@@ -10,7 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import { StructuredData } from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { AuthRoutesEnum, PublicRoutesEnum } from "@/data/routesEnums";
 import { useSEO } from "@/features/seo";
 
@@ -412,7 +411,6 @@ export default function Landing() {
 					</div>
 				</footer>
 			</div>
-			<WhatsAppButton />
 		</>
 	);
 }

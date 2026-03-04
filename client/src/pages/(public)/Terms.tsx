@@ -239,7 +239,6 @@ export default function TermsPage() {
 						</p>
 						<ul className="list-disc list-inside ml-4 space-y-1 text-gray-700 dark:text-gray-300">
 							<li>Email: contacto@aragua.link</li>
-							<li>WhatsApp: +58 414-9409930</li>
 						</ul>
 					</section>
 				</div>

@@ -1,6 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./nav-sidebar/app-sidebar";
-import { WhatsAppButton } from "./WhatsAppButton";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -22,7 +21,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 					</div>
 				</div>
 			</SidebarInset>
-			<WhatsAppButton />
 		</SidebarProvider>
 	);
 }

@@ -52,20 +52,6 @@ function Home() {
 										<span className="truncate">contacto@aragua.link</span>
 									</a>
 								</Button>
-								<Button
-									variant="outline"
-									className="flex items-center justify-center gap-2 border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-400 dark:hover:bg-amber-950/40 text-sm h-9 sm:h-10"
-									asChild
-								>
-									<a
-										href="https://wa.me/584149409930"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Phone className="h-4 w-4 shrink-0" />
-										+58 414-9409930
-									</a>
-								</Button>
 							</div>
 						</div>
 						<div className="pt-3 border-t border-amber-200 dark:border-amber-800">
